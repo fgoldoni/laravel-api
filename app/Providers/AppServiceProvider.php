@@ -8,21 +8,18 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register()
     {
-        //
+        if ('testing' !== $this->app->environment()) {
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot()
     {
-        //
     }
 }

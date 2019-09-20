@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ruleset  name="PSR2">
+    <description></description>
+
+    <arg name="colors"/>
+    <arg value="p"/>
+
+    <file>app</file>
+    <file>modules</file>
+    <file>tests</file>
+    <file>resources/lang</file>
+
+    <rule ref="PSR2"/>
+
+</ruleset>

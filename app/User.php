@@ -2,13 +2,20 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+
+    public $appends = ['full_name'];
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password', 'api_token',
     ];
 
     /**
@@ -25,7 +32,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'api_token', 'email_verified_at', 'remember_token', 'pivot',
     ];
 
     /**
@@ -36,4 +43,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return  ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
+    }
 }
