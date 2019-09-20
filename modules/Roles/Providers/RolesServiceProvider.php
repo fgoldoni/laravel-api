@@ -36,7 +36,8 @@ class RolesServiceProvider extends ServiceProvider
             __DIR__ . '/../Config/config.php' => config_path('roles.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__ . '/../Config/config.php', 'roles'
+            __DIR__ . '/../Config/config.php',
+            'roles'
         );
     }
 
