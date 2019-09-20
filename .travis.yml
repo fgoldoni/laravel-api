@@ -7,6 +7,10 @@ install:
   - composer selfupdate
   - composer install
 
+matrix:
+  allow_failures:
+    - php: 7.2
+
 script:
   - ./vendor/bin/phpcs -s
   - ./vendor/bin/php-cs-fixer fix --diff --dry-run
