@@ -5,7 +5,7 @@ php:
 
 install:
   - composer selfupdate
-  - composer install
+  - composer install --ignore-platform-reqs
 
 matrix:
   allow_failures:
