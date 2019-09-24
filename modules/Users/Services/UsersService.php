@@ -4,6 +4,7 @@ namespace Modules\Users\Services;
 
 use App\Repositories\Criteria\EagerLoad;
 use App\Repositories\Criteria\OrderBy;
+use App\Repositories\Criteria\WithTrashed;
 use App\Services\ServiceAbstract;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -43,6 +44,7 @@ class UsersService extends ServiceAbstract implements UsersServiceInterface
 
         return $this->resolveRepository()->withCriteria([
             new EagerLoad(['roles:id,name,guard_name']),
+            new WithTrashed(),
             new OrderBy($sort[0], $sort[1])
         ])->paginate($perPage);
     }

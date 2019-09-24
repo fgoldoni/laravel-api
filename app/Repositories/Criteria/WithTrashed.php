@@ -24,7 +24,7 @@ class WithTrashed implements CriterionInterface
      */
     public function apply($model): Builder
     {
-        if (Auth::guard('web')->user()->hasPermissionTo('RESTORE_USERS')) {
+        if (Auth::user()->hasRole('Admin')) {
             return $model->withTrashed();
         }
 

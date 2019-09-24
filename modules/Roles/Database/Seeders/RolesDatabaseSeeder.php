@@ -17,23 +17,21 @@ class RolesDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
-        Permission::create(['name' => 'READ_USERS', 'guard_name' => 'web']);
-        Permission::create(['name' => 'EDIT_USERS', 'guard_name' => 'web']);
-        Permission::create(['name' => 'UPDATE_USERS', 'guard_name' => 'web']);
-        Permission::create(['name' => 'DELETE_USERS', 'guard_name' => 'web']);
+        foreach (config('access.roles', []) as $role) {
+            if (!Role::where('name', $role['name'])->where('guard_name', $role['guard_name'])->exists()) {
+                Role::create($role);
+            }
+        }
 
-        // create roles and assign created permissions
+        foreach (config('access.permissions', []) as $permission) {
+            if (!Permission::where('name', $permission['name'])->where('guard_name', $permission['guard_name'])->exists()) {
+                Permission::create($permission);
+            }
+        }
 
-        // this can be done as separate statements
-        Role::create(['name' => 'User', 'guard_name' => 'web']);
-
-        // or may be done by chaining
-        Role::create(['name' => 'Admin', 'guard_name' => 'web'])->givePermissionTo(Permission::all());
-
+        Role::where('name', 'Admin')->first()->givePermissionTo(Permission::all());
         User::first()->assignRole('Admin');
     }
 }

@@ -5,7 +5,7 @@
       <ServerVersion>5.7.27</ServerVersion>
       <DefaultEngine>InnoDB</DefaultEngine>
       <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
-      <DefaultCasing>mixed/mixed</DefaultCasing>
+      <DefaultCasing>exact</DefaultCasing>
     </root>
     <schema id="2" parent="1" name="default">
       <Current>1</Current>
