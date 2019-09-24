@@ -18,8 +18,6 @@ addons:
 
 dist: trusty
 
-sudo: required
-
 branches:
   only:
     - master
@@ -33,10 +31,6 @@ install:
   - mysql -e 'create database test;'
   - composer selfupdate
   - composer install --ignore-platform-reqs --no-interaction
-
-before_script:
-  - mysql -e 'create database my_app_testing;'
-  - php artisan migrate --force --seed
 
 matrix:
   allow_failures:
