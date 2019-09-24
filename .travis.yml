@@ -4,15 +4,10 @@ php:
   - 7.2
 
 install:
+  - cp .env.travis .env
+  - mysql -e 'create database test;'
   - composer selfupdate
   - composer install --ignore-platform-reqs --no-interaction
-  - cp .env.travis .env
-  - pear install pear/PHP_CodeSniffer
-  - phpenv rehash
-  - nvm install 7.7.2
-  - npm install npm@latest -g
-  - npm install -g jshint
-  - npm install
 
 matrix:
   allow_failures:
