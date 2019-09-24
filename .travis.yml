@@ -14,10 +14,15 @@ before_install:
   - mysql -e 'CREATE DATABASE realworld_test;'
 
 script:
-  - phpunit
+  - ./vendor/bin/phpcs -s
+  - ./vendor/bin/php-cs-fixer fix --diff --dry-run
+  - ./vendor/bin/phpunit --colors --coverage-text --coverage-clover build/logs/clover.xml
 
 services:
   - mysql
 
 notifications:
   email: false
+
+after_success:
+  - travis_retry php ./vendor/bin/php-coveralls
