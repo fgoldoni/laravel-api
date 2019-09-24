@@ -3,43 +3,22 @@ language: php
 php:
   - 7.2
 
-services:
-  - redis-server
-
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-      - sourceline: deb https://packages.cloudfoundry.org/debian stable main
-        key_url: https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key
-    packages:
-      - mysql-server
-      - cf-cli
-
-dist: trusty
-
-branches:
-  only:
-    - master
-
-cache:
-  directories:
-    - vendor
-
-install:
+before_script:
   - cp .env.travis .env
-  - mysql -e 'create database test;'
-  - composer selfupdate
-  - composer install --ignore-platform-reqs --no-interaction
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+  - php artisan key:generate
+  - php artisan jwt:generate
+  - php artisan migrate
 
-matrix:
-  allow_failures:
-    - php: 7.2
+before_install:
+  - mysql -e 'CREATE DATABASE realworld_test;'
 
 script:
-  - ./vendor/bin/phpcs -s
-  - ./vendor/bin/php-cs-fixer fix --diff --dry-run
-  - ./vendor/bin/phpunit --colors --coverage-text --coverage-clover build/logs/clover.xml
+  - phpunit
 
-after_success:
-  - travis_retry php ./vendor/bin/php-coveralls
+services:
+  - mysql
+
+notifications:
+  email: false
