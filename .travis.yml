@@ -12,7 +12,7 @@ before_script:
   - php artisan db:seed
 
 before_install:
-  - mysql -e 'CREATE DATABASE travis;'
+  - mysql -e 'CREATE DATABASE travis_test_db;'
 
 script:
   - ./vendor/bin/phpcs -s
