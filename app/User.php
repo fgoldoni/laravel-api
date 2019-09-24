@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -12,6 +13,7 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
+    use LogsActivity;
 
     protected $dates = ['deleted_at'];
 
@@ -43,6 +45,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static $logOnlyDirty = true;
+
+    protected static $logAttributes = [
+        'first_name',
+        'last_name',
+        'email'
+    ];
+
+    protected static $submitEmptyLogs = false;
 
     /**
      * @return string

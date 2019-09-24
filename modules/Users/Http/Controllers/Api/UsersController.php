@@ -75,11 +75,27 @@ class UsersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create()
     {
-        return view('users::create');
+        try {
+            $user = $this->usersService->firstOrNew([
+                'first_name' => '',
+                'last_name'  => '',
+                'email'      => '',
+            ]);
+
+            $result['user'] = $this->usersService->transform($user);
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+        } catch (Exception $e) {
+            $result['success'] = false;
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_ERROR;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_PRESERVE_ZERO_FRACTION);
     }
 
     /**
@@ -114,21 +130,26 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         return view('users::show');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(int $id): JsonResponse
     {
-        return view('users::edit');
+        try {
+            $user = $this->usersService->find($id);
+
+            $result['user'] = $this->usersService->transform($user);
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+        } catch (Exception $e) {
+            $result['success'] = false;
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_ERROR;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_PRESERVE_ZERO_FRACTION);
     }
 
     /**

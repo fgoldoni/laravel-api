@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Users\Http\Requests\ApiStoreUserRequest;
 use Modules\Users\Http\Requests\ApiUpdateUserRequest;
+use Modules\Users\Transformers\UserCollection;
 
 interface UsersServiceInterface
 {
@@ -24,4 +25,10 @@ interface UsersServiceInterface
     public function forceDelete(int $id): User;
 
     public function restore(int $id): User;
+
+    public function find(int $id): User;
+
+    public function transform(User $user): UserCollection;
+
+    public function firstOrNew(array $attributes): User;
 }
