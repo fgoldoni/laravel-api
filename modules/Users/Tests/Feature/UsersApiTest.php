@@ -31,7 +31,9 @@ class UsersApiTest extends TestCase
         $headers = ['Authorization' => "Bearer $token"];
 
         $response = $this->json('GET', 'api/users', [], $headers);
-        fwrite(STDERR, print_r($response->getContent(), TRUE));
+
+        fwrite(STDERR, print_r(route('login'), TRUE));
+        fwrite(STDERR, print_r(route('api/users'), TRUE));
 
         $response->assertStatus(200)
             ->assertJsonStructure([
