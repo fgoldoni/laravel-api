@@ -14,7 +14,7 @@ class UsersApiTest extends TestCase
     {
         parent::setUp();
         Artisan::call('migrate');
-        Artisan::call('db:seed');
+        Artisan::call('module:seed', ['module' => 'Roles', '--force' => true]);
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->registerPermissions();
     }
 
