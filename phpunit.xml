@@ -20,8 +20,10 @@
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
-            <directory suffix=".php">./modules/Users</directory>
+            <directory suffix=".php">./modules/Users/Http</directory>
+            <directory suffix=".php">./modules/Users/Repositories</directory>
+            <directory suffix=".php">./modules/Users/Services</directory>
+            <directory suffix=".php">./modules/Users/Transformers</directory>
         </whitelist>
     </filter>
     <php>
