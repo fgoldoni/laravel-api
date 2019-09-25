@@ -4,6 +4,7 @@ namespace Modules\Users\Tests\Feature;
 
 use App\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class UsersApiTest extends TestCase
@@ -33,7 +34,7 @@ class UsersApiTest extends TestCase
         $response = $this->json('GET', 'api/users', [], $headers);
 
         fwrite(STDERR, print_r(route('login'), true));
-        fwrite(STDERR, print_r(route('api/users'), true));
+        fwrite(STDERR, print_r(Route::getRoutes(), true));
 
         $response->assertStatus(200)
             ->assertJsonStructure([
