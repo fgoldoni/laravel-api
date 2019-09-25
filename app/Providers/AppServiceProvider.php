@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Modules\Users\Providers\RouteServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,8 +14,6 @@ class AppServiceProvider extends ServiceProvider
         if ('testing' !== $this->app->environment()) {
             $this->app->register(TelescopeServiceProvider::class);
         }
-
-        $this->app->register(RouteServiceProvider::class);
     }
 
     /**
