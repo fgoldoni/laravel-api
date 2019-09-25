@@ -32,6 +32,9 @@ class RolesDatabaseSeeder extends Seeder
         }
 
         Role::where('name', 'Admin')->first()->givePermissionTo(Permission::all());
-        User::first()->assignRole('Admin');
+
+        if (User::first()) {
+            User::first()->assignRole('Admin');
+        }
     }
 }
