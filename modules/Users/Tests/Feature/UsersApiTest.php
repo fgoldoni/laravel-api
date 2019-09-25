@@ -4,7 +4,6 @@ namespace Modules\Users\Tests\Feature;
 
 use App\User;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class UsersApiTest extends TestCase
@@ -32,7 +31,7 @@ class UsersApiTest extends TestCase
         $headers = ['Authorization' => "Bearer $token"];
 
         $response = $this->json('GET', 'api/users', [], $headers);
-
+        dd($response->getContent());
         $response->assertStatus(200)
             ->assertJsonStructure([
             'data',
