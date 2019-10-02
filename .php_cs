@@ -2,7 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/app')
-    ->in(__DIR__ . '/modules')
+    ->in(__DIR__ . '/Modules')
     ->in(__DIR__ . '/resources/lang')
     ->in(__DIR__ . '/tests')
 ;
