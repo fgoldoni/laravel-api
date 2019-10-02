@@ -33,7 +33,8 @@ class UsersApiTest extends TestCase
 
         $response = $this->json('GET', 'api/users', [], $headers);
 
-        fwrite(STDERR, print_r($response->getContent(), true));
+        fwrite(STDERR, print_r(route('login'), true));
+        fwrite(STDERR, print_r(url('login'), true));
 
         $response->assertStatus(200)
             ->assertJsonStructure([
