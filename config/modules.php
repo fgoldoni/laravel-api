@@ -69,7 +69,7 @@ return [
         |
         */
 
-        'modules' => base_path('modules'),
+        'modules' => base_path('Modules'),
         /*
         |--------------------------------------------------------------------------
         | Modules assets path
@@ -79,7 +79,7 @@ return [
         |
         */
 
-        'assets' => public_path('modules'),
+        'assets' => public_path('Modules'),
         /*
         |--------------------------------------------------------------------------
         | The migrations path
