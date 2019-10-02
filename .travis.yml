@@ -21,6 +21,7 @@ before_script:
   - php artisan view:clear
 
 before_install:
+  - sudo apt-get update
   - mysql -e 'CREATE DATABASE travis_test_db;'
   - git submodule update --init --recursive
 
