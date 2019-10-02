@@ -35,6 +35,8 @@ class UsersApiTest extends TestCase
 
         fwrite(STDERR, print_r(route('login'), true));
         fwrite(STDERR, print_r(url('login'), true));
+        fwrite(STDERR, print_r(route('api.users'), true));
+        fwrite(STDERR, print_r(url('api/users'), true));
 
         $response->assertStatus(200)
             ->assertJsonStructure([
