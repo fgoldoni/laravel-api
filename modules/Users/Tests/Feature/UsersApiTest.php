@@ -33,7 +33,6 @@ class UsersApiTest extends TestCase
 
         $response = $this->json('GET', 'api/users', [], $headers);
 
-        fwrite(STDERR, print_r(route('login'), true));
         fwrite(STDERR, print_r(url('login'), true));
         fwrite(STDERR, print_r(route('api.users'), true));
         fwrite(STDERR, print_r(url('api/users'), true));

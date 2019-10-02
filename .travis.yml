@@ -20,6 +20,7 @@ before_script:
   - php artisan route:clear
   - php artisan view:clear
   - php artisan module:list
+  - php artisan route:list | grep 'users'
 
 before_install:
   - sudo apt-get update
