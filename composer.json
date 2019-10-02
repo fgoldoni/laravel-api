@@ -19,6 +19,7 @@
         "spatie/laravel-permission": "^3.0"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-master",
         "facade/ignition": "^1.4",
         "friendsofphp/php-cs-fixer": "^2.15",
         "fzaninotto/faker": "^1.4",
