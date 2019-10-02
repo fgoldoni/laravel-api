@@ -24,6 +24,7 @@ class UsersApiTest extends TestCase
         //fwrite(STDERR, print_r(User::first()->first_name, TRUE));
 
         $users = factory(User::class, 10)->create();
+
         $users->first()->assignRole('Admin');
 
         $token = $users->first()->makeVisible('api_token')->api_token;
@@ -32,7 +33,7 @@ class UsersApiTest extends TestCase
 
         $response = $this->json('GET', 'api/users', [], $headers);
 
-        fwrite(STDERR, print_r($response->getContent(), TRUE));
+        fwrite(STDERR, print_r($response->getContent(), true));
 
         $response->assertStatus(200)
             ->assertJsonStructure([
