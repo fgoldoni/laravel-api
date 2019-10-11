@@ -138,7 +138,7 @@ return [
     'scan' => [
         'enabled' => true,
         'paths' => [
-            base_path('Modules/*/*'),
+            base_path('Modules/*'),
         ],
     ],
     /*
