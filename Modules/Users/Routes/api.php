@@ -10,8 +10,6 @@
 |
 */
 
-use Illuminate\Support\Facades\Route;
-
 Route::group(['middleware' => ['auth:api', 'role:Admin'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('users', 'UsersController@getUsers')->name('users');
     Route::get('users/paginate', 'UsersController@paginate')->name('users.paginate');
