@@ -91,4 +91,121 @@ class UsersApiTest extends TestCase
 
         return ['Authorization' => "Bearer $token"];
     }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreCreatedCorrectly(): void
+    {
+        $headers = $this->init(1);
+
+        $payload = [
+            'first_name'        => 'This is a First Name',
+            'last_name'         => 'This is a Last Name',
+            'email'             => 'john@doe.com',
+            'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+        ];
+
+        $response = $this->json('POST', 'api/users', $payload, $headers)
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'user' => [
+                    'id',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'updated_at',
+                    'created_at'
+                ],
+                'message',
+                'success',
+                'status',
+            ]);
+
+        $content = json_decode($response->getContent());
+
+        $this->assertSame('This is a First Name', $content->user->first_name);
+
+        $this->assertSame('This is a Last Name', $content->user->last_name);
+
+        $this->assertSame('john@doe.com', $content->user->email);
+    }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreUpdatedCorrectly(): void
+    {
+        $headers = $this->init(1);
+
+        $user = factory(User::class)->create([
+            'first_name'        => 'This is a First Name',
+            'last_name'         => 'This is a Last Name',
+            'email'             => 'john@doe.com',
+        ]);
+
+        $payload = [
+            'first_name' => 'Updated This is a First Name',
+            'last_name'  => 'Updated This is a Last Name',
+            'email'      => 'updated.john@doe.com',
+        ];
+
+        $response = $this->json('PUT', 'api/users/' . $user->id, $payload, $headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'user' => [
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'updated_at',
+                    'created_at',
+                    'id'
+                ],
+                'message',
+                'success',
+                'status',
+            ]);
+
+        $content = json_decode($response->getContent(), false);
+
+        $this->assertSame('Updated This is a First Name', $content->user->first_name);
+
+        $this->assertSame('Updated This is a Last Name', $content->user->last_name);
+
+        $this->assertSame('updated.john@doe.com', $content->user->email);
+    }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreDeletedCorrectly(): void
+    {
+        $headers = $this->init(1);
+
+        $user = factory(User::class)->create([
+            'first_name'        => 'This is a First Name',
+            'last_name'         => 'This is a Last Name',
+            'email'             => 'john@doe.com',
+        ]);
+
+        $this->json('DELETE', 'api/users/' . $user->id, [], $headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'user' => [
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'updated_at',
+                    'created_at',
+                    'id'
+                ],
+                'message',
+                'success',
+                'status',
+            ]);
+
+        $user = $user->fresh();
+
+        $this->assertNotNull($user->deleted_at);
+    }
 }

@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Log\Logger;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Str;
@@ -33,13 +34,18 @@ class UsersController extends Controller
      * @var \Modules\Users\Services\Contracts\UsersServiceInterface
      */
     private $usersService;
+    /**
+     * @var \Illuminate\Log\Logger
+     */
+    private $logger;
 
-    public function __construct(UsersServiceInterface $usersService, ResponseFactory $response, Translator $lang, Str $str)
+    public function __construct(UsersServiceInterface $usersService, ResponseFactory $response, Translator $lang, Str $str, Logger $logger)
     {
         $this->response = $response;
         $this->lang = $lang;
         $this->str = $str;
         $this->usersService = $usersService;
+        $this->logger = $logger;
     }
 
     public function getUsers(): JsonResponse
@@ -49,6 +55,7 @@ class UsersController extends Controller
             $result['success'] = true;
             $result['status'] = Flag::STATUS_CODE_SUCCESS;
         } catch (Exception $e) {
+            $this->logger->error($e);
             $result['success'] = false;
             $result['message'] = $e->getMessage();
             $result['status'] = Flag::STATUS_CODE_ERROR;
@@ -64,6 +71,7 @@ class UsersController extends Controller
             $result['success'] = true;
             $result['status'] = Flag::STATUS_CODE_SUCCESS;
         } catch (Exception $e) {
+            $this->logger->error($e);
             $result['success'] = false;
             $result['message'] = $e->getMessage();
             $result['status'] = Flag::STATUS_CODE_ERROR;
