@@ -10,10 +10,12 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Modules\\Users\\Providers\\UsersServiceProvider"
+                "Modules\\Users\\Providers\\UsersServiceProvider",
+                "Modules\\Users\\Providers\\RouteServiceProvider",
+                "Modules\\Users\\Providers\\RepositoryServiceProvider"
             ],
             "aliases": {
-                
+
             }
         }
     },
