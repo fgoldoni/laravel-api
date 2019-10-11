@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/fgoldoni/laravel-api.svg?branch=master)](https://travis-ci.org/fgoldoni/laravel-api)
 [![Coverage Status](https://coveralls.io/repos/github/fgoldoni/laravel-api/badge.svg?branch=master)](https://coveralls.io/github/fgoldoni/laravel-api?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fgoldoni/laravel-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fgoldoni/laravel-api/?branch=master)
 ## About Laravel
 
 Laravel Api
