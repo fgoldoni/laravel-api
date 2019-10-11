@@ -37,6 +37,9 @@
     },
     "extra": {
         "laravel": {
+            "providers": [
+                "Modules\\Users\\Providers\\UsersServiceProvider"
+            ],
             "dont-discover": []
         }
     },
