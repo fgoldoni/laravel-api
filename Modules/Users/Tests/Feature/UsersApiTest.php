@@ -81,6 +81,31 @@ class UsersApiTest extends TestCase
             ]);
     }
 
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreEditedCorrectly(): void
+    {
+        $headers = $this->init(1);
+
+        $response = $this->json('GET', 'api/users/1/edit', [], $headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'user' => [
+                    'id',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'updated_at',
+                    'created_at'
+                ],
+                'success',
+                'status',
+            ]);
+
+        $content = json_decode($response->getContent(), true);
+    }
+
     public function init($maxUsers): array
     {
         $users = factory(User::class, $maxUsers)->create();
@@ -99,9 +124,28 @@ class UsersApiTest extends TestCase
     {
         $headers = $this->init(1);
 
+        $response = $this->json('GET', 'api/users/create', [], $headers)
+            ->assertStatus(200);
+
+        $content = json_decode($response->getContent(), false);
+
+        $this->assertSame('', $content->user->first_name);
+
+        $this->assertSame('', $content->user->last_name);
+
+        $this->assertSame('', $content->user->email);
+    }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreStoredCorrectly(): void
+    {
+        $headers = $this->init(1);
+
         $payload = [
-            'first_name'        => 'This is a First Name',
-            'last_name'         => 'This is a Last Name',
+            'first_name'        => 'John',
+            'last_name'         => 'Doe',
             'email'             => 'john@doe.com',
             'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
         ];
@@ -124,9 +168,9 @@ class UsersApiTest extends TestCase
 
         $content = json_decode($response->getContent());
 
-        $this->assertSame('This is a First Name', $content->user->first_name);
+        $this->assertSame('John', $content->user->first_name);
 
-        $this->assertSame('This is a Last Name', $content->user->last_name);
+        $this->assertSame('Doe', $content->user->last_name);
 
         $this->assertSame('john@doe.com', $content->user->email);
     }
