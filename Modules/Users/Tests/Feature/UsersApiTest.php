@@ -208,4 +208,60 @@ class UsersApiTest extends TestCase
 
         $this->assertNotNull($user->deleted_at);
     }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreForceDeletedCorrectly(): void
+    {
+        $headers = $this->init(1);
+
+        $user = factory(User::class)->create([
+            'first_name'        => 'This is a First Name',
+            'last_name'         => 'This is a Last Name',
+            'email'             => 'john@doe.com',
+        ]);
+
+        $this->json('DELETE', 'api/users/' . $user->id, [], $headers)
+            ->assertStatus(200);
+
+        $user = $user->fresh();
+
+        $this->assertNotNull($user->deleted_at);
+
+        $this->json('DELETE', 'api/users/' . $user->id . '/destroy', [], $headers)
+            ->assertStatus(200);
+
+        $user = $user->fresh();
+
+        $this->assertNull($user);
+    }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreRestoredCorrectly(): void
+    {
+        $headers = $this->init(1);
+
+        $user = factory(User::class)->create([
+            'first_name'        => 'John',
+            'last_name'         => 'Doe',
+            'email'             => 'john@doe.com',
+        ]);
+
+        $this->json('DELETE', 'api/users/' . $user->id, [], $headers)
+            ->assertStatus(200);
+
+        $user = $user->fresh();
+
+        $this->assertNotNull($user->deleted_at);
+
+        $this->json('PUT', 'api/users/' . $user->id . '/restore', [], $headers)
+            ->assertStatus(200);
+
+        $user = $user->fresh();
+
+        $this->assertNull($user->deleted_at);
+    }
 }
