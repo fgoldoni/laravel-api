@@ -5,16 +5,23 @@ namespace Modules\Users\Tests\Feature;
 use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
+use Prophecy\Argument;
 use Tests\TestCase;
 
 class UsersApiTest extends TestCase
 {
+    /**
+     * @var array
+     */
+    private $headers;
+
     protected function setUp(): void
     {
         parent::setUp();
         Artisan::call('migrate:refresh');
         Artisan::call('module:seed', ['module' => 'Roles', '--force' => true]);
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->registerPermissions();
+        $this->headers = $this->init(1);
     }
 
     /**
@@ -23,16 +30,7 @@ class UsersApiTest extends TestCase
     public function testUsersAreListedCorrectly(): void
     {
         //fwrite(STDERR, print_r(User::first()->first_name, TRUE));
-
-        $users = factory(User::class, 10)->create();
-
-        $users->first()->assignRole('Admin');
-
-        $token = $users->first()->makeVisible('api_token')->api_token;
-
-        $headers = ['Authorization' => "Bearer $token"];
-
-        $response = $this->json('GET', 'api/users', [], $headers);
+        $response = $this->json('GET', 'api/users', [], $this->headers);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -52,17 +50,15 @@ class UsersApiTest extends TestCase
     /**
      * A basic unit test example.
      */
-    public function testUsersAreListedCorrectlyException(): void
+    public function testUsersAreListedException(): void
     {
-        $headers = $this->init(1);
-
         $usersService = $this->prophesize(UsersServiceInterface::class);
 
         $usersService->getUsers()->willThrow(new \Exception('Exception'));
 
         $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
 
-        $response = $this->json('GET', 'api/users', [], $headers);
+        $response = $this->json('GET', 'api/users', [], $this->headers);
 
         $response->assertStatus(500);
 
@@ -78,9 +74,7 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreListedWithPaginateCorrectly(): void
     {
-        $headers = $this->init(1);
-
-        $response = $this->json('GET', 'api/users/paginate', ['per_page' => 10], $headers);
+        $response = $this->json('GET', 'api/users/paginate', ['per_page' => 10], $this->headers);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -109,11 +103,31 @@ class UsersApiTest extends TestCase
     /**
      * A basic unit test example.
      */
+    public function testUsersAreListedWithPaginateException(): void
+    {
+        $usersService = $this->prophesize(UsersServiceInterface::class);
+
+        $usersService->paginate(Argument::any())->willThrow(new \Exception('Exception'));
+
+        $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
+
+        $response = $this->json('GET', 'api/users/paginate', ['per_page' => 10], $this->headers);
+
+        $response->assertStatus(500);
+
+        $response->assertJsonStructure([
+            'success',
+            'message',
+            'status'
+        ]);
+    }
+
+    /**
+     * A basic unit test example.
+     */
     public function testUsersAreEditedCorrectly(): void
     {
-        $headers = $this->init(1);
-
-        $response = $this->json('GET', 'api/users/1/edit', [], $headers)
+        $response = $this->json('GET', 'api/users/1/edit', [], $this->headers)
             ->assertStatus(200)
             ->assertJsonStructure([
                 'user' => [
@@ -127,8 +141,28 @@ class UsersApiTest extends TestCase
                 'success',
                 'status',
             ]);
+    }
 
-        $content = json_decode($response->getContent(), true);
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreEditedException(): void
+    {
+        $usersService = $this->prophesize(UsersServiceInterface::class);
+
+        $usersService->transform(Argument::any())->willThrow(new \Exception('Exception'));
+
+        $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
+
+        $response = $this->json('GET', 'api/users/1/edit', [], $this->headers);
+
+        $response->assertStatus(500);
+
+        $response->assertJsonStructure([
+            'success',
+            'message',
+            'status'
+        ]);
     }
 
     public function init($maxUsers): array
@@ -159,6 +193,28 @@ class UsersApiTest extends TestCase
         $this->assertSame('', $content->user->last_name);
 
         $this->assertSame('', $content->user->email);
+    }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testUsersAreCreatedException(): void
+    {
+        $usersService = $this->prophesize(UsersServiceInterface::class);
+
+        $usersService->transform(Argument::any())->willThrow(new \Exception('Exception'));
+
+        $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
+
+        $response = $this->json('GET', 'api/users/create', [], $this->headers);
+
+        $response->assertStatus(500);
+
+        $response->assertJsonStructure([
+            'success',
+            'message',
+            'status'
+        ]);
     }
 
     /**

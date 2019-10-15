@@ -75,6 +75,8 @@ class UsersController extends Controller
             $result['success'] = false;
             $result['message'] = $e->getMessage();
             $result['status'] = Flag::STATUS_CODE_ERROR;
+
+            return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
         }
 
         return $this->response->json($result['data'], $result['status'], [], JSON_NUMERIC_CHECK);
