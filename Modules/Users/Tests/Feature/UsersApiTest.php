@@ -4,6 +4,7 @@ namespace Modules\Users\Tests\Feature;
 
 use App\User;
 use Illuminate\Support\Facades\Artisan;
+use Modules\Users\Services\Contracts\UsersServiceInterface;
 use Tests\TestCase;
 
 class UsersApiTest extends TestCase
@@ -51,9 +52,33 @@ class UsersApiTest extends TestCase
     /**
      * A basic unit test example.
      */
+    public function testUsersAreListedCorrectlyException(): void
+    {
+        $headers = $this->init(1);
+
+        $usersService = $this->prophesize(UsersServiceInterface::class);
+
+        $usersService->getUsers()->willThrow(new \Exception('Exception'));
+
+        $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
+
+        $response = $this->json('GET', 'api/users', [], $headers);
+
+        $response->assertStatus(500);
+
+        $response->assertJsonStructure([
+            'success',
+            'message',
+            'status'
+        ]);
+    }
+
+    /**
+     * A basic unit test example.
+     */
     public function testUsersAreListedWithPaginateCorrectly(): void
     {
-        $headers = $this->init(20);
+        $headers = $this->init(1);
 
         $response = $this->json('GET', 'api/users/paginate', ['per_page' => 10], $headers);
 
