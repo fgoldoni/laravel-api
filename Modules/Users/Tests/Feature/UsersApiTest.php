@@ -2,6 +2,7 @@
 
 namespace Modules\Users\Tests\Feature;
 
+use App\Exceptions\TestErrorException;
 use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
@@ -39,7 +40,12 @@ class UsersApiTest extends TestCase
                     'id',
                     'first_name',
                     'last_name',
+                    'full_name',
                     'email',
+                    'deleted_at',
+                    'created_at',
+                    'updated_at',
+                    'roles' => [],
                 ]
             ],
             'success',
@@ -54,7 +60,7 @@ class UsersApiTest extends TestCase
     {
         $usersService = $this->prophesize(UsersServiceInterface::class);
 
-        $usersService->getUsers()->willThrow(new \Exception('Exception'));
+        $usersService->getUsers()->willThrow(new TestErrorException('Exception 1'));
 
         $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
 
@@ -84,7 +90,12 @@ class UsersApiTest extends TestCase
                         'id',
                         'first_name',
                         'last_name',
+                        'full_name',
                         'email',
+                        'deleted_at',
+                        'created_at',
+                        'updated_at',
+                        'roles' => [],
                     ]
                 ],
                 'first_page_url',

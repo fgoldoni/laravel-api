@@ -43,7 +43,6 @@ class UsersController extends Controller
     {
         $this->response = $response;
         $this->lang = $lang;
-        $this->str = $str;
         $this->usersService = $usersService;
         $this->logger = $logger;
     }
