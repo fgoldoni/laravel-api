@@ -13,7 +13,8 @@ class ModelException extends BaseException
     {
         return static::create(
             "Class {$model} must be an instance of Illuminate\\Database\\Eloquent\\Model",
-            ErrorCodes::ERROR_CODE_NOT_MODEL, 500
+            ErrorCodes::ERROR_CODE_NOT_MODEL,
+            500
         );
     }
 }
