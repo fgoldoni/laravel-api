@@ -56,6 +56,7 @@ class UsersController extends Controller
         } catch (Exception $e) {
             $this->logger->error($e);
             $result['success'] = false;
+            $result['exception'] = \get_class($e);
             $result['message'] = $e->getMessage();
             $result['status'] = Flag::STATUS_CODE_ERROR;
         }

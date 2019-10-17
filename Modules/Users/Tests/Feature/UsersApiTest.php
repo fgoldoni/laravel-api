@@ -4,8 +4,10 @@ namespace Modules\Users\Tests\Feature;
 
 use App\Exceptions\TestErrorException;
 use App\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
+use PHPUnit\Framework\Assert as PHPUnit;
 use Prophecy\Argument;
 use Tests\TestCase;
 
@@ -15,6 +17,10 @@ class UsersApiTest extends TestCase
      * @var array
      */
     private $headers;
+    /**
+     * @var false|string
+     */
+    private $responseBody;
 
     protected function setUp(): void
     {
@@ -60,13 +66,22 @@ class UsersApiTest extends TestCase
     {
         $usersService = $this->prophesize(UsersServiceInterface::class);
 
-        $usersService->getUsers()->willThrow(new TestErrorException('Exception 1'));
+        $usersService->getUsers()->willThrow(new TestErrorException('Test Exception'));
 
         $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
 
         $response = $this->json('GET', 'api/users', [], $this->headers);
 
+        $this->responseBody = $response->getContent();
+
         $response->assertStatus(500);
+
+        $this->seeJsonEquals([
+            'success'   => false,
+            'exception' => TestErrorException::class,
+            'message'   => 'Test Exception',
+            'status'    => 500
+        ]);
 
         $response->assertJsonStructure([
             'success',
@@ -399,5 +414,21 @@ class UsersApiTest extends TestCase
         $user = $user->fresh();
 
         $this->assertNull($user->deleted_at);
+    }
+
+    private function seeJsonEquals(array $data): self
+    {
+        $actual = json_encode(Arr::sortRecursive(
+            $this->getResponseAsArray()
+        ));
+
+        PHPUnit::assertEquals(json_encode(Arr::sortRecursive($data)), $actual);
+
+        return $this;
+    }
+
+    private function getResponseAsArray()
+    {
+        return json_decode($this->responseBody, true);
     }
 }

@@ -9,9 +9,9 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\ModelException;
 use App\Repositories\Contracts\RepositoryInterface;
 use App\Repositories\Criteria\CriteriaInterface;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -196,7 +196,7 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
      */
     public function paginate(int $perPage = null, $columns = ['*'], $method = 'paginate'): LengthAwarePaginator
     {
-        $perPage = null === $perPage ? 10 : $perPage;
+        $perPage = $perPage ?? 10;
 
         return $this->model->{$method}($perPage, $columns);
     }
@@ -282,7 +282,7 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
         $model = app()->make($this->model());
 
         if (!$model instanceof Model) {
-            throw new Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+            throw ModelException::notModelException($this->model());
         }
 
         return $model;
