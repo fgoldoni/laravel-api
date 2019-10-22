@@ -28,7 +28,9 @@ class UsersApiTest extends TestCase
         Artisan::call('migrate:refresh');
         Artisan::call('module:seed', ['module' => 'Roles', '--force' => true]);
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->registerPermissions();
-        $this->headers = $this->init(1);
+        $admin = User::role('Admin')->first();
+        $token = $admin->makeVisible('api_token')->api_token;
+        $this->headers = ['Authorization' => "Bearer $token"];
     }
 
     /**
@@ -41,22 +43,22 @@ class UsersApiTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'first_name',
-                    'last_name',
-                    'full_name',
-                    'email',
-                    'deleted_at',
-                    'created_at',
-                    'updated_at',
-                    'roles' => [],
-                ]
-            ],
-            'success',
-            'status',
-        ]);
+                'data' => [
+                    '*' => [
+                        'id',
+                        'first_name',
+                        'last_name',
+                        'full_name',
+                        'email',
+                        'deleted_at',
+                        'created_at',
+                        'updated_at',
+                        'roles' => [],
+                    ]
+                ],
+                'success',
+                'status',
+            ]);
     }
 
     /**
@@ -191,25 +193,12 @@ class UsersApiTest extends TestCase
         ]);
     }
 
-    public function init($maxUsers): array
-    {
-        $users = factory(User::class, $maxUsers)->create();
-
-        $users->first()->assignRole('Admin');
-
-        $token = $users->first()->makeVisible('api_token')->api_token;
-
-        return ['Authorization' => "Bearer $token"];
-    }
-
     /**
      * A basic unit test example.
      */
     public function testUsersAreCreatedCorrectly(): void
     {
-        $headers = $this->init(1);
-
-        $response = $this->json('GET', 'api/users/create', [], $headers)
+        $response = $this->json('GET', 'api/users/create', [], $this->headers)
             ->assertStatus(200);
 
         $content = json_decode($response->getContent(), false);
@@ -248,8 +237,6 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreStoredCorrectly(): void
     {
-        $headers = $this->init(1);
-
         $payload = [
             'first_name'        => 'John',
             'last_name'         => 'Doe',
@@ -257,7 +244,7 @@ class UsersApiTest extends TestCase
             'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
         ];
 
-        $response = $this->json('POST', 'api/users', $payload, $headers)
+        $response = $this->json('POST', 'api/users', $payload, $this->headers)
             ->assertStatus(201)
             ->assertJsonStructure([
                 'user' => [
@@ -287,8 +274,6 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreUpdatedCorrectly(): void
     {
-        $headers = $this->init(1);
-
         $user = factory(User::class)->create([
             'first_name'        => 'This is a First Name',
             'last_name'         => 'This is a Last Name',
@@ -301,7 +286,7 @@ class UsersApiTest extends TestCase
             'email'      => 'updated.john@doe.com',
         ];
 
-        $response = $this->json('PUT', 'api/users/' . $user->id, $payload, $headers)
+        $response = $this->json('PUT', 'api/users/' . $user->id, $payload, $this->headers)
             ->assertStatus(200)
             ->assertJsonStructure([
                 'user' => [
@@ -331,15 +316,13 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreDeletedCorrectly(): void
     {
-        $headers = $this->init(1);
-
         $user = factory(User::class)->create([
             'first_name'        => 'This is a First Name',
             'last_name'         => 'This is a Last Name',
             'email'             => 'john@doe.com',
         ]);
 
-        $this->json('DELETE', 'api/users/' . $user->id, [], $headers)
+        $this->json('DELETE', 'api/users/' . $user->id, [], $this->headers)
             ->assertStatus(200)
             ->assertJsonStructure([
                 'user' => [
@@ -365,22 +348,20 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreForceDeletedCorrectly(): void
     {
-        $headers = $this->init(1);
-
         $user = factory(User::class)->create([
             'first_name'        => 'This is a First Name',
             'last_name'         => 'This is a Last Name',
             'email'             => 'john@doe.com',
         ]);
 
-        $this->json('DELETE', 'api/users/' . $user->id, [], $headers)
+        $this->json('DELETE', 'api/users/' . $user->id, [], $this->headers)
             ->assertStatus(200);
 
         $user = $user->fresh();
 
         $this->assertNotNull($user->deleted_at);
 
-        $this->json('DELETE', 'api/users/' . $user->id . '/destroy', [], $headers)
+        $this->json('DELETE', 'api/users/' . $user->id . '/destroy', [], $this->headers)
             ->assertStatus(200);
 
         $user = $user->fresh();
@@ -393,22 +374,20 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreRestoredCorrectly(): void
     {
-        $headers = $this->init(1);
-
         $user = factory(User::class)->create([
             'first_name'        => 'John',
             'last_name'         => 'Doe',
             'email'             => 'john@doe.com',
         ]);
 
-        $this->json('DELETE', 'api/users/' . $user->id, [], $headers)
+        $this->json('DELETE', 'api/users/' . $user->id, [], $this->headers)
             ->assertStatus(200);
 
         $user = $user->fresh();
 
         $this->assertNotNull($user->deleted_at);
 
-        $this->json('PUT', 'api/users/' . $user->id . '/restore', [], $headers)
+        $this->json('PUT', 'api/users/' . $user->id . '/restore', [], $this->headers)
             ->assertStatus(200);
 
         $user = $user->fresh();

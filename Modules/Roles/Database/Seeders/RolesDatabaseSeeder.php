@@ -35,6 +35,14 @@ class RolesDatabaseSeeder extends Seeder
 
         if (User::first()) {
             User::first()->assignRole('Admin');
+        } else {
+            $user = factory(User::class)->create([
+                'first_name'        => 'Admin',
+                'last_name'         => 'M',
+                'email'             => 'admin@contact.com',
+            ]);
+
+            $user->assignRole('Admin');
         }
     }
 }
