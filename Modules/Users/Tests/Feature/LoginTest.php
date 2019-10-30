@@ -1,14 +1,12 @@
 <?php
 
-
 namespace Modules\Users\Tests\Feature;
+
 use App\User;
 use Tests\BrowserKitTestCase;
 
 /**
- * Class LoginTest
- *
- * @package \Modules\Users\Tests\Feature
+ * Class LoginTest.
  */
 class LoginTest extends BrowserKitTestCase
 {
@@ -36,7 +34,7 @@ class LoginTest extends BrowserKitTestCase
             'password' => bcrypt($password = 'i-love-laravel'),
         ]);
         $response = $this->post('/login', [
-            'email' => $user->email,
+            'email'    => $user->email,
             'password' => $password,
         ]);
         $response->assertRedirect('/home');
@@ -50,7 +48,7 @@ class LoginTest extends BrowserKitTestCase
         ]);
 
         $response = $this->from('/login')->post('/login', [
-            'email' => $user->email,
+            'email'    => $user->email,
             'password' => 'invalid-password',
         ]);
 

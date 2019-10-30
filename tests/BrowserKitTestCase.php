@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Tests;
 
 use App\User;
@@ -8,9 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 
 /**
- * Class BrowserKitTestCase
- *
- * @package \Tests
+ * Class BrowserKitTestCase.
  */
 class BrowserKitTestCase extends TestCase
 {
@@ -30,5 +27,4 @@ class BrowserKitTestCase extends TestCase
         $token = $admin->makeVisible('api_token')->api_token;
         $this->headers = ['Authorization' => "Bearer $token"];
     }
-
 }
