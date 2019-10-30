@@ -52,7 +52,8 @@ class UsersService extends ServiceAbstract implements UsersServiceInterface
     public function getUsers(): Collection
     {
         return $this->resolveRepository()->withCriteria([
-            new EagerLoad(['roles:id,name,guard_name'])
+            new EagerLoad(['roles:id,name,guard_name']),
+            new WithTrashed()
         ])->all();
     }
 
