@@ -37,9 +37,10 @@ class RolesDatabaseSeeder extends Seeder
             User::first()->assignRole('Admin');
         } else {
             $user = factory(User::class)->create([
-                'first_name'        => 'Admin',
-                'last_name'         => 'M',
-                'email'             => 'admin@contact.com',
+                'first_name'            => 'Admin',
+                'last_name'             => 'M',
+                'email'                 => 'admin@contact.com',
+                'api_token'             => '2cxFfbacikqS4mphg8DFUsUm3i2KkJ5yAqydeXT0Eoq3pZ4BdIcFqHLDbpE6',
             ]);
 
             $user->assignRole('Admin');

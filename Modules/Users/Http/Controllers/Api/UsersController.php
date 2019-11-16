@@ -15,6 +15,7 @@ use Illuminate\Translation\Translator;
 use Modules\Users\Http\Requests\ApiStoreUserRequest;
 use Modules\Users\Http\Requests\ApiUpdateUserRequest;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
+use Modules\Users\Transformers\UsersCollection;
 
 class UsersController extends Controller
 {
@@ -50,7 +51,7 @@ class UsersController extends Controller
     public function getUsers(): JsonResponse
     {
         try {
-            $result['data'] = $this->usersService->getUsers();
+            $result['data'] = UsersCollection::collection($this->usersService->getUsers());
             $result['success'] = true;
             $result['status'] = Flag::STATUS_CODE_SUCCESS;
         } catch (Exception $e) {

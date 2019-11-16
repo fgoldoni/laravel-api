@@ -18,8 +18,17 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->timestamp('dob')->nullable();
+            $table->enum('gender', ['male', 'female '])->nullable();
+            $table->string('country')->default('Germany');
+            $table->string('company')->nullable();
+            $table->string('department')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('website')->nullable();
+            $table->enum('languages_known', ["English", "French", "Germany", "Arabic"])->nullable();
+            $table->enum('contact_options', ["email", "message", "phone"])->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('api_token', 80)->unique()->nullable()->default(null);
 
             $table->rememberToken();

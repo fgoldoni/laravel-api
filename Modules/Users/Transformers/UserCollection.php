@@ -43,11 +43,25 @@ class UserCollection extends JsonResource
 
     private function mapPermissions()
     {
-        return $this->permissions->map(static function ($item) {
-            return [
-                'id'   => $item->id,
-                'name' => $item->name,
-            ];
-        });
+        $permissions = [
+            'users' => [
+                'read'         => $this->hasPermissionTo('READ_USERS'),
+                'write'        => $this->hasPermissionTo('EDIT_USERS'),
+                'update'       => $this->hasPermissionTo('UPDATE_USERS'),
+                'delete'       => $this->hasPermissionTo('DELETE_USERS'),
+                'restore'      => $this->hasPermissionTo('RESTORE_USERS'),
+                'force_delete' => $this->hasPermissionTo('FORCE_DELETE_USERS'),
+            ],
+            'roles' => [
+                'read'         => $this->hasPermissionTo('READ_ROLES'),
+                'write'        => $this->hasPermissionTo('EDIT_ROLES'),
+                'update'       => $this->hasPermissionTo('UPDATE_ROLES'),
+                'delete'       => $this->hasPermissionTo('DELETE_ROLES'),
+                'restore'      => $this->hasPermissionTo('RESTORE_ROLES'),
+                'force_delete' => $this->hasPermissionTo('FORCE_DELETE_ROLES'),
+            ]
+        ];
+
+        return $permissions;
     }
 }
