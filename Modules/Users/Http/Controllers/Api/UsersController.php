@@ -4,6 +4,7 @@ namespace Modules\Users\Http\Controllers\Api;
 
 use App\Flag;
 use Exception;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -39,14 +40,47 @@ class UsersController extends Controller
      * @var \Illuminate\Log\Logger
      */
     private $logger;
+    /**
+     * @var \Illuminate\Auth\AuthManager
+     */
+    private $auth;
 
-    public function __construct(UsersServiceInterface $usersService, ResponseFactory $response, Translator $lang, Str $str, Logger $logger)
+    public function __construct(UsersServiceInterface $usersService, ResponseFactory $response, Translator $lang, Str $str, Logger $logger, AuthManager $auth)
     {
         $this->response = $response;
         $this->lang = $lang;
         $this->usersService = $usersService;
         $this->logger = $logger;
+        $this->str = $str;
+        $this->auth = $auth;
     }
+
+    public function login(Request $request): JsonResponse
+    {
+        try {
+            if ($this->auth->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+                $user = $this->auth->user();
+                $user->makeVisible('api_token')->api_token;
+                $result['userData'] = $user;
+                $result['userData']['userRole'] = $user->roles()->first();
+                $result['accessToken'] = $user->api_token;
+            } else {
+                throw new Exception('Wrong Email or Password');
+            }
+
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+        } catch (Exception $e) {
+            $this->logger->error($e);
+            $result['success'] = false;
+            $result['exception'] = \get_class($e);
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_UNAUTHORIZED;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+    }
+
 
     public function getUsers(): JsonResponse
     {

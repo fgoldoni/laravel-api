@@ -18,7 +18,7 @@ $factory->define(User::class, static function (Faker $faker) {
         'website'                       => $faker->url,
         'languages_known'               => $faker->randomElement(['English', 'French', 'Germany', 'Arabic']),
         'contact_options'               => $faker->randomElement(['email', 'message', 'phone']),
-        'password'                      => '$2y$10$rHtbJP6GQLJdCcpIm6gbUeuyw5RjJWdHTBEM1jNbuuViJ4chi8jdC',
+        'password'                      => bcrypt('000000'),
         'email_verified_at'             => $faker->randomElement([now(), null]),
         'api_token'                     => Str::random(60),
         'remember_token'                => Str::random(10),

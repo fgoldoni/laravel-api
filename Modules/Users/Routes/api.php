@@ -22,3 +22,7 @@ Route::group(['middleware' => ['auth:api', 'role:Admin'], 'namespace' => 'Api', 
         ->name('admin.users.forceDelete')->where('id', '[0-9]+');
     Route::put('users/{id}/restore', 'UsersController@restore')->name('admin.users.restore')->where('id', '[0-9]+');
 });
+
+Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], function () {
+    Route::post('users/login', 'UsersController@login')->name('login');
+});
