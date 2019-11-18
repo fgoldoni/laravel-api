@@ -81,7 +81,6 @@ class UsersController extends Controller
         return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
     }
 
-
     public function getUsers(): JsonResponse
     {
         try {
