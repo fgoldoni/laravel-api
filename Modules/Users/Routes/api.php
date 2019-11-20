@@ -24,5 +24,5 @@ Route::group(['middleware' => ['auth:api', 'role:Admin'], 'namespace' => 'Api', 
 });
 
 Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], function () {
-    Route::post('users/login', 'UsersController@login')->name('login');
+    Route::post('auth/login', 'AuthController@login')->name('auth.login');
 });

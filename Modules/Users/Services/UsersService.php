@@ -14,6 +14,7 @@ use Modules\Users\Http\Requests\ApiStoreUserRequest;
 use Modules\Users\Http\Requests\ApiUpdateUserRequest;
 use Modules\Users\Repositories\Contracts\UsersRepository;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
+use Modules\Users\Transformers\AuthCollection;
 use Modules\Users\Transformers\UserCollection;
 
 /**
@@ -110,5 +111,10 @@ class UsersService extends ServiceAbstract implements UsersServiceInterface
     public function firstOrNew(array $attributes): User
     {
         return $this->resolveRepository()->firstOrNew($attributes);
+    }
+
+    public function authTransform(User $user): AuthCollection
+    {
+        return new AuthCollection($user);
     }
 }

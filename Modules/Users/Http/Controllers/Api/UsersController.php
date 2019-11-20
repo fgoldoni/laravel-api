@@ -55,32 +55,6 @@ class UsersController extends Controller
         $this->auth = $auth;
     }
 
-    public function login(Request $request): JsonResponse
-    {
-        try {
-            if ($this->auth->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-                $user = $this->auth->user();
-                $user->makeVisible('api_token')->api_token;
-                $result['userData'] = $user;
-                $result['userData']['userRole'] = $user->roles()->first();
-                $result['accessToken'] = $user->api_token;
-            } else {
-                throw new Exception('Wrong Email or Password');
-            }
-
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
-        } catch (Exception $e) {
-            $this->logger->error($e);
-            $result['success'] = false;
-            $result['exception'] = \get_class($e);
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_UNAUTHORIZED;
-        }
-
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
-    }
-
     public function getUsers(): JsonResponse
     {
         try {
