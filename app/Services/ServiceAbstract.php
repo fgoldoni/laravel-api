@@ -17,19 +17,12 @@ abstract class ServiceAbstract
      */
     abstract protected function repository();
 
-    /**
-     * @throws \Exception
-     *
-     * @return mixed
-     */
     protected function resolveRepository()
     {
         $repository = app()->make($this->repository());
 
         if (!$repository instanceof RepositoryAbstract) {
-            throw new Exception(
-                "Class {$this->repository()} must be an instance of App\\Repositories\\RepositoryAbstract"
-            );
+            throw new Exception("Class {$this->repository()} must be an instance of App\\Repositories\\RepositoryAbstract");
         }
 
         return $repository;
