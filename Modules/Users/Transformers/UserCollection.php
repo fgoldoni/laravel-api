@@ -24,8 +24,8 @@ class UserCollection extends JsonResource
             'email'       => $this->email,
             'roles'       => $this->mapRoles(),
             'permissions' => $this->mapPermissions(),
+            'status'      => $this->getStatus(),
             'activities'  => ActivityTransformer::collection($this->activities),
-            'actions'     => $this->actions,
             'created_at'  => $this->created_at,
             'updated_at'  => $this->updated_at,
         ];
@@ -63,5 +63,14 @@ class UserCollection extends JsonResource
         ];
 
         return $permissions;
+    }
+
+    private function getStatus()
+    {
+        if (null === $this->deleted_at) {
+            return 'active';
+        }
+
+        return 'blocked';
     }
 }

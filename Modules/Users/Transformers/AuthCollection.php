@@ -13,12 +13,11 @@ class AuthCollection extends JsonResource
             'first_name'      => $this->first_name,
             'last_name'       => $this->last_name,
             'full_name'       => $this->full_name,
+            'name'            => $this->full_name,
             'email'           => $this->email,
             'role'            => $this->mapRole(),
             'all_permissions' => $this->all_permissions,
             'accessToken'     => $this->api_token,
-            'created_at'      => $this->created_at,
-            'updated_at'      => $this->updated_at,
         ];
     }
 
