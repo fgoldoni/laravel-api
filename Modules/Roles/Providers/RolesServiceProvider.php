@@ -4,6 +4,8 @@ namespace Modules\Roles\Providers;
 
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
+use Modules\Roles\Services\Contracts\RolesServiceInterface;
+use Modules\Roles\Services\RolesService;
 
 class RolesServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,7 @@ class RolesServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->app->bind(RolesServiceInterface::class, RolesService::class);
     }
 
     /**
@@ -25,6 +28,7 @@ class RolesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(RepositoryServiceProvider::class);
     }
 
     /**

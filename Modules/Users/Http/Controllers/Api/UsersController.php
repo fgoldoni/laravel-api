@@ -13,6 +13,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
+use Modules\Roles\Services\Contracts\RolesServiceInterface;
 use Modules\Users\Http\Requests\ApiStoreUserRequest;
 use Modules\Users\Http\Requests\ApiUpdateUserRequest;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
@@ -44,8 +45,12 @@ class UsersController extends Controller
      * @var \Illuminate\Auth\AuthManager
      */
     private $auth;
+    /**
+     * @var \Modules\Roles\Services\Contracts\RolesServiceInterface
+     */
+    private $rolesService;
 
-    public function __construct(UsersServiceInterface $usersService, ResponseFactory $response, Translator $lang, Str $str, Logger $logger, AuthManager $auth)
+    public function __construct(UsersServiceInterface $usersService, RolesServiceInterface $rolesService, ResponseFactory $response, Translator $lang, Str $str, Logger $logger, AuthManager $auth)
     {
         $this->response = $response;
         $this->lang = $lang;
@@ -53,12 +58,13 @@ class UsersController extends Controller
         $this->logger = $logger;
         $this->str = $str;
         $this->auth = $auth;
+        $this->rolesService = $rolesService;
     }
 
     public function getUsers(): JsonResponse
     {
         try {
-            $result['data'] = UsersCollection::collection($this->usersService->getUsers());
+            $result['data'] = UsersCollection::collection($this->usersService->all());
             $result['success'] = true;
             $result['status'] = Flag::STATUS_CODE_SUCCESS;
         } catch (Exception $e) {
@@ -126,7 +132,8 @@ class UsersController extends Controller
     public function store(ApiStoreUserRequest $request): JsonResponse
     {
         try {
-            $user = $this->usersService->store($request);
+            $user = $this->usersService->storeUser($request);
+            $this->usersService->sync($user->id, 'roles', $request->get('roles'));
 
             $result['user'] = $user;
             $result['message'] = $this->lang->get('messages.created', ['attribute' => $user->full_name]);
@@ -181,7 +188,7 @@ class UsersController extends Controller
     public function update(ApiUpdateUserRequest $request, $id): JsonResponse
     {
         try {
-            $user = $this->usersService->update($request, $id);
+            $user = $this->usersService->updateUser($request, $id);
 
             $result['user'] = $user;
             $result['message'] = $this->lang->get('messages.updated', ['attribute' => $user->first_name]);

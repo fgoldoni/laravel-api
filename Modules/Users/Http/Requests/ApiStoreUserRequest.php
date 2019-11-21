@@ -13,12 +13,24 @@ class ApiStoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'first_name'       => 'required|string',
-            'last_name'        => 'required|string',
+        $rules = [
+            'first_name'       => 'nullable|string',
+            'last_name'        => 'nullable|string',
             'email'            => 'required|string|email|max:255|unique:users',
-            'password'         => 'required|min:6',
+            'mobile'           => 'nullable|regex:#^[0\+]{1}[0-9-]{8,15}#',
+            'phone'            => 'nullable|regex:#^[0\+]{1}[0-9-]{8,15}#',
+            'password_confirm' => 'required|min:6|required_with:password',
+            'password'         => 'required|sometimes|required_with:password_confirm|same:password_confirm|min:6',
+            'roles'            => 'required|array',
         ];
+
+        if ($this->request->has('roles')) {
+            foreach ($this->request->get('roles') as $key => $val) {
+                $rules['roles.' . $key] = 'required|integer';
+            }
+        }
+
+        return $rules;
     }
 
     /**
