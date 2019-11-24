@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Flag;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => ['auth:api', 'role:Admin'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['auth:api', 'role:' . Flag::ROLE_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('roles', 'RolesController@getRoles')->name('roles');
     Route::get('roles/paginate', 'RolesController@paginate')->name('roles.paginate');
     Route::get('roles/{id}/edit', 'RolesController@edit')->name('roles.edit')->where('id', '[0-9]+');

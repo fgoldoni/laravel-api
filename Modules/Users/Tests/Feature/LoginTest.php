@@ -31,7 +31,7 @@ class LoginTest extends BrowserKitTestCase
     public function testUserCanLoginWithCorrectCredentials()
     {
         $user = factory(User::class)->create([
-            'password' => bcrypt($password = 'i-love-laravel'),
+            'password'         => bcrypt($password = 'i-love-laravel')
         ]);
         $response = $this->post('/login', [
             'email'    => $user->email,

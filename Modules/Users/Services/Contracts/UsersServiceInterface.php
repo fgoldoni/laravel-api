@@ -5,6 +5,7 @@ namespace Modules\Users\Services\Contracts;
 use App\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Users\Http\Requests\ApiStoreUserRequest;
+use Modules\Users\Http\Requests\ApiUpdateUserRequest;
 use Modules\Users\Transformers\AuthCollection;
 use Modules\Users\Transformers\UserCollection;
 
@@ -18,5 +19,9 @@ interface UsersServiceInterface
 
     public function storeUser(ApiStoreUserRequest $request): User;
 
-    public function updateUser(ApiStoreUserRequest $request, int $id): User;
+    public function findUser(int $id): User;
+
+    public function updateUser(ApiUpdateUserRequest $request, int $id): User;
+
+    public function getUsers();
 }

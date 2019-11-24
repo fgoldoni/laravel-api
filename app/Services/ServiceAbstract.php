@@ -67,7 +67,7 @@ abstract class ServiceAbstract implements ServiceInterface
         return $this->resolveRepository()->create($attributes);
     }
 
-    public function update(array $attributes, $id)
+    public function update(int $id, array $attributes)
     {
         return $this->resolveRepository()->update(
             $id,
@@ -92,11 +92,7 @@ abstract class ServiceAbstract implements ServiceInterface
 
     public function find(int $id)
     {
-        return $this->resolveRepository()->withCriteria([
-            new EagerLoad(['roles:id,name', 'permissions:id,name', 'activities' => static function ($query) {
-                return $query->latest();
-            }])
-        ])->find($id);
+        return $this->resolveRepository()->find($id);
     }
 
     public function firstOrNew(array $attributes)

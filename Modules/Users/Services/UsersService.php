@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 use Modules\Users\Http\Requests\ApiStoreUserRequest;
+use Modules\Users\Http\Requests\ApiUpdateUserRequest;
 use Modules\Users\Repositories\Contracts\UsersRepository;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
 use Modules\Users\Transformers\AuthCollection;
@@ -63,11 +64,25 @@ class UsersService extends ServiceAbstract implements UsersServiceInterface
         );
     }
 
-    public function updateUser(ApiStoreUserRequest $request, int $id): User
+    public function updateUser(ApiUpdateUserRequest $request, int $id): User
     {
         return $this->update(
             $id,
             $request->only('first_name', 'last_name', 'email')
         );
+    }
+
+    public function findUser(int $id): User
+    {
+        return $this->resolveRepository()->withCriteria([
+            new EagerLoad(['roles:id,name', 'permissions:id,name', 'activities' => static function ($query) {
+                return $query->latest();
+            }])
+        ])->find($id);
+    }
+
+    public function getUsers()
+    {
+        return $this->all();
     }
 }

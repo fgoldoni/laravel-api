@@ -64,7 +64,7 @@ class UsersController extends Controller
     public function getUsers(): JsonResponse
     {
         try {
-            $result['data'] = UsersCollection::collection($this->usersService->all());
+            $result['data'] = UsersCollection::collection($this->usersService->getUsers());
             $result['success'] = true;
             $result['status'] = Flag::STATUS_CODE_SUCCESS;
         } catch (Exception $e) {
@@ -163,7 +163,7 @@ class UsersController extends Controller
     public function edit(int $id): JsonResponse
     {
         try {
-            $user = $this->usersService->find($id);
+            $user = $this->usersService->findUser($id);
 
             $result['user'] = $this->usersService->transform($user);
             $result['success'] = true;

@@ -15,7 +15,7 @@ interface ServiceInterface
 
     public function store(array $attributes);
 
-    public function update(array $attributes, $id);
+    public function update(int $id, array $attributes);
 
     public function delete(int $id);
 

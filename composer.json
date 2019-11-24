@@ -10,9 +10,11 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
+        "algolia/algoliasearch-client-php": "^2.2",
         "barryvdh/laravel-cors": "^0.11.4",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
+        "laravel/scout": "^7.2",
         "laravel/telescope": "^2.1",
         "laravel/tinker": "^1.0",
         "nwidart/laravel-modules": "^6.0",

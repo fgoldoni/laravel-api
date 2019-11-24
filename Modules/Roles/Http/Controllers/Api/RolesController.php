@@ -86,4 +86,41 @@ class RolesController extends Controller
 
         return $this->response->json($result['data'], $result['status'], [], JSON_NUMERIC_CHECK);
     }
+
+
+    public function edit(int $id): JsonResponse
+    {
+        try {
+            $role = $this->rolesService->find($id);
+
+            $result['role'] = $role;
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+        } catch (Exception $e) {
+            $result['success'] = false;
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_ERROR;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_PRESERVE_ZERO_FRACTION);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        try {
+            $role = $this->rolesService->storeRole($request);
+
+            $result['role'] = $role;
+            $result['message'] = $this->lang->get('messages.created', ['attribute' => $role->name]);
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_CREATED;
+        } catch (Exception $e) {
+            $result['success'] = false;
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_ERROR;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+    }
+
 }

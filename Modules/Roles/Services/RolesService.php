@@ -5,7 +5,10 @@ namespace Modules\Roles\Services;
 use App\Repositories\Criteria\OrderBy;
 use App\Repositories\Criteria\WithTrashed;
 use App\Services\ServiceAbstract;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
+use Modules\Roles\Entities\Role;
 use Modules\Roles\Repositories\Contracts\RolesRepository;
 use Modules\Roles\Services\Contracts\RolesServiceInterface;
 
@@ -30,5 +33,12 @@ class RolesService extends ServiceAbstract implements RolesServiceInterface
             new WithTrashed(),
             new OrderBy($sort[0], $sort[1])
         ])->paginate($perPage);
+    }
+
+    public function storeRole(Request $request): Role
+    {
+        return $this->resolveRepository()->create(
+            $request->only('name')
+        );
     }
 }

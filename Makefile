@@ -72,7 +72,7 @@ ansible:  ## deploy with ansible before run:  sudo apt-get install -y python
 
 ansible-repo:  ## deploy with ansible
 	ansible-playbook -i ../Ansible/hosts ../Ansible/install.yml
-test:  ## phpunit
+test:  ## phpunit ypx36095@zzrgg.com
 	./vendor/bin/phpunit
 docker:  ## docker-compose up -d nginx mysql phpmyadmin laravel-horizon redis php-worker  workspace
 	cd laradock

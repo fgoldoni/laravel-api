@@ -10,7 +10,9 @@
 |
 */
 
-Route::group(['middleware' => ['auth:api', 'role:Admin'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+use App\Flag;
+
+Route::group(['middleware' => ['auth:api', 'role:' . Flag::ROLE_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('users', 'UsersController@getUsers')->name('users');
     Route::get('users/paginate', 'UsersController@paginate')->name('users.paginate');
     Route::get('users/{id}/edit', 'UsersController@edit')->name('users.edit')->where('id', '[0-9]+');
