@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Repositories\Criteria\EagerLoad;
 use App\Repositories\Criteria\OrderBy;
 use App\Repositories\Criteria\WithTrashed;
 use App\Repositories\RepositoryAbstract;

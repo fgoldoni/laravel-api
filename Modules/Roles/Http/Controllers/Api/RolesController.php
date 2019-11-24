@@ -87,7 +87,6 @@ class RolesController extends Controller
         return $this->response->json($result['data'], $result['status'], [], JSON_NUMERIC_CHECK);
     }
 
-
     public function edit(int $id): JsonResponse
     {
         try {
@@ -122,5 +121,4 @@ class RolesController extends Controller
 
         return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
     }
-
 }

@@ -7,7 +7,6 @@ use App\Repositories\Criteria\WithTrashed;
 use App\Services\ServiceAbstract;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Str;
 use Modules\Roles\Entities\Role;
 use Modules\Roles\Repositories\Contracts\RolesRepository;
 use Modules\Roles\Services\Contracts\RolesServiceInterface;

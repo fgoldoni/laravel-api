@@ -8,5 +8,4 @@ use Modules\Roles\Entities\Role;
 interface RolesServiceInterface
 {
     public function storeRole(Request $request): Role;
-
 }
