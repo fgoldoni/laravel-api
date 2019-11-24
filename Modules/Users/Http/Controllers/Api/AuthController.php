@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Log\Logger;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
@@ -30,17 +31,24 @@ class AuthController extends Controller
      * @var \Illuminate\Auth\AuthManager
      */
     private $auth;
+    /**
+     * @var \Illuminate\Log\Logger
+     */
+    private $logger;
 
-    public function __construct(UsersServiceInterface $usersService, ResponseFactory $response, Translator $lang, AuthManager $auth)
+    public function __construct(UsersServiceInterface $usersService, ResponseFactory $response, Translator $lang, AuthManager $auth, Logger $logger)
     {
         $this->usersService = $usersService;
         $this->response = $response;
         $this->lang = $lang;
         $this->auth = $auth;
+        $this->logger = $logger;
     }
 
     public function login(Request $request): JsonResponse
     {
+        $result = [];
+
         try {
             if ($this->auth->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
                 $user = $this->usersService->find($this->auth->user()->id)->makeVisible('api_token');
