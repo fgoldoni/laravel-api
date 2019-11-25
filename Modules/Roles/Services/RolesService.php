@@ -40,4 +40,12 @@ class RolesService extends ServiceAbstract implements RolesServiceInterface
             $request->only('name')
         );
     }
+
+    public function updateRole(Request $request, $id): Role
+    {
+        return $this->update(
+            $id,
+            $request->only('name')
+        );
+    }
 }

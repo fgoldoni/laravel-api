@@ -12,6 +12,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
+use Modules\Roles\Http\Requests\ApiStoreRoleRequest;
+use Modules\Roles\Http\Requests\ApiUpdateRoleRequest;
 use Modules\Roles\Services\RolesService;
 use Modules\Roles\Transformers\RolesCollection;
 
@@ -104,7 +106,7 @@ class RolesController extends Controller
         return $this->response->json($result, $result['status'], [], JSON_PRESERVE_ZERO_FRACTION);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(ApiStoreRoleRequest $request): JsonResponse
     {
         try {
             $role = $this->rolesService->storeRole($request);
@@ -113,6 +115,73 @@ class RolesController extends Controller
             $result['message'] = $this->lang->get('messages.created', ['attribute' => $role->name]);
             $result['success'] = true;
             $result['status'] = Flag::STATUS_CODE_CREATED;
+        } catch (Exception $e) {
+            $result['success'] = false;
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_ERROR;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+    }
+
+    public function update(ApiUpdateRoleRequest $request, $id): JsonResponse
+    {
+        try {
+            $role = $this->rolesService->updateRole($request, $id);
+
+            $result['role'] = $role;
+            $result['message'] = $this->lang->get('messages.updated', ['attribute' => $role->name]);
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+        } catch (Exception $e) {
+            $result['success'] = false;
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_ERROR;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+    }
+
+
+    public function destroy(int $id): JsonResponse
+    {
+        try {
+            $result['role'] = $this->rolesService->delete($id);
+            $result['message'] = $this->lang->get('messages.deleted', ['attribute' => $result['role']->name]);
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+        } catch (Exception $e) {
+            $result['success'] = false;
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_ERROR;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+    }
+
+    public function restore(int $id): JsonResponse
+    {
+        try {
+            $result['role'] = $this->rolesService->restore($id);
+            $result['message'] = $this->lang->get('messages.restored', ['attribute' => $result['role']->name]);
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+        } catch (Exception $e) {
+            $result['success'] = false;
+            $result['message'] = $e->getMessage();
+            $result['status'] = Flag::STATUS_CODE_ERROR;
+        }
+
+        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+    }
+
+    public function forceDelete(int $id): JsonResponse
+    {
+        try {
+            $result['role'] = $this->rolesService->forceDelete($id);
+            $result['message'] = $this->lang->get('messages.destroyed', ['attribute' => $result['role']->name]);
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
         } catch (Exception $e) {
             $result['success'] = false;
             $result['message'] = $e->getMessage();

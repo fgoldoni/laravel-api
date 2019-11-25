@@ -6,6 +6,10 @@
     <arg value="p"/>
 
     <file>app</file>
+    <file>./Modules/*/Http</file>
+    <file>./Modules/*/Repositories</file>
+    <file>./Modules/*/Services</file>
+    <file>./Modules/*/Transformers</file>
     <file>tests</file>
     <file>resources/lang</file>
 

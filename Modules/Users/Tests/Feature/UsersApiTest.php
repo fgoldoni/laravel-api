@@ -17,10 +17,6 @@ class UsersApiTest extends TestCase
      * @var array
      */
     private $headers;
-    /**
-     * @var false|string
-     */
-    private $responseBody;
 
     protected function setUp(): void
     {
@@ -407,21 +403,5 @@ class UsersApiTest extends TestCase
         $user = $user->fresh();
 
         $this->assertNull($user->deleted_at);
-    }
-
-    private function seeJsonEquals(array $data): self
-    {
-        $actual = json_encode(Arr::sortRecursive(
-            $this->getResponseAsArray()
-        ));
-
-        PHPUnit::assertEquals(json_encode(Arr::sortRecursive($data)), $actual);
-
-        return $this;
-    }
-
-    private function getResponseAsArray()
-    {
-        return json_decode($this->responseBody, true);
     }
 }
