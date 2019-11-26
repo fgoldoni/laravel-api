@@ -36,7 +36,8 @@ class ActivitiesServiceProvider extends ServiceProvider
             __DIR__ . '/../Config/config.php' => config_path('activities.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__ . '/../Config/config.php', 'activities'
+            __DIR__ . '/../Config/config.php',
+            'activities'
         );
     }
 

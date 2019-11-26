@@ -142,7 +142,6 @@ class RolesController extends Controller
         return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
     }
 
-
     public function destroy(int $id): JsonResponse
     {
         try {

@@ -4,10 +4,8 @@ namespace Modules\Users\Tests\Feature;
 
 use App\Exceptions\TestErrorException;
 use App\User;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
-use PHPUnit\Framework\Assert as PHPUnit;
 use Prophecy\Argument;
 use Tests\TestCase;
 

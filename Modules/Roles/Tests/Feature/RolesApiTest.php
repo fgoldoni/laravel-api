@@ -2,14 +2,9 @@
 
 namespace Modules\Roles\Tests\Feature;
 
-use App\Exceptions\TestErrorException;
 use App\User;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Modules\Roles\Entities\Role;
-use Modules\Roles\Services\Contracts\RolesServiceInterface;
-use PHPUnit\Framework\Assert as PHPUnit;
-use Prophecy\Argument;
 use Tests\TestCase;
 
 class RolesApiTest extends TestCase
@@ -52,7 +47,6 @@ class RolesApiTest extends TestCase
                 'status',
             ]);
     }
-
 
     /**
      * A basic unit test example.
