@@ -39,8 +39,8 @@ class RolesApiTest extends TestCase
                     '*' => [
                         'id',
                         'name',
-                        'created_at',
-                        'updated_at',
+                        'users' => [],
+                        'permissions' => [],
                     ]
                 ],
                 'success',
@@ -55,10 +55,11 @@ class RolesApiTest extends TestCase
     {
         $payload = [
             'name'        => 'Provider',
+            'permissions' => [1],
         ];
 
         $response = $this->json('POST', 'api/roles', $payload, $this->headers)
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJsonStructure([
                 'role' => [
                     'id',

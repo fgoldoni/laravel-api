@@ -9,9 +9,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Log\Logger;
-use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 use Illuminate\Translation\Translator;
 use Modules\Roles\Services\Contracts\RolesServiceInterface;
 use Modules\Users\Http\Requests\ApiStoreUserRequest;
@@ -64,18 +64,12 @@ class UsersController extends Controller
     public function getUsers(): JsonResponse
     {
         try {
-            $result['data'] = UsersCollection::collection($this->usersService->getUsers());
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
-        } catch (Exception $e) {
-            $this->logger->error($e);
-            $result['success'] = false;
-            $result['exception'] = \get_class($e);
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
-        }
+            $data = UsersCollection::collection($this->usersService->getUsers());
 
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+            return $this->responseJson(['data' => $data]);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 
     public function paginate(Request $request): JsonResponse
