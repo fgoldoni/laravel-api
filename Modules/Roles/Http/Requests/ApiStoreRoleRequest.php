@@ -14,7 +14,9 @@ class ApiStoreRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:roles'
+            'name'        => 'required|string|unique:roles',
+            'users'       => 'nullable|array',
+            'permissions' => 'required|array',
         ];
     }
 

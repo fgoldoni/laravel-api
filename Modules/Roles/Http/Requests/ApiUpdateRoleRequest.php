@@ -14,7 +14,9 @@ class ApiUpdateRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:roles'
+            'name'        => 'required|string',
+            'users'       => 'nullable|array',
+            'permissions' => 'nullable|array',
         ];
     }
 
