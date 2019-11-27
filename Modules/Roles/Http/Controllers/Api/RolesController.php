@@ -11,15 +11,11 @@ use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
 use Modules\Roles\Http\Requests\ApiStoreRoleRequest;
 use Modules\Roles\Http\Requests\ApiUpdateRoleRequest;
-use Modules\Roles\Services\RolesService;
+use Modules\Roles\Services\Contracts\RolesServiceInterface;
 use Modules\Roles\Transformers\RolesCollection;
 
 class RolesController extends Controller
 {
-    /**
-     * @var \Modules\Roles\Services\RolesService
-     */
-    private $rolesService;
     /**
      * @var \Illuminate\Translation\Translator
      */
@@ -32,13 +28,17 @@ class RolesController extends Controller
      * @var \Illuminate\Auth\AuthManager
      */
     private $auth;
+    /**
+     * @var \Modules\Roles\Services\Contracts\RolesServiceInterface
+     */
+    private $rolesService;
 
-    public function __construct(RolesService $rolesService, Translator $lang, Str $str, AuthManager $auth)
+    public function __construct(RolesServiceInterface $rolesService, Translator $lang, Str $str, AuthManager $auth)
     {
-        $this->rolesService = $rolesService;
         $this->lang = $lang;
         $this->str = $str;
         $this->auth = $auth;
+        $this->rolesService = $rolesService;
     }
 
     public function getRoles()

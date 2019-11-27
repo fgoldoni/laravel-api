@@ -39,7 +39,7 @@ class RolesApiTest extends TestCase
                     '*' => [
                         'id',
                         'name',
-                        'users' => [],
+                        'users'       => [],
                         'permissions' => [],
                     ]
                 ],

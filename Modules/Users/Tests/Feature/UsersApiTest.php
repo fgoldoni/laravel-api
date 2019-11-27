@@ -74,7 +74,7 @@ class UsersApiTest extends TestCase
     {
         $usersService = $this->prophesize(UsersServiceInterface::class);
 
-        $usersService->getUsers()->willThrow(new TestErrorException('Test Exception'));
+        $usersService->getUsers()->willThrow(new TestErrorException('Test Exception', 500));
 
         $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
 
@@ -141,7 +141,7 @@ class UsersApiTest extends TestCase
     {
         $usersService = $this->prophesize(UsersServiceInterface::class);
 
-        $usersService->paginate(Argument::any())->willThrow(new \Exception('Exception'));
+        $usersService->paginate(Argument::any())->willThrow(new \Exception('Exception', 500));
 
         $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
 
@@ -184,7 +184,7 @@ class UsersApiTest extends TestCase
     {
         $usersService = $this->prophesize(UsersServiceInterface::class);
 
-        $usersService->transform(Argument::any())->willThrow(new \Exception('Exception'));
+        $usersService->transform(Argument::any())->willThrow(new \Exception('Exception', 500));
 
         $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
 
@@ -223,7 +223,7 @@ class UsersApiTest extends TestCase
     {
         $usersService = $this->prophesize(UsersServiceInterface::class);
 
-        $usersService->transform(Argument::any())->willThrow(new \Exception('Exception'));
+        $usersService->transform(Argument::any())->willThrow(new \Exception('Exception', 500));
 
         $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
 

@@ -33,7 +33,7 @@ class Controller extends BaseController
             'success'   => false,
             'exception' => \get_class($e),
             'message'   => $e->getMessage(),
-            'status'    => Flag::STATUS_CODE_ERROR,
+            'status'    => $e->getCode(),
         ];
 
         return response()->json($result, $result['status'], [], JSON_NUMERIC_CHECK);

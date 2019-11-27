@@ -3,6 +3,7 @@
 namespace Modules\Users\Http\Controllers\Api;
 
 use App\Flag;
+use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\JsonResponse;
@@ -11,7 +12,6 @@ use Illuminate\Http\Response;
 use Illuminate\Log\Logger;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Str;
-use App\Http\Controllers\Controller;
 use Illuminate\Translation\Translator;
 use Modules\Roles\Services\Contracts\RolesServiceInterface;
 use Modules\Users\Http\Requests\ApiStoreUserRequest;

@@ -6,6 +6,7 @@ use App\Repositories\Criteria\EagerLoad;
 use App\Repositories\Criteria\OrderBy;
 use App\Repositories\Criteria\WithTrashed;
 use App\Services\ServiceAbstract;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Roles\Entities\Role;
@@ -47,7 +48,7 @@ class RolesService extends ServiceAbstract implements RolesServiceInterface
         ])->find($id, ['id', 'name']);
     }
 
-    public function getRoles()
+    public function getRoles(): Collection
     {
         return $this->resolveRepository()->withCriteria([
             new EagerLoad(['permissions' => function ($query) {
