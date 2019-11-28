@@ -2,8 +2,6 @@
 
 namespace Modules\Roles\Tests\Feature;
 
-use App\User;
-use Illuminate\Support\Facades\Artisan;
 use Modules\Roles\Entities\Role;
 use Tests\TestCase;
 
@@ -17,11 +15,7 @@ class RolesApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Artisan::call('migrate:refresh');
-        Artisan::call('module:seed', ['module' => 'Roles', '--force' => true]);
-        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->registerPermissions();
-        $admin = User::role('Admin')->first();
-        $token = $admin->makeVisible('api_token')->api_token;
+        $token = $this->admin->makeVisible('api_token')->api_token;
         $this->headers = ['Authorization' => "Bearer $token"];
     }
 
@@ -30,7 +24,6 @@ class RolesApiTest extends TestCase
      */
     public function testRolesAreListedCorrectly(): void
     {
-        //fwrite(STDERR, print_r(User::first()->first_name, TRUE));
         $response = $this->json('GET', 'api/roles', [], $this->headers);
 
         $response->assertStatus(200)

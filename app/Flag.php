@@ -19,7 +19,15 @@ class Flag
 
     const STATUS_CODE_ERROR = 500;
 
+    const PERMISSION_ADMIN = 'ADMIN';
+
+    const PERMISSION_EXECUTIVE = 'EXECUTIVE';
+
+    const PERMISSION_USER = 'USER';
+
     const ROLE_ADMIN = 'Admin';
+
+    const ROLE_EXECUTIVE = 'Executive';
 
     const ROLE_USER = 'User';
 }

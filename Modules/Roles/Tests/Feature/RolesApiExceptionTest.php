@@ -4,8 +4,6 @@ namespace Modules\Roles\Tests\Feature;
 
 use App\Exceptions\TestErrorException;
 use App\Flag;
-use App\User;
-use Illuminate\Support\Facades\Artisan;
 use Modules\Roles\Services\Contracts\RolesServiceInterface;
 use Prophecy\Argument;
 use Tests\TestCase;
@@ -23,11 +21,7 @@ class RolesApiExceptionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Artisan::call('migrate:refresh');
-        Artisan::call('module:seed', ['module' => 'Roles', '--force' => true]);
-        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->registerPermissions();
-        $admin = User::role('Admin')->first();
-        $token = $admin->makeVisible('api_token')->api_token;
+        $token = $this->admin->makeVisible('api_token')->api_token;
         $this->headers = ['Authorization' => "Bearer $token"];
     }
 

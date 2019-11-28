@@ -2,7 +2,7 @@
 
 namespace Modules\Roles\Database\Seeders;
 
-use App\User;
+use App\Flag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -31,19 +31,8 @@ class RolesDatabaseSeeder extends Seeder
             }
         }
 
-        Role::where('name', 'Admin')->first()->givePermissionTo(Permission::all());
-
-        if (User::first()) {
-            User::first()->assignRole('Admin');
-        } else {
-            $user = factory(User::class)->create([
-                'first_name'            => 'Admin',
-                'last_name'             => 'M',
-                'email'                 => 'admin@contact.com',
-                'api_token'             => '2cxFfbacikqS4mphg8DFUsUm3i2KkJ5yAqydeXT0Eoq3pZ4BdIcFqHLDbpE6',
-            ]);
-
-            $user->assignRole('Admin');
-        }
+        Role::where('name', Flag::ROLE_USER)->first()->givePermissionTo(Permission::find(1));
+        Role::where('name', Flag::ROLE_EXECUTIVE)->first()->givePermissionTo(Permission::find(2));
+        Role::where('name', Flag::ROLE_ADMIN)->first()->givePermissionTo(Permission::all());
     }
 }

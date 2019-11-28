@@ -2,13 +2,14 @@
 
 namespace Modules\Users\Tests\Feature;
 
-use App\User;
-use Tests\BrowserKitTestCase;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 /**
  * Class LoginTest.
  */
-class LoginTest extends BrowserKitTestCase
+class LoginTest extends TestCase
 {
     public function testUserCanViewLoginForm()
     {
@@ -21,34 +22,35 @@ class LoginTest extends BrowserKitTestCase
 
     public function testUserCannotViewLoginFormWhenAuthenticated()
     {
-        $user = factory(User::class)->make();
+        Event::fake();
 
-        $response = $this->actingAs($user)->get('/login');
+        Auth::logout();
+
+        $response = $this->actingAs($this->user)->get('/login');
 
         $response->assertRedirect('/home');
     }
 
     public function testUserCanLoginWithCorrectCredentials()
     {
-        $user = factory(User::class)->create([
-            'password'         => bcrypt($password = 'i-love-laravel')
-        ]);
+        Event::fake();
+
+        Auth::logout();
+
         $response = $this->post('/login', [
-            'email'    => $user->email,
-            'password' => $password,
+            'email'    => $this->user->email,
+            'password' => $this->userPassword,
         ]);
+
         $response->assertRedirect('/home');
-        $this->assertAuthenticatedAs($user);
+
+        $this->assertAuthenticatedAs($this->user);
     }
 
     public function testUserCannotLoginWithIncorrectPassword()
     {
-        $user = factory(User::class)->create([
-            'password' => bcrypt('i-love-laravel'),
-        ]);
-
         $response = $this->from('/login')->post('/login', [
-            'email'    => $user->email,
+            'email'    => $this->user->email,
             'password' => 'invalid-password',
         ]);
 

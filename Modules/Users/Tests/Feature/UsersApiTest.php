@@ -4,7 +4,6 @@ namespace Modules\Users\Tests\Feature;
 
 use App\Exceptions\TestErrorException;
 use App\User;
-use Illuminate\Support\Facades\Artisan;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
 use Prophecy\Argument;
 use Tests\TestCase;
@@ -19,11 +18,7 @@ class UsersApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Artisan::call('migrate:refresh');
-        Artisan::call('module:seed', ['module' => 'Roles', '--force' => true]);
-        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->registerPermissions();
-        $admin = User::role('Admin')->first();
-        $token = $admin->makeVisible('api_token')->api_token;
+        $token = $this->admin->makeVisible('api_token')->api_token;
         $this->headers = ['Authorization' => "Bearer $token"];
     }
 
@@ -32,7 +27,6 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreListedCorrectly(): void
     {
-        //fwrite(STDERR, print_r(User::first()->first_name, TRUE));
         $response = $this->json('GET', 'api/users', [], $this->headers);
 
         $response->assertStatus(200)
