@@ -76,18 +76,13 @@ class UsersController extends Controller
     {
         try {
             $result['data'] = $this->usersService->paginate($request);
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
-        } catch (Exception $e) {
-            $this->logger->error($e);
-            $result['success'] = false;
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
 
-            return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+            return $this->response->json($result['data'], Flag::STATUS_CODE_SUCCESS, [], JSON_NUMERIC_CHECK);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
         }
 
-        return $this->response->json($result['data'], $result['status'], [], JSON_NUMERIC_CHECK);
+
     }
 
     /**
@@ -98,22 +93,18 @@ class UsersController extends Controller
     public function create()
     {
         try {
-            $user = $this->usersService->firstOrNew([
-                'first_name' => '',
-                'last_name'  => '',
-                'email'      => '',
-            ]);
+            $user = $this->usersService->transform(
+                $this->usersService->firstOrNew([
+                    'first_name' => '',
+                    'last_name'  => '',
+                    'email'      => '',
+                ])
+            );
 
-            $result['user'] = $this->usersService->transform($user);
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+            return $this->responseJson(['user' => $user]);
         } catch (Exception $e) {
-            $result['success'] = false;
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
+            return $this->responseJsonError($e);
         }
-
-        return $this->response->json($result, $result['status'], [], JSON_PRESERVE_ZERO_FRACTION);
     }
 
     /**
@@ -131,15 +122,11 @@ class UsersController extends Controller
 
             $result['user'] = $user;
             $result['message'] = $this->lang->get('messages.created', ['attribute' => $user->full_name]);
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_CREATED;
-        } catch (Exception $e) {
-            $result['success'] = false;
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
-        }
 
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 
     /**
@@ -158,17 +145,12 @@ class UsersController extends Controller
     {
         try {
             $user = $this->usersService->findUser($id);
-
             $result['user'] = $this->usersService->transform($user);
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
-        } catch (Exception $e) {
-            $result['success'] = false;
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
-        }
 
-        return $this->response->json($result, $result['status'], [], JSON_PRESERVE_ZERO_FRACTION);
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 
     /**
@@ -182,19 +164,13 @@ class UsersController extends Controller
     public function update(ApiUpdateUserRequest $request, $id): JsonResponse
     {
         try {
-            $user = $this->usersService->updateUser($request, $id);
+            $result['user'] = $this->usersService->updateUser($request, $id);
+            $result['message'] = $this->lang->get('messages.updated', ['attribute' => $result['user']->first_name]);
 
-            $result['user'] = $user;
-            $result['message'] = $this->lang->get('messages.updated', ['attribute' => $user->first_name]);
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
+            return $this->responseJson($result);
         } catch (Exception $e) {
-            $result['success'] = false;
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
+            return $this->responseJsonError($e);
         }
-
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
     }
 
     public function destroy(int $id): JsonResponse
@@ -202,15 +178,11 @@ class UsersController extends Controller
         try {
             $result['user'] = $this->usersService->delete($id);
             $result['message'] = $this->lang->get('messages.deleted', ['attribute' => $result['user']->first_name]);
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
-        } catch (Exception $e) {
-            $result['success'] = false;
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
-        }
 
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 
     /**
@@ -223,15 +195,11 @@ class UsersController extends Controller
         try {
             $result['user'] = $this->usersService->forceDelete($id);
             $result['message'] = $this->lang->get('messages.destroyed', ['attribute' => $result['user']->first_name]);
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
-        } catch (Exception $e) {
-            $result['success'] = false;
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
-        }
 
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 
     /**
@@ -244,14 +212,10 @@ class UsersController extends Controller
         try {
             $result['user'] = $this->usersService->restore($id);
             $result['message'] = $this->lang->get('messages.restored', ['attribute' => $result['user']->first_name]);
-            $result['success'] = true;
-            $result['status'] = Flag::STATUS_CODE_SUCCESS;
-        } catch (Exception $e) {
-            $result['success'] = false;
-            $result['message'] = $e->getMessage();
-            $result['status'] = Flag::STATUS_CODE_ERROR;
-        }
 
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 }

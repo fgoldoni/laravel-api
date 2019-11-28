@@ -247,7 +247,7 @@ class UsersApiTest extends TestCase
         ];
 
         $response = $this->json('POST', 'api/users', $payload, $this->headers)
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJsonStructure([
                 'user' => [
                     'id',
