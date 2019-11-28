@@ -37,8 +37,6 @@ class UsersDatabaseSeeder extends Seeder
             'api_token'             => 'cX6FFEAiG20w3TiLYEbb1nefdUzMz3Jqr9estkmPh6zb6rBQFhE6qDU54r9E',
         ]);
 
-        factory(User::class, 47)->create();
-
         $admin->assignRole(Flag::ROLE_ADMIN);
 
         $executive->assignRole(Flag::ROLE_EXECUTIVE);

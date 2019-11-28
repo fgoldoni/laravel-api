@@ -28,7 +28,7 @@ before_install:
 script:
   - mkdir -p build/logs
   - ./vendor/bin/phpcs -s
-  - ./vendor/bin/phpunit --colors --coverage-text --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/phpunit --debug --colors --coverage-text --coverage-clover build/logs/clover.xml
 
 services:
   - mysql

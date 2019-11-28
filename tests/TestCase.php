@@ -3,7 +3,6 @@
 namespace Tests;
 
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
@@ -14,7 +13,6 @@ use PHPUnit\Framework\Assert as PHPUnit;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use RefreshDatabase;
 
     protected $responseBody;
     /**
@@ -84,7 +82,7 @@ abstract class TestCase extends BaseTestCase
          */
         $this->admin = User::find(1);
         $this->executive = User::find(2);
-        $this->user = User::find(4);
+        $this->user = User::find(3);
         $this->adminRole = Role::find(1)->name;
         $this->executiveRole = Role::find(2)->name;
         $this->userRole = Role::find(3)->name;

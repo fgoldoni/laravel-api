@@ -32,11 +32,10 @@ optimize: install ## optimize
 	$(PHP) artisan cache:clear & $(PHP) artisan config:clear & $(PHP) artisan route:clear & $(PHP) artisan view:clear
 
 migrate: optimize ## migrate
-	$(PHP) artisan migrate:refresh --seed
+	$(PHP) artisan migrate:refresh
 
 refresh: migrate ## refresh + php artisan module:seed Admin & php artisan module:seed Support
-	php artisan module:seed Roles & php artisan module:seed Boards & php artisan module:seed Categories & php artisan module:seed System & php artisan module:seed Users & php artisan module:seed Homes & php artisan module:seed Events & php artisan module:seed Partners & php artisan module:seed Congratulations & php artisan module:seed Posts
-
+	php artisan module:seed Roles & php artisan module:seed Users
 routes: optimize
 	$(PHP) artisan laroute:generate
 
