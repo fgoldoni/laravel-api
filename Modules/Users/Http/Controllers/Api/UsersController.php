@@ -81,8 +81,6 @@ class UsersController extends Controller
         } catch (Exception $e) {
             return $this->responseJsonError($e);
         }
-
-
     }
 
     /**

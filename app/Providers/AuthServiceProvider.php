@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Flag;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
@@ -26,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::before(function ($user, $ability) {
-            return $user->hasRole('Admin') ? true : null;
+            return $user->hasRole(Flag::ROLE_ADMIN) ? true : null;
         });
 
         if (Schema::hasTable('permissions')) {
