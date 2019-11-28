@@ -15,4 +15,6 @@ interface RolesServiceInterface
     public function getRole(int $id): Role;
 
     public function getRoles(): Collection;
+
+    public function transform(Role $role);
 }

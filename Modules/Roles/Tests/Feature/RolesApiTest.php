@@ -44,6 +44,39 @@ class RolesApiTest extends TestCase
     /**
      * A basic unit test example.
      */
+    public function testRolesAreListedWithPaginateCorrectly(): void
+    {
+        $response = $this->json('GET', 'api/roles/paginate', ['per_page' => 10], $this->headers);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'current_page',
+                'data' => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'guard_name',
+                        'deleted_at',
+                        'created_at',
+                        'updated_at',
+                    ]
+                ],
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total',
+            ]);
+    }
+
+    /**
+     * A basic unit test example.
+     */
     public function testRolesAreStoredCorrectly(): void
     {
         $payload = [
@@ -129,5 +162,53 @@ class RolesApiTest extends TestCase
         $role = $role->fresh();
 
         $this->assertNotNull($role->deleted_at);
+    }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testRolesAreRestoredCorrectly(): void
+    {
+        $role = factory(Role::class)->create([
+            'name'        => 'Fake',
+        ]);
+
+        $this->json('DELETE', 'api/roles/' . $role->id, [], $this->headers)
+            ->assertStatus(200);
+
+        $role = $role->fresh();
+
+        $this->assertNotNull($role->deleted_at);
+
+        $this->json('PUT', 'api/roles/' . $role->id . '/restore', [], $this->headers)
+            ->assertStatus(200);
+
+        $role = $role->fresh();
+
+        $this->assertNull($role->deleted_at);
+    }
+
+    /**
+     * A basic unit test example.
+     */
+    public function testRolesAreForceDeletedCorrectly(): void
+    {
+        $role = factory(Role::class)->create([
+            'name'        => 'Fake',
+        ]);
+
+        $this->json('DELETE', 'api/roles/' . $role->id, [], $this->headers)
+            ->assertStatus(200);
+
+        $role = $role->fresh();
+
+        $this->assertNotNull($role->deleted_at);
+
+        $this->json('DELETE', 'api/roles/' . $role->id . '/destroy', [], $this->headers)
+            ->assertStatus(200);
+
+        $role = $role->fresh();
+
+        $this->assertNull($role);
     }
 }

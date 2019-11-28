@@ -2,11 +2,13 @@
 
 namespace Modules\Roles\Http\Controllers\Api;
 
+use App\Flag;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
 use Modules\Roles\Http\Requests\ApiStoreRoleRequest;
@@ -32,13 +34,18 @@ class RolesController extends Controller
      * @var \Modules\Roles\Services\Contracts\RolesServiceInterface
      */
     private $rolesService;
+    /**
+     * @var \Illuminate\Routing\ResponseFactory
+     */
+    private $response;
 
-    public function __construct(RolesServiceInterface $rolesService, Translator $lang, Str $str, AuthManager $auth)
+    public function __construct(RolesServiceInterface $rolesService, ResponseFactory $response, Translator $lang, Str $str, AuthManager $auth)
     {
         $this->lang = $lang;
         $this->str = $str;
         $this->auth = $auth;
         $this->rolesService = $rolesService;
+        $this->response = $response;
     }
 
     public function getRoles()
@@ -55,9 +62,11 @@ class RolesController extends Controller
     public function paginate(Request $request): JsonResponse
     {
         try {
-            $data = $this->rolesService->paginate($request);
+            $result['data'] = $this->rolesService->paginate($request);
+            $result['success'] = true;
+            $result['status'] = Flag::STATUS_CODE_SUCCESS;
 
-            return $this->responseJson(['data' => $data]);
+            return $this->response->json($result['data'], $result['status'], [], JSON_NUMERIC_CHECK);
         } catch (Exception $e) {
             return $this->responseJsonError($e);
         }
