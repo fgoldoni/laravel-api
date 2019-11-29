@@ -26,10 +26,10 @@ server: ## Load phpMyAdmin server
 	$(PHP) -S localhost:$(PORT) -t ../../phpMyAdmin
 
 test: ## phpunit test
-	./vendor/bin/phpunit
+	./vendor/bin/phpunit --debug
 
 optimize: install ## optimize
-	$(PHP) artisan cache:clear & $(PHP) artisan config:clear & $(PHP) artisan route:clear & $(PHP) artisan view:clear
+		$(PHP) artisan cache:clear & $(PHP) artisan config:clear & $(PHP) artisan route:clear & $(PHP) artisan view:clear
 
 migrate: optimize ## migrate
 	$(PHP) artisan migrate:refresh
@@ -71,8 +71,6 @@ ansible:  ## deploy with ansible before run:  sudo apt-get install -y python
 
 ansible-repo:  ## deploy with ansible
 	ansible-playbook -i ../Ansible/hosts ../Ansible/install.yml
-test:  ## phpunit ypx36095@zzrgg.com
-	./vendor/bin/phpunit
 docker:  ## docker-compose up -d nginx mysql phpmyadmin laravel-horizon redis php-worker  workspace
 	cd laradock
 	docker-compose up -d nginx mysql phpmyadmin laravel-horizon redis php-worker  workspace

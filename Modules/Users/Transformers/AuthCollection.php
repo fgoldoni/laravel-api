@@ -9,15 +9,16 @@ class AuthCollection extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'              => $this->id,
-            'first_name'      => $this->first_name,
-            'last_name'       => $this->last_name,
-            'full_name'       => $this->full_name,
-            'name'            => $this->full_name,
-            'email'           => $this->email,
-            'role'            => $this->mapRole(),
-            'all_permissions' => $this->all_permissions,
-            'accessToken'     => $this->api_token,
+            'id'                  => $this->id,
+            'first_name'          => $this->first_name,
+            'last_name'           => $this->last_name,
+            'full_name'           => $this->full_name,
+            'name'                => $this->full_name,
+            'email'               => $this->email,
+            'role'                => $this->mapRole(),
+            'all_permissions'     => $this->all_permissions,
+            'unreadNotifications' => $this->getUnreadNotifications(),
+            'accessToken'         => $this->api_token,
         ];
     }
 
@@ -30,5 +31,24 @@ class AuthCollection extends JsonResource
         }
 
         return mb_strtolower($role->name);
+    }
+
+    private function getUnreadNotifications()
+    {
+        $unreadNotifications = [];
+        $notifications = $this->unreadNotifications()->latest()->get();
+
+        foreach ($notifications as $key => $item) {
+            $unreadNotifications[] = [
+                'index'         => $key,
+                'title'         => $item->data['title'],
+                'msg'           => $item->data['msg'],
+                'icon'          => $item->data['icon'],
+                'time'          => $item->data['time'],
+                'category'      => $item->data['category']
+            ];
+        }
+
+        return $unreadNotifications;
     }
 }
