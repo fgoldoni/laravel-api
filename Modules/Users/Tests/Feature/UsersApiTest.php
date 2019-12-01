@@ -4,6 +4,10 @@ namespace Modules\Users\Tests\Feature;
 
 use App\Exceptions\TestErrorException;
 use App\User;
+use Illuminate\Support\Facades\Notification;
+use Modules\Users\Notifications\UserCreated;
+use Modules\Users\Notifications\UserDeleted;
+use Modules\Users\Notifications\UserRestored;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
 use Prophecy\Argument;
 use Tests\TestCase;
@@ -237,6 +241,10 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreStoredCorrectly(): void
     {
+        Notification::fake();
+
+        Notification::assertNothingSent();
+
         $payload = [
             'first_name'        => 'John',
             'last_name'         => 'Doe',
@@ -269,6 +277,11 @@ class UsersApiTest extends TestCase
         $this->assertSame('Doe', $content->user->last_name);
 
         $this->assertSame('john@doe.com', $content->user->email);
+
+        Notification::assertSentTo(
+            [$this->admin],
+            UserCreated::class
+        );
     }
 
     /**
@@ -318,6 +331,10 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreDeletedCorrectly(): void
     {
+        Notification::fake();
+
+        Notification::assertNothingSent();
+
         $user = factory(User::class)->create([
             'first_name'        => 'This is a First Name',
             'last_name'         => 'This is a Last Name',
@@ -343,6 +360,11 @@ class UsersApiTest extends TestCase
         $user = $user->fresh();
 
         $this->assertNotNull($user->deleted_at);
+
+        Notification::assertSentTo(
+            [$this->admin],
+            UserDeleted::class
+        );
     }
 
     /**
@@ -350,6 +372,10 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreForceDeletedCorrectly(): void
     {
+        Notification::fake();
+
+        Notification::assertNothingSent();
+
         $user = factory(User::class)->create([
             'first_name'        => 'This is a First Name',
             'last_name'         => 'This is a Last Name',
@@ -369,6 +395,11 @@ class UsersApiTest extends TestCase
         $user = $user->fresh();
 
         $this->assertNull($user);
+
+        Notification::assertSentTo(
+            [$this->admin],
+            UserDeleted::class
+        );
     }
 
     /**
@@ -376,6 +407,10 @@ class UsersApiTest extends TestCase
      */
     public function testUsersAreRestoredCorrectly(): void
     {
+        Notification::fake();
+
+        Notification::assertNothingSent();
+
         $user = factory(User::class)->create([
             'first_name'        => 'John',
             'last_name'         => 'Doe',
@@ -395,5 +430,10 @@ class UsersApiTest extends TestCase
         $user = $user->fresh();
 
         $this->assertNull($user->deleted_at);
+
+        Notification::assertSentTo(
+            [$this->admin],
+            UserRestored::class
+        );
     }
 }

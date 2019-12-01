@@ -7,8 +7,14 @@
 
     <file>app</file>
     <file>tests</file>
-    <file>resources/lang</file>
+    <file>Modules</file>
 
     <rule ref="PSR2"/>
 
+    <rule ref="PSR2">
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+
+    <exclude-pattern>Modules/*/Database/Migrations</exclude-pattern>
+    <exclude-pattern>Modules/*/Resources</exclude-pattern>
 </ruleset>
