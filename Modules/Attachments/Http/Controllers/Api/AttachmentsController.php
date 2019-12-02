@@ -3,7 +3,8 @@
 namespace Modules\Attachments\Http\Controllers\Api;
 
 use App\Flag;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
 use Modules\Attachments\Http\Requests\StoreAttachmentRequest;
@@ -29,6 +30,15 @@ class AttachmentsController extends Controller
         $this->response = $response;
         $this->attachments = $attachments;
         $this->lang = $lang;
+    }
+
+    public function getAttachments()
+    {
+        try {
+            return $this->responseJson(['data' => $this->attachments->all()]);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 
     public function store(StoreAttachmentRequest $request)
@@ -71,5 +81,17 @@ class AttachmentsController extends Controller
         }
 
         return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+    }
+
+    public function destroy(int $id)
+    {
+        try {
+            $result['attachment'] = $this->attachments->delete($id);
+            $result['message'] = $this->lang->get('messages.deleted', ['attribute' => $result['attachment']->name]);
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 }

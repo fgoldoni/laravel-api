@@ -44,13 +44,19 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
 
     private function makeImage(array $attributes = [])
     {
-        $manager = new ImageManager(['driver' => 'imagick']);
+        if ('testing' === app()->environment()) {
+            $driver = 'gd';
+        } else {
+            $driver = env('IMAGE_DRIVER', 'gd');
+        }
+
+        $manager = new ImageManager(['driver' => $driver]);
 
         $basename = $this->getBasename($attributes['attachment']->getClientOriginalExtension());
 
         $path = $this->getDirectory($attributes['folder']) . DS . $basename;
 
-        if ((bool) $attributes['resize']) {
+        if (isset($attributes['resize']) && (bool) $attributes['resize']) {
             $manager->make($attributes['attachment']->getRealPath())->orientate()->fit($attributes['width'], $attributes['height'])->save($path);
         } else {
             $manager->make($attributes['attachment']->getRealPath())->orientate()->save($path);

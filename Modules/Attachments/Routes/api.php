@@ -11,6 +11,13 @@
 |
 */
 
+use App\Flag;
+
+Route::group(['middleware' => ['auth:api', 'role:' . Flag::ROLE_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
+    Route::get('attachments', 'AttachmentsController@getAttachments')->name('users');
+});
+
 Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('attachments/store', 'AttachmentsController@store')->name('attachments.store');
+    Route::delete('attachments/{attachment}', 'AttachmentsController@destroy')->name('attachments.destroy');
 });
