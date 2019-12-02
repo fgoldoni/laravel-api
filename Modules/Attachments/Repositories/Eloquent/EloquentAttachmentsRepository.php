@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * Created by PhpStorm.
+ * User: goldoni
+ * Date: 24.09.18
+ * Time: 21:18.
+ */
+
+namespace Modules\Attachments\Repositories\Eloquent;
+
+use App\Flag;
+use App\Repositories\RepositoryAbstract;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Modules\Attachments\Entities\Attachment;
+use Modules\Attachments\Repositories\Contracts\AttachmentsRepository;
+
+/**
+ * Class EloquentPostsRepository.
+ */
+class EloquentAttachmentsRepository extends RepositoryAbstract implements AttachmentsRepository
+{
+    public function model()
+    {
+        return Attachment::class;
+    }
+
+    public function store(array $attributes = []): Attachment
+    {
+        $attachment = new Attachment([
+            'attachable_type' => $attributes['attachable_type'],
+            'attachable_id'   => $attributes['attachable_id']
+        ]);
+
+        $attachment->loadParameters($attributes['attachment'], $attributes['folder']);
+
+        $attachment->basename = $this->makeImage($attributes);
+
+        $attachment->save();
+
+        return $attachment;
+    }
+
+    private function makeImage(array $attributes = [])
+    {
+        $manager = new ImageManager(['driver' => 'imagick']);
+
+        $basename = $this->getBasename($attributes['attachment']->getClientOriginalExtension());
+
+        $path = $this->getDirectory($attributes['folder']) . DS . $basename;
+
+        if ((bool) $attributes['resize']) {
+            $manager->make($attributes['attachment']->getRealPath())->orientate()->fit($attributes['width'], $attributes['height'])->save($path);
+        } else {
+            $manager->make($attributes['attachment']->getRealPath())->orientate()->save($path);
+        }
+
+        return $basename;
+    }
+
+    private function getBasename(string $extension)
+    {
+        return  time() . '.' . $extension;
+    }
+
+    private function getDirectory(string $folder)
+    {
+        if (!\in_array($folder, Storage::disk(Flag::UPLOADS)->directories(), true)) {
+            Storage::disk(Flag::UPLOADS)->makeDirectory($folder);
+        }
+
+        return Storage::disk(Flag::UPLOADS)->getDriver()->getAdapter()->getPathPrefix() . $folder;
+    }
+}

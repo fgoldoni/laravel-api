@@ -30,4 +30,6 @@ class Flag
     const ROLE_EXECUTIVE = 'Executive';
 
     const ROLE_USER = 'User';
+
+    const UPLOADS = 'uploads';
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Scout\Searchable;
+use Modules\Attachments\Traits\AttachableTrait;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasRoles;
@@ -17,6 +18,7 @@ class User extends Authenticatable
     use HasRoles;
     use SoftDeletes;
     use LogsActivity;
+    use AttachableTrait;
 
     protected $dates = ['deleted_at'];
 
