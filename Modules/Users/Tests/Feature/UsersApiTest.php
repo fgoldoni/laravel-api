@@ -10,7 +10,6 @@ use Modules\Users\Notifications\UserDeleted;
 use Modules\Users\Notifications\UserRestored;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
 use Prophecy\Argument;
-use ReflectionClass;
 use Tests\TestCase;
 
 class UsersApiTest extends TestCase
