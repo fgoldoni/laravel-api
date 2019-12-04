@@ -49,8 +49,6 @@ interface RepositoryInterface
 
     public function firstOrCreate(array $attributes = []);
 
-    public function supportedLocales(): array;
-
     public function setHidden(string $attribute);
 
     public function setVisible(string $attribute);
