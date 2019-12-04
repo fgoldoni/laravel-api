@@ -13,6 +13,7 @@ class AuthCollection extends JsonResource
             'first_name'          => $this->first_name,
             'last_name'           => $this->last_name,
             'full_name'           => $this->full_name,
+            'avatar'              => $this->getAvatar(),
             'name'                => $this->full_name,
             'email'               => $this->email,
             'role'                => $this->mapRole(),
@@ -50,5 +51,14 @@ class AuthCollection extends JsonResource
         }
 
         return $unreadNotifications;
+    }
+
+    private function getAvatar()
+    {
+        if ($avatar = $this->attachments()->first()) {
+            return $avatar->url;
+        }
+
+        return '';
     }
 }

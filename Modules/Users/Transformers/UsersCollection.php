@@ -20,6 +20,7 @@ class UsersCollection extends JsonResource
             'first_name'                        => $this->first_name,
             'last_name'                         => $this->last_name,
             'full_name'                         => $this->full_name,
+            'avatar'                            => $this->getAvatar(),
             'name'                              => $this->full_name,
             'email'                             => $this->email,
             'dob'                               => $this->dob,
@@ -80,5 +81,14 @@ class UsersCollection extends JsonResource
         }
 
         return 'blocked';
+    }
+
+    private function getAvatar()
+    {
+        if ($avatar = $this->attachments()->first()) {
+            return $avatar->url;
+        }
+
+        return '';
     }
 }

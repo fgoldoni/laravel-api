@@ -43,8 +43,9 @@ class RolesApiExceptionTest extends TestCase
         $response->assertStatus(Flag::STATUS_CODE_ERROR);
 
         $this->seeJsonEquals([
+            'code'      => 500,
             'success'   => false,
-            'exception' => TestErrorException::class,
+            'exception' => $this->getExceptionShortName(TestErrorException::class),
             'message'   => 'Test Exception',
             'status'    => Flag::STATUS_CODE_ERROR
         ]);
@@ -74,8 +75,9 @@ class RolesApiExceptionTest extends TestCase
         $this->responseBody = $response->getContent();
 
         $this->seeJsonEquals([
+            'code'      => 500,
             'success'   => false,
-            'exception' => TestErrorException::class,
+            'exception' => $this->getExceptionShortName(TestErrorException::class),
             'message'   => 'Test Exception',
             'status'    => Flag::STATUS_CODE_ERROR
         ]);

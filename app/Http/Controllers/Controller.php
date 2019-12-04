@@ -27,7 +27,12 @@ class Controller extends BaseController
 
     protected function responseJsonError(Exception $e): JsonResponse
     {
+        if (method_exists(\get_class($e), 'getResponse')) {
+            return $e->getResponse();
+        }
+
         Log::error($e);
+
         $statusCode = (0 !== $e->getCode()) ? $e->getCode() : Flag::STATUS_CODE_ERROR;
 
         $result = [

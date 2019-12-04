@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Modules\Roles\Entities\Role;
 use PHPUnit\Framework\Assert as PHPUnit;
+use ReflectionClass;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -112,5 +113,10 @@ abstract class TestCase extends BaseTestCase
     protected function assertLoggedOut()
     {
         $this->assertFalse(Auth::check());
+    }
+
+    protected function getExceptionShortName(string $class)
+    {
+        return (new ReflectionClass($class))->getShortName();
     }
 }

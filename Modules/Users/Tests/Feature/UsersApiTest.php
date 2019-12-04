@@ -10,6 +10,7 @@ use Modules\Users\Notifications\UserDeleted;
 use Modules\Users\Notifications\UserRestored;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
 use Prophecy\Argument;
+use ReflectionClass;
 use Tests\TestCase;
 
 class UsersApiTest extends TestCase
@@ -83,8 +84,9 @@ class UsersApiTest extends TestCase
         $response->assertStatus(500);
 
         $this->seeJsonEquals([
+            'code'      => 500,
             'success'   => false,
-            'exception' => TestErrorException::class,
+            'exception' => $this->getExceptionShortName(TestErrorException::class),
             'message'   => 'Test Exception',
             'status'    => 500
         ]);
@@ -221,7 +223,7 @@ class UsersApiTest extends TestCase
     {
         $usersService = $this->prophesize(UsersServiceInterface::class);
 
-        $usersService->transform(Argument::any())->willThrow(new \Exception('Exception', 500));
+        $usersService->transform(Argument::any())->willThrow(new TestErrorException('Exception', 500));
 
         $this->app->instance(UsersServiceInterface::class, $usersService->reveal());
 

@@ -2,7 +2,7 @@
 
 namespace Modules\Attachments\Http\Controllers\Api;
 
-use App\Flag;
+use App\Exceptions\AttachmentException;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Routing\ResponseFactory;
@@ -43,44 +43,28 @@ class AttachmentsController extends Controller
 
     public function store(StoreAttachmentRequest $request)
     {
-        if (class_exists($request->get('attachable_type'))
-            && method_exists($request->get('attachable_type'), 'attachments')) {
-            $subject = \call_user_func(
-                $request->get('attachable_type') . '::find',
-                (int) ($request->get('attachable_id'))
-            );
+        try {
+            if (class_exists($request->get('attachable_type'))
+                && method_exists($request->get('attachable_type'), 'attachments')) {
+                $subject = \call_user_func(
+                    $request->get('attachable_type') . '::find',
+                    (int) ($request->get('attachable_id'))
+                );
 
-            if ($subject) {
-                try {
+                if ($subject) {
                     $attachment = $this->attachments->store($request->all());
 
                     $result['attachment'] = $attachment;
-                    $result['status'] = Flag::STATUS_CODE_SUCCESS;
-                    $result['success'] = true;
                     $result['message'] = $this->lang->get('messages.created', ['attribute' => 'File']);
-                } catch (Exception $e) {
-                    $result['status'] = Flag::STATUS_CODE_ERROR;
-                    $result['success'] = false;
-                    $result['message'] = $e->getMessage();
-                }
-            } else {
-                return $this->response->json(
-                    ['attachable_id' => 'This content can not receive a file'],
-                    Flag::STATUS_CODE_ERROR,
-                    [],
-                    JSON_NUMERIC_CHECK
-                );
-            }
-        } else {
-            return $this->response->json(
-                ['error' => 'method attachments undefined'],
-                Flag::STATUS_CODE_ERROR,
-                [],
-                JSON_NUMERIC_CHECK
-            );
-        }
 
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+                    return $this->responseJson($result);
+                }
+                throw AttachmentException::notFileReceiveException();
+            }
+            throw AttachmentException::undefinedMethodException($request->get('attachable_type'));
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 
     public function destroy(int $id)
