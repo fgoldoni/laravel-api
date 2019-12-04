@@ -74,6 +74,7 @@ class UsersController extends Controller
 
     public function paginate(Request $request): JsonResponse
     {
+        $result = [];
         try {
             $result['data'] = $this->usersService->paginate($request);
 
@@ -127,16 +128,9 @@ class UsersController extends Controller
         }
     }
 
-    /**
-     * Show the specified resource.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
+
     public function show(int $id)
     {
-        return view('users::show');
     }
 
     public function edit(int $id): JsonResponse

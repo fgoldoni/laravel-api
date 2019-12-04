@@ -19,6 +19,7 @@ class NotificationsController extends Controller
 
     public function notifications(Request $request)
     {
+        $result = [];
         $notifications = $request->user()->unreadNotifications()->latest()->get();
 
         foreach ($notifications as $key => $item) {

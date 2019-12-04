@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /**
  * Class RepositoryAbstract.
@@ -217,17 +216,6 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
         return $this->model->firstOrCreate($attributes);
     }
 
-    public function supportedLocales(): array
-    {
-        $languages = LaravelLocalization::getSupportedLocales();
-        $lang = [];
-
-        foreach ($languages as $localeCode => $properties) {
-            $lang[] = $localeCode;
-        }
-
-        return $lang;
-    }
 
     public function setHidden(string $attribute)
     {

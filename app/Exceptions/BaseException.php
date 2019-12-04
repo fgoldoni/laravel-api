@@ -9,20 +9,22 @@ use ReflectionClass;
 
 class BaseException extends Exception
 {
+    /**
+     * @var int
+     */
     protected $httpStatusCode = 500;
 
-    protected $errorCode;
-
-    protected $errorMessage;
+    /**
+     * @var int
+     */
+    protected $errorCode = 500;
 
     /**
-     * BaseException constructor.
-     *
-     * @param                 $errorMessage
-     * @param int             $errorCode
-     * @param int             $httpStatusCode
-     * @param \Throwable|null $previous
+     * @var string
      */
+    protected $errorMessage;
+
+
     public function __construct(
         $errorMessage = null,
         $errorCode = 0,
@@ -60,17 +62,17 @@ class BaseException extends Exception
         return new static($message, $errorCode, $httpStatusCode);
     }
 
-    public function getErrorMessage()
+    public function getErrorMessage(): string
     {
         return $this->errorMessage;
     }
 
-    public function getErrorCode()
+    public function getErrorCode(): int
     {
         return $this->errorCode;
     }
 
-    public function getHttpStatusCode()
+    public function getHttpStatusCode(): int
     {
         return $this->httpStatusCode;
     }
