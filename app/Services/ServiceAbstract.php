@@ -89,9 +89,9 @@ abstract class ServiceAbstract implements ServiceInterface
         return $this->resolveRepository()->restore($id);
     }
 
-    public function find(int $id)
+    public function find(int $id, array $columns = ['*'])
     {
-        return $this->resolveRepository()->find($id);
+        return $this->resolveRepository()->find($id, $columns);
     }
 
     public function firstOrNew(array $attributes)

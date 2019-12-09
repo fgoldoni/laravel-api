@@ -4,6 +4,7 @@ namespace Modules\Users\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Activities\Transformers\ActivityTransformer;
+use Modules\Roles\Entities\Role;
 
 class UserCollection extends JsonResource
 {
@@ -23,7 +24,9 @@ class UserCollection extends JsonResource
             'full_name'   => $this->full_name,
             'avatar'      => $this->getAvatar(),
             'email'       => $this->email,
+            'role'        => $this->mapRole(),
             'roles'       => $this->mapRoles(),
+            'all_roles'   => $this->mapAllRoles(),
             'permissions' => $this->mapPermissions(),
             'status'      => $this->getStatus(),
             'activities'  => ActivityTransformer::collection($this->activities),
@@ -32,14 +35,36 @@ class UserCollection extends JsonResource
         ];
     }
 
-    private function mapRoles()
+    private function mapAllRoles()
     {
-        return $this->roles->map(static function ($item) {
+        return Role::all()->map(static function ($item) {
             return [
                 'id'   => $item->id,
                 'name' => $item->name,
             ];
         });
+    }
+
+    private function mapRole()
+    {
+        $role = $this->roles()->first();
+
+        if (null === $role) {
+            return 'user';
+        }
+
+        return mb_strtolower($role->name);
+    }
+
+    private function mapRoles()
+    {
+        $role = $this->roles()->first();
+
+        if (null === $role) {
+            return [];
+        }
+
+        return [$role->id];
     }
 
     private function mapPermissions()
@@ -77,7 +102,7 @@ class UserCollection extends JsonResource
 
     private function getAvatar()
     {
-        if ($avatar = $this->attachments()->first()) {
+        if ($avatar = $this->attachments()->latest()->first()) {
             return $avatar->url;
         }
 

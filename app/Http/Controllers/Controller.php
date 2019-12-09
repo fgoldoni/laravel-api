@@ -22,7 +22,11 @@ class Controller extends BaseController
         $result['success'] = true;
         $result['status'] = Flag::STATUS_CODE_SUCCESS;
 
-        return response()->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+        return response()->json($result, $result['status'], [
+            'Access-Control-Allow-Origin'  => '*',
+            'Access-Control-Allow-Methods' => '*',
+            'Access-Control-Allow-Headers' => '*',
+        ], JSON_NUMERIC_CHECK);
     }
 
     protected function responseJsonError(Exception $e): JsonResponse

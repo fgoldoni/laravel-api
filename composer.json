@@ -19,6 +19,7 @@
         "laravel/telescope": "^2.1",
         "laravel/tinker": "^1.0",
         "nwidart/laravel-modules": "^6.0",
+        "rinvex/laravel-categories": "^3.0",
         "spatie/laravel-activitylog": "^3.8",
         "spatie/laravel-permission": "^3.0"
     },

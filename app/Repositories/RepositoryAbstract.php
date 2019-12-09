@@ -216,7 +216,6 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
         return $this->model->firstOrCreate($attributes);
     }
 
-
     public function setHidden(string $attribute)
     {
         return $this->model->makeHidden($attribute);

@@ -55,7 +55,7 @@ class AuthCollection extends JsonResource
 
     private function getAvatar()
     {
-        if ($avatar = $this->attachments()->first()) {
+        if ($avatar = $this->attachments()->latest()->first()) {
             return $avatar->url;
         }
 

@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Log\Logger;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Str;
@@ -128,7 +127,6 @@ class UsersController extends Controller
         }
     }
 
-
     public function show(int $id)
     {
     }
@@ -156,7 +154,10 @@ class UsersController extends Controller
     public function update(ApiUpdateUserRequest $request, $id): JsonResponse
     {
         try {
-            $result['user'] = $this->usersService->updateUser($request, $id);
+            $user = $this->usersService->updateUser($request, $id);
+            $this->usersService->sync($user->id, 'roles', $request->get('roles'));
+
+            $result['user'] = $this->usersService->transform($user->fresh());
             $result['message'] = $this->lang->get('messages.updated', ['attribute' => $result['user']->first_name]);
 
             return $this->responseJson($result);

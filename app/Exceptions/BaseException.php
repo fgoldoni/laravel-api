@@ -24,7 +24,6 @@ class BaseException extends Exception
      */
     protected $errorMessage;
 
-
     public function __construct(
         $errorMessage = null,
         $errorCode = 0,

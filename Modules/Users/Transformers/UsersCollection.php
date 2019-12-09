@@ -80,12 +80,12 @@ class UsersCollection extends JsonResource
             return 'active';
         }
 
-        return 'blocked';
+        return 'deleted';
     }
 
     private function getAvatar()
     {
-        if ($avatar = $this->attachments()->first()) {
+        if ($avatar = $this->attachments()->latest()->first()) {
             return $avatar->url;
         }
 
