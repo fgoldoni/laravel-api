@@ -62,7 +62,7 @@ class AttachmentsController extends Controller
                 throw AttachmentException::notFileReceiveException();
             }
             throw AttachmentException::undefinedMethodException($request->get('attachable_type'));
-        } catch (Exception $e) {
+        } catch (AttachmentException $e) {
             return $this->responseJsonError($e);
         }
     }

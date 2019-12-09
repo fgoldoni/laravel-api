@@ -37,7 +37,8 @@ class CategoriesServiceProvider extends ServiceProvider
             __DIR__ . '/../Config/config.php' => config_path('categories.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__ . '/../Config/config.php', 'categories'
+            __DIR__ . '/../Config/config.php',
+            'categories'
         );
     }
 

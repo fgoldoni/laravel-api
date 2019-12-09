@@ -38,7 +38,8 @@ class PostsServiceProvider extends ServiceProvider
             __DIR__ . '/../Config/config.php' => config_path('posts.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__ . '/../Config/config.php', 'posts'
+            __DIR__ . '/../Config/config.php',
+            'posts'
         );
     }
 
