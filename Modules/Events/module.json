@@ -1,0 +1,13 @@
+{
+    "name": "Events",
+    "alias": "events",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Events\\Providers\\EventsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

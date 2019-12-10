@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Attachments\Traits\AttachableTrait;
+use Modules\Tags\Traits\TaggableTrait;
 use Rinvex\Categories\Traits\Categorizable;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -14,6 +15,7 @@ class Post extends Model
     use SoftDeletes;
     use LogsActivity;
     use Categorizable;
+    use TaggableTrait;
     use AttachableTrait;
 
     protected $fillable = ['name', 'content', 'online', 'user_id'];

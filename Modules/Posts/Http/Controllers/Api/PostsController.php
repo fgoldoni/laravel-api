@@ -46,8 +46,13 @@ class PostsController extends Controller
     public function store(StorePostRequest $request)
     {
         try {
-            $post = $this->postsService->storePost($request->only('name', 'content', 'online', 'user_id'), $request->get('categories'), $request->get('tags'));
-            $result['data'] = new PostCollection($post);
+            $result['post'] = new PostCollection(
+                $this->postsService->storePost(
+                    $request->only('name', 'content', 'online', 'user_id'),
+                    $request->get('categories', []),
+                    $request->get('tags', [])
+                )
+            );
 
             return $this->responseJson($result);
         } catch (Exception $e) {
@@ -61,11 +66,44 @@ class PostsController extends Controller
             $post = $this->postsService->updatePost(
                 $id,
                 $request->only('name', 'content', 'online', 'user_id'),
-                $request->get('categories'),
-                $request->get('tags')
+                $request->get('categories', []),
+                $request->get('tags', [])
             );
 
             $result['data'] = new PostCollection($post);
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        try {
+            $result['post'] = new PostCollection($this->postsService->delete($id));
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function restore(int $id)
+    {
+        try {
+            $result['post'] = new PostCollection($this->postsService->restore($id));
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function forceDelete(int $id)
+    {
+        try {
+            $result['post'] = new PostCollection($this->postsService->forceDelete($id));
 
             return $this->responseJson($result);
         } catch (Exception $e) {

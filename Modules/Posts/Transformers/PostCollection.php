@@ -22,10 +22,12 @@ class PostCollection extends JsonResource
             'online'      => $this->online,
             'attachments' => $this->getAttachments(),
             'categories'  => $this->getCategories(),
+            'tags'        => $this->getTags(),
             'user'        => [
                 'full_name' => $this->user->full_name,
             ],
             'created_at' => $this->created_at,
+            'deleted_at' => $this->deleted_at,
         ];
     }
 
@@ -45,6 +47,15 @@ class PostCollection extends JsonResource
         return $this->attachments()->get()->map(function ($category) {
             return [
                 'url' => $category->url
+            ];
+        });
+    }
+
+    private function getTags()
+    {
+        return $this->tags()->get()->map(function ($tag) {
+            return [
+                'name' => $tag->name
             ];
         });
     }

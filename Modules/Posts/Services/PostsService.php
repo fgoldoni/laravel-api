@@ -50,7 +50,7 @@ class PostsService extends ServiceAbstract implements PostsServiceInterface
         );
 
         $this->resolveRepository()->sync($post->id, 'categories', $categories);
-        // $post->saveTags($tags);
+        $post->saveTags($tags);
 
         return $post->fresh();
     }
@@ -63,7 +63,7 @@ class PostsService extends ServiceAbstract implements PostsServiceInterface
         );
 
         $this->resolveRepository()->sync($post->id, 'categories', $categories);
-        // $post->saveTags($tags);
+        $post->saveTags($tags);
 
         return $post->fresh();
     }
