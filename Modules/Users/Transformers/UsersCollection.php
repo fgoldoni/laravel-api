@@ -6,13 +6,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UsersCollection extends JsonResource
 {
-    /**
-     * Transform the resource collection into an array.
-     *
-     * @param  \Illuminate\Http\Request
-     *
-     * @return array
-     */
     public function toArray($request)
     {
         return [

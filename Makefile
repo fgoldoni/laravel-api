@@ -18,8 +18,8 @@ help: ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 phpcs: ## PRS2 Validation
-	./vendor/bin/phpcbf
-	./vendor/bin/phpcs
+	./vendor/bin/phpcbf --extensions=php -s
+	./vendor/bin/phpcs --extensions=php -s
 	./vendor/bin/php-cs-fixer fix --diff
 
 server: ## Load phpMyAdmin server
