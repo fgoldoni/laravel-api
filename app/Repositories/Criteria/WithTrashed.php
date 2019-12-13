@@ -9,6 +9,7 @@
 
 namespace App\Repositories\Criteria;
 
+use App\Flag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +25,7 @@ class WithTrashed implements CriterionInterface
      */
     public function apply($model): Builder
     {
-        if (Auth::user()->hasRole('Admin')) {
+        if (Auth::user()->hasPermissionTo(Flag::PERMISSION_ADMIN)) {
             return $model->withTrashed();
         }
 

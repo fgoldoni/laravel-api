@@ -37,10 +37,19 @@ class UsersDatabaseSeeder extends Seeder
             'api_token'             => 'cX6FFEAiG20w3TiLYEbb1nefdUzMz3Jqr9estkmPh6zb6rBQFhE6qDU54r9E',
         ]);
 
+        $event = factory(User::class)->create([
+            'first_name'            => 'Event',
+            'last_name'             => 'M',
+            'email'                 => 'event@contact.com',
+            'api_token'             => 'cX6FFEAiG20w3TiLYEbb1nefdUzMz3Jqr9estkmPh6zb6rBQFhE6qDU54r9F',
+        ]);
+
         $admin->assignRole(Flag::ROLE_ADMIN);
 
         $executive->assignRole(Flag::ROLE_EXECUTIVE);
 
         $user->assignRole(Flag::ROLE_USER);
+
+        $event->assignRole(Flag::ROLE_EVENT_MANAGER);
     }
 }

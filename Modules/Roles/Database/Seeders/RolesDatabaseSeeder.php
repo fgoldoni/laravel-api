@@ -34,5 +34,14 @@ class RolesDatabaseSeeder extends Seeder
         Role::where('name', Flag::ROLE_USER)->first()->givePermissionTo(Permission::find(1));
         Role::where('name', Flag::ROLE_EXECUTIVE)->first()->givePermissionTo(Permission::find(2));
         Role::where('name', Flag::ROLE_ADMIN)->first()->givePermissionTo(Permission::all());
+        Role::where('name', Flag::ROLE_EVENT_MANAGER)->first()->givePermissionTo(
+            [
+                'USER',
+                Flag::PERMISSION_EVENT_MANAGER,
+                'CREATE_EVENT',
+                'UPDATE_EVENT',
+                'DELETE_EVENT'
+            ]
+        );
     }
 }

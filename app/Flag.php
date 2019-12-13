@@ -21,11 +21,15 @@ class Flag
 
     const PERMISSION_ADMIN = 'ADMIN';
 
+    const PERMISSION_EVENT_MANAGER = 'EVENT_MANAGER';
+
     const PERMISSION_EXECUTIVE = 'EXECUTIVE';
 
     const PERMISSION_USER = 'USER';
 
     const ROLE_ADMIN = 'Admin';
+
+    const ROLE_EVENT_MANAGER = 'Event Manager';
 
     const ROLE_EXECUTIVE = 'Executive';
 

@@ -9,7 +9,9 @@
 
 namespace App\Repositories\Criteria;
 
+use App\Flag;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ByUser.
@@ -38,6 +40,10 @@ class ByUser implements CriterionInterface
      */
     public function apply($model): Builder
     {
+        if (Auth::user()->hasPermissionTo(Flag::PERMISSION_ADMIN)) {
+            return $model->newQuery();
+        }
+
         return $model->where('user_id', $this->userId);
     }
 }

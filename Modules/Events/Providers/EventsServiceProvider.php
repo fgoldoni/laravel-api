@@ -4,6 +4,10 @@ namespace Modules\Events\Providers;
 
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
+use Modules\Events\Entities\Event;
+use Modules\Events\Observers\EventObserver;
+use Modules\Events\Services\Contracts\EventsServiceInterface;
+use Modules\Events\Services\EventsService;
 
 class EventsServiceProvider extends ServiceProvider
 {
@@ -12,11 +16,13 @@ class EventsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Event::observe(EventObserver::class);
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->app->bind(EventsServiceInterface::class, EventsService::class);
     }
 
     /**
@@ -25,6 +31,9 @@ class EventsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(RepositoryServiceProvider::class);
+        $this->app->register(EventServiceProvider::class);
+        $this->app->register(AuthServiceProvider::class);
     }
 
     /**

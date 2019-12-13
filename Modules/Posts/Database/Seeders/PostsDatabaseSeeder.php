@@ -15,6 +15,6 @@ class PostsDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $admin = factory(Post::class, 10)->create();
+        factory(Post::class, 10)->create();
     }
 }

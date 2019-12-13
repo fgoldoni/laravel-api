@@ -9,7 +9,10 @@ use Illuminate\Support\Carbon;
 use Modules\Attachments\Traits\AttachableTrait;
 use Modules\Tags\Traits\TaggableTrait;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Rinvex\Categories\Traits\Categorizable;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use willvincent\Rateable\Rateable;
 
 class Event extends Model
@@ -19,7 +22,9 @@ class Event extends Model
     use SearchableTrait;
     use AttachableTrait;
     use TaggableTrait;
+    use Categorizable;
     use Rateable;
+    use HasSlug;
 
     public $guarded = [];
 
@@ -34,7 +39,7 @@ class Event extends Model
         'online'  => 'boolean',
     ];
 
-    public $appends = ['slug', 'old', 'average_rating', 'user_average_rating'];
+    public $appends = ['old', 'average_rating', 'user_average_rating'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -92,14 +97,11 @@ class Event extends Model
         ],
     ];
 
-    /**
-     * @param $value
-     *
-     * @return mixed
-     */
-    public function getSlugAttribute()
+    public function getSlugOptions(): SlugOptions
     {
-        return str_slug($this->title);
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
     }
 
     /**
