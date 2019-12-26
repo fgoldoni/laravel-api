@@ -35,6 +35,11 @@ migrate: optimize ## migrate
 	$(PHP) artisan migrate:refresh
 
 refresh: migrate ## refresh + php artisan module:seed Admin & php artisan module:seed Support
+	php artisan module:migrate-refresh Roles
+	php artisan module:migrate-refresh Users
+	php artisan module:migrate-refresh Categories
+	php artisan module:migrate-refresh Posts
+	php artisan module:migrate-refresh Events
 	php artisan module:seed Roles
 	php artisan module:seed Users
 	php artisan module:seed Categories
