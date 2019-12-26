@@ -5,7 +5,11 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Modules\Activities\Providers\ActivitiesServiceProvider;
 use Modules\Attachments\Providers\AttachmentsServiceProvider;
+use Modules\Categories\Providers\CategoriesServiceProvider;
+use Modules\Events\Providers\EventsServiceProvider;
+use Modules\Posts\Providers\PostsServiceProvider;
 use Modules\Roles\Providers\RolesServiceProvider;
+use Modules\Tags\Providers\TagsServiceProvider;
 use Modules\Users\Providers\UsersServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(RolesServiceProvider::class);
         $this->app->register(ActivitiesServiceProvider::class);
         $this->app->register(AttachmentsServiceProvider::class);
+        $this->app->register(CategoriesServiceProvider::class);
+        $this->app->register(EventsServiceProvider::class);
+        $this->app->register(PostsServiceProvider::class);
+        $this->app->register(TagsServiceProvider::class);
     }
 
     /**
