@@ -39,6 +39,7 @@ refresh: migrate ## refresh + php artisan module:seed Admin & php artisan module
 	php artisan module:migrate-refresh Users
 	php artisan module:migrate-refresh Categories
 	php artisan module:migrate-refresh Posts
+	php artisan module:migrate-refresh Tags
 	php artisan module:migrate-refresh Events
 	php artisan module:seed Roles
 	php artisan module:seed Users
