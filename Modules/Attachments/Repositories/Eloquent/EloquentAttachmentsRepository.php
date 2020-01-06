@@ -10,6 +10,7 @@
 namespace Modules\Attachments\Repositories\Eloquent;
 
 use App\Flag;
+use App\Repositories\Criteria\Where;
 use App\Repositories\RepositoryAbstract;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
@@ -36,6 +37,18 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
         $attachment->loadParameters($attributes['attachment'], $attributes['folder']);
 
         $attachment->basename = $this->makeImage($attributes);
+
+        if($attachment->type === 'cover') {
+            $attachments = $this->withCriteria([
+                new Where('type', 'cover'),
+                new Where('attachable_id', $attributes['attachable_id']),
+                new Where('attachable_type', $attributes['attachable_type'])
+            ])->get();
+
+            foreach($attachments as $file) {
+                $file->delete();
+            }
+        }
 
         $attachment->save();
 
@@ -67,7 +80,7 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
 
     private function getBasename(string $extension)
     {
-        return  time() . '.' . $extension;
+        return  time() . '_' . mb_substr(str_replace('/', '', bcrypt(str_random(40))), -4)  . '.' . $extension;
     }
 
     private function getDirectory(string $folder)

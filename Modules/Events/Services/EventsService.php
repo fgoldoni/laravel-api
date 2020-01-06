@@ -5,6 +5,7 @@ namespace Modules\Events\Services;
 use App\Repositories\Criteria\ByUser;
 use App\Repositories\Criteria\EagerLoad;
 use App\Repositories\Criteria\OrderBy;
+use App\Repositories\Criteria\Where;
 use App\Repositories\Criteria\WithTrashed;
 use App\Services\ServiceAbstract;
 use App\User;
@@ -60,6 +61,13 @@ class EventsService extends ServiceAbstract implements EventsServiceInterface
         $event->saveTags($tags);
 
         return $event->fresh();
+    }
+
+    public function findBySlug(string $slug): Event
+    {
+        return $this->resolveRepository()->withCriteria([
+            new Where('slug', $slug)
+        ])->first();
     }
 
     public function updateEvent(int $id, array $attributes = [], array $categories = [], array $tags = null): Event

@@ -3,8 +3,10 @@
 namespace Modules\Events\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Categories\Repositories\Contracts\CategoriesRepository;
+use Modules\Events\Entities\Event;
 
-class EventCollection extends JsonResource
+class CreateEventCollection extends JsonResource
 {
     public function toArray($request)
     {
@@ -19,39 +21,26 @@ class EventCollection extends JsonResource
             'contact_phone'    => $this->contact_phone,
             'contact_email'    => $this->contact_email,
             'contact_name'     => $this->contact_name,
-            'start'            => $this->start,
-            'end'              => $this->end,
+            'start'            => $this->start->format('Y-m-d H:i:s'),
+            'end'              => $this->end->format('Y-m-d H:i:s'),
             'url'              => $this->url,
             'color'            => $this->color,
             'all_day'          => $this->all_day,
             'online'           => $this->online,
             'attachments'      => $this->getAttachments(),
-            'categories'       => $this->getCategories(),
-            'tags'             => $this->getTags(),
-            'rating'           => random_int(2,5),
-            'user_id'          => $this->user->id,
-            'user'             => [
-                'full_name' => $this->user->full_name,
-            ],
-            'created_at' => $this->created_at,
-            'deleted_at' => $this->deleted_at,
+            'categories'       => [6],
+            'categoriesList'       => $this->getCategories()
         ];
     }
 
     private function getCategories()
     {
-        return $this->categories()->get()->map(function ($category) {
-            return [
-                'id'   => $category->id,
-                'name' => $category->name,
-                'slug' => $category->slug,
-            ];
-        });
+        return app()->make(CategoriesRepository::class)->siblings('events', Event::class);
     }
 
     private function getAttachments()
     {
-        return $this->attachments()->orderBy('type', 'asc')->latest()->get()->map(function ($category) {
+        return $this->attachments()->get()->map(function ($category) {
             return [
                 'url' => $category->url
             ];

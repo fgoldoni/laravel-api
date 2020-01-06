@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Laravel\Scout\Searchable;
 use Modules\Attachments\Traits\AttachableTrait;
 use Modules\Tags\Traits\TaggableTrait;
 use Nicolaslopezj\Searchable\SearchableTrait;
@@ -14,6 +15,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use willvincent\Rateable\Rateable;
+use Faker\Factory as Faker;
 
 class Event extends Model
 {
@@ -25,6 +27,7 @@ class Event extends Model
     use Categorizable;
     use Rateable;
     use HasSlug;
+    use Searchable;
 
     public $guarded = [];
 
@@ -112,5 +115,91 @@ class Event extends Model
     public function getOldAttribute()
     {
         return $this->start < Carbon::now();
+    }
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'events_index';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id'               => $this->id,
+            'title'            => $this->title,
+            'slug'             => $this->slug,
+            'description'      => $this->description,
+            'content'          => $this->content,
+            'city'             => $this->city,
+            'contact_phone'    => $this->contact_phone,
+            'contact_email'    => $this->contact_email,
+            'contact_name'     => $this->contact_name,
+            'address'          => $this->address,
+            'start'            => $this->start,
+            'start_timestamp'  => Carbon::parse($this->start)->timestamp,
+            'end'              => $this->end,
+            'url'              => $this->url,
+            'color'            => $this->color,
+            'all_day'          => $this->all_day,
+            'online'           => $this->online,
+            'image'            => $this->getImage(),
+            'categories'       => $this->getCategories(),
+            'tags'             => $this->getTags(),
+            'rating'           => $this->getRating(),
+            'price'            => $this->getPrice(),
+            'owner'            => $this->user->full_name,
+            'created_at'       => $this->created_at,
+            'deleted_at'       => $this->deleted_at,
+        ];
+    }
+
+    private function getCategories()
+    {
+        return $this->categories()->get()->map(function ($category) {
+            return [$category->name];
+        });
+    }
+
+    private function getImage()
+    {
+        if ($image = $this->attachments()->where('type', 'cover')->latest()->first()) {
+            return $image->url;
+        }
+
+        return asset('storage/uploads/events/1577545968.jpg');
+    }
+
+    private function getTags()
+    {
+        return $this->tags()->get()->map(function ($tag) {
+            return [
+                'name' => $tag->name
+            ];
+        });
+    }
+
+    private function getRating()
+    {
+        return random_int(1, 5);
+    }
+
+    private function getPrice()
+    {
+        return random_int(1, 1000);
+    }
+
+    public function visits()
+    {
+        return visits($this);
     }
 }

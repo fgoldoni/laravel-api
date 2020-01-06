@@ -17,7 +17,6 @@ class UpdateEventRequest extends FormRequest
             'title'             => 'required|string|min:4|max:255',
             'description'       => 'required|string|min:4',
             'address'           => 'required|string|min:4',
-            'user_id'           => 'required|integer',
             'start'             => 'required|date',
             'end'               => 'required|date',
             'color'             => 'required|string',

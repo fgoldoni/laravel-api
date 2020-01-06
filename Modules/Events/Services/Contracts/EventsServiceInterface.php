@@ -12,4 +12,6 @@ interface EventsServiceInterface
     public function storeEvent(array $attributes = [], array $categories = [], array $tags = null): Event;
 
     public function updateEvent(int $id, array $attributes = [], array $categories = [], array $tags = null): Event;
+
+    public function findBySlug(string $slug): Event;
 }

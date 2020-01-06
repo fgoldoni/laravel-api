@@ -22,4 +22,37 @@ class EloquentCategoriesRepository extends RepositoryAbstract implements Categor
     {
         return Category::class;
     }
+
+    public function getSiblingsCategories(int $key, $model)
+    {
+        $parent = $this->resolveModel()->newQuery()->where('slug', 'categories')->with(['descendants'])->whereIsRoot()->get()->toTree()->first();
+
+        return $parent->descendants->map(function ($category) use ($model) {
+            return [
+                'id'    => $category->id,
+                'name'  => $category->getTranslation('name', session()->get('locale')),
+                'slug'  => $category->slug,
+                'count' => $category->entries($model)->count()
+            ];
+        });
+    }
+
+    public function siblings(string $slug, string $model = null)
+    {
+        $parent = $this->resolveModel()->newQuery()->where('slug', $slug)->with(['descendants'])->whereIsRoot()->get()->toTree()->first();
+
+        if (null === $parent) {
+            return [];
+        }
+
+        return $parent->descendants->map(function ($category) use ($model) {
+            $locale = session()->has('locale') ? session()->get('locale') : 'en';
+
+            return [
+                'id'    => $category->id,
+                'name'  => $category->getTranslation('name', $locale),
+                'slug'  => $category->slug,
+            ];
+        });
+    }
 }

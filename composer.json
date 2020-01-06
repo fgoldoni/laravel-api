@@ -11,6 +11,7 @@
         "php": "^7.2",
         "ext-json": "*",
         "algolia/algoliasearch-client-php": "^2.2",
+        "awssat/laravel-visits": "^2.0",
         "barryvdh/laravel-cors": "^0.11.4",
         "fideloper/proxy": "^4.0",
         "intervention/image": "^2.5",

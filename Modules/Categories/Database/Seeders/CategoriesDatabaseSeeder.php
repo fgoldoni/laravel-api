@@ -43,5 +43,34 @@ class CategoriesDatabaseSeeder extends Seeder
         $parent->children()->create([
             'name' => 'VueJS'
         ]);
+
+        $parent = Category::create([
+            'name'     => 'Events',
+            'children' => [
+                [
+                    'name' => 'Soirées en gala',
+                ]
+            ]
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Soirées en club'
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Festivals'
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Concerts'
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Événements sportifs'
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Théâtre et comédie'
+        ]);
     }
 }

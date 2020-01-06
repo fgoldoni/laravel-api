@@ -31,7 +31,7 @@ class AuthCollection extends JsonResource
             return 'user';
         }
 
-        return mb_strtolower($role->name);
+        return str_slug($role->name);
     }
 
     private function getUnreadNotifications()
