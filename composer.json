@@ -24,6 +24,7 @@
         "rinvex/laravel-categories": "^3.0",
         "spatie/laravel-activitylog": "^3.8",
         "spatie/laravel-permission": "^3.0",
+        "tymon/jwt-auth": "dev-develop",
         "willvincent/laravel-rateable": "^2.0"
     },
     "require-dev": {

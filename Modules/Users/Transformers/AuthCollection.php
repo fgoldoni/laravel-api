@@ -18,8 +18,7 @@ class AuthCollection extends JsonResource
             'email'               => $this->email,
             'role'                => $this->mapRole(),
             'all_permissions'     => $this->all_permissions,
-            'unreadNotifications' => $this->getUnreadNotifications(),
-            'accessToken'         => $this->api_token,
+            'unreadNotifications' => $this->getUnreadNotifications()
         ];
     }
 

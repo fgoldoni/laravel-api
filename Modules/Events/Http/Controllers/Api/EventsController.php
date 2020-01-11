@@ -4,7 +4,6 @@ namespace Modules\Events\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Modules\Events\Http\Requests\StoreEventRequest;
 use Modules\Events\Http\Requests\UpdateEventRequest;
 use Modules\Events\Services\Contracts\EventsServiceInterface;
@@ -51,7 +50,6 @@ class EventsController extends Controller
         }
     }
 
-
     public function show(string $slug)
     {
         try {
@@ -71,7 +69,7 @@ class EventsController extends Controller
     public function create()
     {
         try {
-            $event =  $this->eventsService->firstOrNew([
+            $event = $this->eventsService->firstOrNew([
                 'id'               => 0,
                 'title'            => 'Ebony 2020',
                 'description'      => 'Id est harum enim tempora quia ad est similique cumque eius ut quidem nesciunt accusamus expedita quae et soluta temporibus nesciunt commodi.',
@@ -86,7 +84,6 @@ class EventsController extends Controller
                 'end'              => $this->carbon->now()->endOfDay(),
             ]);
             $result['event'] = new CreateEventCollection($event);
-
 
             return $this->responseJson($result);
         } catch (Exception $e) {

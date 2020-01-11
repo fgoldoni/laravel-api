@@ -9,8 +9,9 @@ use Modules\Attachments\Traits\AttachableTrait;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     use HasRoles;
@@ -28,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'api_token',
+        'first_name', 'last_name', 'email', 'password', 'api_token', 'email_verified_at',
     ];
 
     /**
@@ -90,5 +91,25 @@ class User extends Authenticatable
         }
 
         return $permissions;
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

@@ -13,7 +13,6 @@ use App\Flag;
 |
 */
 
-
 Route::group(['middleware' => ['auth:api', 'permission:' . Flag::PERMISSION_EVENT_MANAGER], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('events', 'EventsController@getEvents')->name('events');
     Route::get('events/paginate', 'EventsController@paginate')->name('events.paginate');
@@ -30,5 +29,3 @@ Route::group(['middleware' => ['auth:api', 'permission:' . Flag::PERMISSION_EVEN
 Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('events/{slug}', 'EventsController@show')->name('events.show');
 });
-
-

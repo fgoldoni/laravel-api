@@ -24,4 +24,14 @@ interface UsersServiceInterface
     public function updateUser(ApiUpdateUserRequest $request, int $id): User;
 
     public function getUsers();
+
+    public function getUserByEmail(string $email);
+
+    public function sendLoginLink(User $user, string $host, string $to = null);
+
+    public function saveUser(array $attributes = []);
+
+    public function sendRegisterNotification(User $user, string $host, string $to = null);
+
+    public function findByToken(string $token);
 }

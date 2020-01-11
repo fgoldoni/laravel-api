@@ -15,7 +15,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use willvincent\Rateable\Rateable;
-use Faker\Factory as Faker;
 
 class Event extends Model
 {

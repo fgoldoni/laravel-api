@@ -11,6 +11,8 @@ class Flag
 
     const STATUS_CODE_CREATED = 201;
 
+    const STATUS_BAD_REQUEST = 400;
+
     const STATUS_CODE_UNAUTHORIZED = 401;
 
     const STATUS_CODE_FORBIDDEN = 403;

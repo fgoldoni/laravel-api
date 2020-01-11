@@ -38,14 +38,14 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
 
         $attachment->basename = $this->makeImage($attributes);
 
-        if($attachment->type === 'cover') {
+        if ('cover' === $attachment->type) {
             $attachments = $this->withCriteria([
                 new Where('type', 'cover'),
                 new Where('attachable_id', $attributes['attachable_id']),
                 new Where('attachable_type', $attributes['attachable_type'])
             ])->get();
 
-            foreach($attachments as $file) {
+            foreach ($attachments as $file) {
                 $file->delete();
             }
         }
@@ -80,7 +80,7 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
 
     private function getBasename(string $extension)
     {
-        return  time() . '_' . mb_substr(str_replace('/', '', bcrypt(str_random(40))), -4)  . '.' . $extension;
+        return  time() . '_' . mb_substr(str_replace('/', '', bcrypt(str_random(40))), -4) . '.' . $extension;
     }
 
     private function getDirectory(string $folder)

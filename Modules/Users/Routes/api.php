@@ -27,4 +27,13 @@ Route::group(['middleware' => ['auth:api', 'role:' . Flag::ROLE_ADMIN], 'namespa
 
 Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('auth/login', 'AuthController@login')->name('auth.login');
+    Route::post('auth/link', 'AuthController@link')->name('auth.link');
+    Route::post('auth/token', 'AuthController@token')->name('auth.token');
+    Route::get('auth/magiclink/{token}', 'AuthController@magiclink')->name('auth.magiclink');
+    Route::post('auth/register', 'AuthController@register')->name('auth.register');
+});
+
+Route::group(['middleware' => ['auth:api'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+    Route::post('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
+    Route::post('auth/user', 'AuthController@user')->name('auth.user');
 });

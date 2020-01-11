@@ -28,7 +28,7 @@ class EventCollection extends JsonResource
             'attachments'      => $this->getAttachments(),
             'categories'       => $this->getCategories(),
             'tags'             => $this->getTags(),
-            'rating'           => random_int(2,5),
+            'rating'           => random_int(2, 5),
             'user_id'          => $this->user->id,
             'user'             => [
                 'full_name' => $this->user->full_name,

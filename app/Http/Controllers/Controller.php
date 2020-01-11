@@ -17,10 +17,10 @@ class Controller extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    protected function responseJson(array $result = []): JsonResponse
+    protected function responseJson(array $result = [], int $status = Flag::STATUS_CODE_SUCCESS): JsonResponse
     {
         $result['success'] = true;
-        $result['status'] = Flag::STATUS_CODE_SUCCESS;
+        $result['status'] = $status;
 
         return response()->json($result, $result['status'], [
             'Access-Control-Allow-Origin'  => '*',
