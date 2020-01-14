@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
+use Modules\Attachments\Http\Requests\SaveAttachmentRequest;
 use Modules\Attachments\Http\Requests\StoreAttachmentRequest;
 use Modules\Attachments\Repositories\Contracts\AttachmentsRepository;
 
@@ -36,6 +37,33 @@ class AttachmentsController extends Controller
     {
         try {
             return $this->responseJson(['data' => $this->attachments->all()]);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function save(SaveAttachmentRequest $request)
+    {
+        try {
+            if (class_exists($request->get('attachable_type'))
+                && method_exists($request->get('attachable_type'), 'attachments')) {
+                $subject = \call_user_func(
+                    $request->get('attachable_type') . '::find',
+                    (int) ($request->get('attachable_id'))
+                );
+
+                if ($subject) {
+                    $attachment = $this->attachments->save($request->all());
+                    $result['attachment'] = $attachment;
+                    $result['message'] = $this->lang->get('messages.created', ['attribute' => 'File']);
+
+                    return $this->responseJson($result);
+                }
+                throw AttachmentException::notFileReceiveException();
+            }
+            throw AttachmentException::undefinedMethodException($request->get('attachable_type'));
+        } catch (AttachmentException $e) {
+            return $this->responseJsonError($e);
         } catch (Exception $e) {
             return $this->responseJsonError($e);
         }

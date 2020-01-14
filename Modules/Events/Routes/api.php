@@ -13,7 +13,7 @@ use App\Flag;
 |
 */
 
-Route::group(['middleware' => ['auth:api', 'permission:' . Flag::PERMISSION_EVENT_MANAGER], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'permission:' . Flag::PERMISSION_EVENT_MANAGER], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('events', 'EventsController@getEvents')->name('events');
     Route::get('events/paginate', 'EventsController@paginate')->name('events.paginate');
     Route::get('events/{id}/edit', 'EventsController@edit')->name('events.edit')->where('id', '[0-9]+');

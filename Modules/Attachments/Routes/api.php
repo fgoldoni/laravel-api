@@ -13,11 +13,12 @@
 
 use App\Flag;
 
-Route::group(['middleware' => ['auth:api', 'role:' . Flag::ROLE_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'role:' . Flag::ROLE_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('attachments', 'AttachmentsController@getAttachments')->name('users');
 });
 
 Route::group(['middleware' => ['api'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('attachments/store', 'AttachmentsController@store')->name('attachments.store');
+    Route::post('attachments/save', 'AttachmentsController@save')->name('attachments.save');
     Route::delete('attachments/{attachment}', 'AttachmentsController@destroy')->name('attachments.destroy');
 });

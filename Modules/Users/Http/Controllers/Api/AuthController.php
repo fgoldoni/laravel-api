@@ -70,15 +70,11 @@ class AuthController extends Controller
                 $result['expiresIn'] = $this->jwtAuth->factory()->getTTL() * 60;
 
                 return $this->responseJson($result, Flag::STATUS_CODE_SUCCESS)
-                    ->cookie('accessToken', $token, $this->jwtAuth->factory()->getTTL() * 60);
+                    ->cookie('accessToken', $result['accessToken'], $result['expiresIn']);
             }
-        } catch (JWTException $e) {
-            $result['success'] = false;
-            $result['status'] = Flag::STATUS_CODE_ERROR;
-            $result['message'] = $e->getMessage();
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
         }
-
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -160,8 +156,6 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return $this->responseJsonError($e);
         }
-
-        return $this->response->json($result, 200, [], JSON_NUMERIC_CHECK);
     }
 
     public function register(ApiRegisterRequest $request): JsonResponse
@@ -177,8 +171,6 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return $this->responseJsonError($e);
         }
-
-        return $this->response->json($result, 200, [], JSON_NUMERIC_CHECK);
     }
 
     public function token(ApiAccessTokenRequest $request): JsonResponse
@@ -191,7 +183,5 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return $this->responseJsonError($e);
         }
-
-        return $this->response->json($result, 200, [], JSON_NUMERIC_CHECK);
     }
 }

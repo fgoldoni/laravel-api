@@ -12,7 +12,7 @@
 
 use App\Flag;
 
-Route::group(['middleware' => ['auth:api', 'role:' . Flag::ROLE_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'role:' . Flag::ROLE_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('users', 'UsersController@getUsers')->name('users');
     Route::get('users/paginate', 'UsersController@paginate')->name('users.paginate');
     Route::get('users/{id}/edit', 'UsersController@edit')->name('users.edit')->where('id', '[0-9]+');
@@ -31,9 +31,13 @@ Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], functio
     Route::post('auth/token', 'AuthController@token')->name('auth.token');
     Route::get('auth/magiclink/{token}', 'AuthController@magiclink')->name('auth.magiclink');
     Route::post('auth/register', 'AuthController@register')->name('auth.register');
+    Route::post('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
 });
 
-Route::group(['middleware' => ['auth:api'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
+});
+
+Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('auth/user', 'AuthController@user')->name('auth.user');
 });

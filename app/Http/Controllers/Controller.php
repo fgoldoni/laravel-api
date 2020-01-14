@@ -37,7 +37,7 @@ class Controller extends BaseController
 
         Log::error($e);
 
-        $statusCode = (0 !== $e->getCode()) ? $e->getCode() : Flag::STATUS_CODE_ERROR;
+        $statusCode = (0 !== $e->getCode()) && (is_numeric($e->getCode())) ? $e->getCode() : Flag::STATUS_CODE_ERROR;
 
         $result = [
             'success'   => false,

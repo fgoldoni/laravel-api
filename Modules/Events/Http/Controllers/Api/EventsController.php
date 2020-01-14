@@ -93,6 +93,7 @@ class EventsController extends Controller
 
     public function store(StoreEventRequest $request)
     {
+
         try {
             $result['event'] = new EventCollection(
                 $this->eventsService->storeEvent(
@@ -101,6 +102,7 @@ class EventsController extends Controller
                     $request->get('tags', [])
                 )
             );
+
 
             return $this->responseJson($result);
         } catch (Exception $e) {

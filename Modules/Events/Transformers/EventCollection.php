@@ -51,7 +51,7 @@ class EventCollection extends JsonResource
 
     private function getAttachments()
     {
-        return $this->attachments()->orderBy('type', 'asc')->latest()->get()->map(function ($category) {
+        return $this->attachments()->orderBy('position', 'asc')->latest()->get()->map(function ($category) {
             return [
                 'url' => $category->url
             ];

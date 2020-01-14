@@ -26,7 +26,6 @@ class Event extends Model
     use Categorizable;
     use Rateable;
     use HasSlug;
-    use Searchable;
 
     public $guarded = [];
 

@@ -12,7 +12,7 @@ vendor: composer.json
 composer.lock: composer.json
 	composer update
 
-install: vendor composer.lock ## install vendor dependancies  fdq10613@molms.com
+install: vendor composer.lock ## install vendor dependancies  soe68427@eveav.com
 
 help: ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'

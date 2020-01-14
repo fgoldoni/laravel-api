@@ -91,4 +91,11 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
 
         return Storage::disk(Flag::UPLOADS)->getDriver()->getAdapter()->getPathPrefix() . $folder;
     }
+
+    public function save(array $attributes = []): Attachment
+    {
+        return $this->resolveModel()->create(
+            $attributes
+        );
+    }
 }

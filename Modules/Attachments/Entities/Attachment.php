@@ -45,7 +45,7 @@ class Attachment extends Model
 
     public function getUrlAttribute()
     {
-        return asset('storage/' . Flag::UPLOADS . DS . $this->type . DS . $this->basename);
+        return 'storage/' . Flag::UPLOADS . DS . $this->type . DS . $this->basename;
     }
 
     public function deleteFile()
