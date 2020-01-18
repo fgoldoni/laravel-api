@@ -5,6 +5,7 @@ namespace Modules\Events\Transformers;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Categories\Repositories\Contracts\CategoriesRepository;
 use Modules\Events\Entities\Event;
+use Modules\Tickets\Entities\Ticket;
 
 class CreateEventCollection extends JsonResource
 {
@@ -29,8 +30,14 @@ class CreateEventCollection extends JsonResource
             'online'               => $this->online,
             'attachments'          => $this->getAttachments(),
             'categories'           => [6],
-            'categoriesList'       => $this->getCategories()
+            'ticketsList'          => $this->ticketsList(),
+            'categoriesList'       => $this->getCategories(),
         ];
+    }
+
+    private function ticketsList()
+    {
+        return app()->make(CategoriesRepository::class)->siblings('tickets', Ticket::class);
     }
 
     private function getCategories()

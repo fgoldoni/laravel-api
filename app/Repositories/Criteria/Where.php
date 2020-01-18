@@ -27,9 +27,6 @@ class Where
 
     /**
      * Where constructor.
-     *
-     * @param string $column
-     * @param string $value
      */
     public function __construct(string $column, string $value)
     {
@@ -39,8 +36,6 @@ class Where
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

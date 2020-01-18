@@ -23,8 +23,6 @@ class Filter implements CriterionInterface
 
     /**
      * Filter constructor.
-     *
-     * @param string|null $search
      */
     public function __construct(string $search = null)
     {
@@ -33,8 +31,6 @@ class Filter implements CriterionInterface
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

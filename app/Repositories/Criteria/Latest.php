@@ -18,8 +18,6 @@ class Latest implements CriterionInterface
 {
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

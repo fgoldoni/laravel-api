@@ -30,9 +30,7 @@ class WhereDate
     /**
      * WhereDate constructor.
      *
-     * @param string $column
-     * @param string $op
-     * @param        $value
+     * @param $value
      */
     public function __construct(string $column, string $op, $value)
     {
@@ -43,8 +41,6 @@ class WhereDate
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

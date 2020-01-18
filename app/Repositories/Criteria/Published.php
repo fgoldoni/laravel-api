@@ -23,8 +23,6 @@ class Published
 
     /**
      * isPublished constructor.
-     *
-     * @param bool $online
      */
     public function __construct(bool $online = true)
     {
@@ -33,8 +31,6 @@ class Published
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

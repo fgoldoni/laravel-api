@@ -15,6 +15,7 @@ use App\Flag;
 
 Route::group(['middleware' => ['jwt.verify', 'permission:' . Flag::PERMISSION_EVENT_MANAGER], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('events', 'EventsController@getEvents')->name('events');
+    Route::get('events/tickets/{event}', 'EventsController@tickets')->name('events.tickets');
     Route::get('events/paginate', 'EventsController@paginate')->name('events.paginate');
     Route::get('events/{id}/edit', 'EventsController@edit')->name('events.edit')->where('id', '[0-9]+');
     Route::get('events/create', 'EventsController@create')->name('events.create');

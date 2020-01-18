@@ -27,9 +27,6 @@ class OrderBy implements CriterionInterface
 
     /**
      * OrderBy constructor.
-     *
-     * @param string $column
-     * @param string $dir
      */
     public function __construct(string $column, string $dir = 'asc')
     {
@@ -39,8 +36,6 @@ class OrderBy implements CriterionInterface
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

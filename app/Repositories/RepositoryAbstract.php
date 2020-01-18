@@ -64,7 +64,6 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
     }
 
     /**
-     * @param int   $id
      * @param array $columns
      *
      * @return mixed

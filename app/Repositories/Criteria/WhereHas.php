@@ -18,8 +18,7 @@ class WhereHas
     /**
      * WhereHas constructor.
      *
-     * @param string $relation
-     * @param        $closure
+     * @param $closure
      */
     public function __construct(string $relation, $closure)
     {
@@ -29,8 +28,6 @@ class WhereHas
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

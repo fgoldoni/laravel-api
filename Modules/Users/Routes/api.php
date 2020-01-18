@@ -36,6 +36,7 @@ Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], functio
 
 Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
+    Route::get('users/tickets', 'UsersController@tickets')->name('users.tickets');
 });
 
 Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {

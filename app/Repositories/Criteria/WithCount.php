@@ -16,8 +16,6 @@ class WithCount
 
     /**
      * WithCount constructor.
-     *
-     * @param string $relations
      */
     public function __construct(string $relations)
     {
@@ -26,8 +24,6 @@ class WithCount
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

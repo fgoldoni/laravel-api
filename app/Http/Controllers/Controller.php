@@ -22,11 +22,7 @@ class Controller extends BaseController
         $result['success'] = true;
         $result['status'] = $status;
 
-        return response()->json($result, $result['status'], [
-            'Access-Control-Allow-Origin'  => '*',
-            'Access-Control-Allow-Methods' => '*',
-            'Access-Control-Allow-Headers' => '*',
-        ], JSON_PRESERVE_ZERO_FRACTION);
+        return response()->json($result, $result['status'], [], JSON_PRESERVE_ZERO_FRACTION);
     }
 
     protected function responseJsonError(Exception $e): JsonResponse
@@ -47,5 +43,14 @@ class Controller extends BaseController
         ];
 
         return response()->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+    }
+
+    public function parseRequest($request)
+    {
+        return [
+            $request->get('per_page', 10),
+            explode('|', $request->get('sort', 'id|asc')),
+            $request->get('filter')
+        ];
     }
 }

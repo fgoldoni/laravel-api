@@ -16,8 +16,6 @@ class Take
 
     /**
      * Take constructor.
-     *
-     * @param int $number
      */
     public function __construct(int $number)
     {
@@ -28,8 +26,6 @@ class Take
      * Set hidden fields.
      *
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

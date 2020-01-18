@@ -23,6 +23,7 @@
         "nwidart/laravel-modules": "^6.0",
         "rinvex/laravel-categories": "^3.0",
         "spatie/laravel-activitylog": "^3.8",
+        "spatie/laravel-cors": "^1.6",
         "spatie/laravel-permission": "^3.0",
         "tymon/jwt-auth": "dev-develop",
         "willvincent/laravel-rateable": "^2.0"

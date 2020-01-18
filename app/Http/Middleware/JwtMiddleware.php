@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Flag;
 use Closure;
 use Exception;
 use Illuminate\Http\Response as IlluminateResponse;
@@ -21,7 +20,6 @@ class JwtMiddleware extends BaseMiddleware
      * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
      *
      * @return mixed
      */
@@ -30,14 +28,14 @@ class JwtMiddleware extends BaseMiddleware
         try {
             if ($request->hasHeader('authorization')) {
                 JWTAuth::parseToken()->authenticate();
-            } else if($request->hasCookie('accessToken')) {
+            } elseif ($request->hasCookie('accessToken')) {
                 $rawToken = $request->cookie('accessToken');
                 $token = new Token($rawToken);
                 Auth::loginUsingId(JWTAuth::decode($token)['sub']);
             }
         } catch (Exception $e) {
             if ($e instanceof TokenInvalidException) {
-                return response()->json(['message' => 'Token is Invalid'],  IlluminateResponse::HTTP_UNAUTHORIZED);
+                return response()->json(['message' => 'Token is Invalid'], IlluminateResponse::HTTP_UNAUTHORIZED);
             } elseif ($e instanceof TokenExpiredException) {
                 return response()->json(['message' => 'Token is Expired'], IlluminateResponse::HTTP_UNAUTHORIZED);
             } elseif ($e instanceof TokenBlacklistedException) {

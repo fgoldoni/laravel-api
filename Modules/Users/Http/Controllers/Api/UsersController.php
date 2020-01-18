@@ -4,6 +4,8 @@ namespace Modules\Users\Http\Controllers\Api;
 
 use App\Flag;
 use App\Http\Controllers\Controller;
+use App\Repositories\Criteria\ByUser;
+use App\Repositories\Criteria\OrderBy;
 use Exception;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +15,7 @@ use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
 use Modules\Roles\Services\Contracts\RolesServiceInterface;
+use Modules\Tickets\Repositories\Contracts\TicketsRepository;
 use Modules\Users\Http\Requests\ApiStoreUserRequest;
 use Modules\Users\Http\Requests\ApiUpdateUserRequest;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
@@ -48,8 +51,12 @@ class UsersController extends Controller
      * @var \Modules\Roles\Services\Contracts\RolesServiceInterface
      */
     private $rolesService;
+    /**
+     * @var \Modules\Tickets\Repositories\Contracts\TicketsRepository
+     */
+    private $tickets;
 
-    public function __construct(UsersServiceInterface $usersService, RolesServiceInterface $rolesService, ResponseFactory $response, Translator $lang, Str $str, Logger $logger, AuthManager $auth)
+    public function __construct(UsersServiceInterface $usersService, TicketsRepository $tickets, RolesServiceInterface $rolesService, ResponseFactory $response, Translator $lang, Str $str, Logger $logger, AuthManager $auth)
     {
         $this->response = $response;
         $this->lang = $lang;
@@ -58,6 +65,7 @@ class UsersController extends Controller
         $this->str = $str;
         $this->auth = $auth;
         $this->rolesService = $rolesService;
+        $this->tickets = $tickets;
     }
 
     public function getUsers(): JsonResponse
@@ -78,6 +86,22 @@ class UsersController extends Controller
             $result['data'] = $this->usersService->paginate($request);
 
             return $this->response->json($result['data'], Flag::STATUS_CODE_SUCCESS, [], JSON_NUMERIC_CHECK);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function tickets(Request $request)
+    {
+        try {
+            [$perPage, $sort, $search] = $this->parseRequest($request);
+
+            $result['tickets'] = $this->tickets->withCriteria([
+                new OrderBy($sort[0], $sort[1]),
+                new ByUser($this->auth->user()->id)
+            ])->paginate($perPage);
+
+            return $this->responseJson($result);
         } catch (Exception $e) {
             return $this->responseJsonError($e);
         }
@@ -107,10 +131,6 @@ class UsersController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param ApiStoreUserRequest $request
-     *
-     * @return JsonResponse
      */
     public function store(ApiStoreUserRequest $request): JsonResponse
     {
@@ -146,10 +166,7 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param ApiUpdateUserRequest $request
      * @param  $id
-     *
-     * @return JsonResponse
      */
     public function update(ApiUpdateUserRequest $request, $id): JsonResponse
     {
@@ -178,11 +195,6 @@ class UsersController extends Controller
         }
     }
 
-    /**
-     * @param int $id
-     *
-     * @return JsonResponse
-     */
     public function forceDelete(int $id): JsonResponse
     {
         try {
@@ -195,11 +207,6 @@ class UsersController extends Controller
         }
     }
 
-    /**
-     * @param int $id
-     *
-     * @return JsonResponse
-     */
     public function restore(int $id): JsonResponse
     {
         try {

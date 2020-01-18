@@ -16,8 +16,6 @@ class Visible
 
     /**
      * Visible constructor.
-     *
-     * @param array $fields
      */
     public function __construct(array $fields)
     {
@@ -28,8 +26,6 @@ class Visible
      * Set visible fields.
      *
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

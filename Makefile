@@ -41,11 +41,13 @@ refresh: migrate ## refresh + php artisan module:seed Admin & php artisan module
 	php artisan module:migrate-refresh Posts
 	php artisan module:migrate-refresh Tags
 	php artisan module:migrate-refresh Events
+	php artisan module:migrate-refresh Tickets
 	php artisan module:seed Roles
 	php artisan module:seed Users
 	php artisan module:seed Categories
 	php artisan module:seed Posts
 	php artisan module:seed Events
+	php artisan module:seed Tickets
 routes: optimize
 	$(PHP) artisan laroute:generate
 

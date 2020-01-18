@@ -72,5 +72,34 @@ class CategoriesDatabaseSeeder extends Seeder
         $parent->children()->create([
             'name' => 'Théâtre et comédie'
         ]);
+
+        $parent = Category::create([
+            'name'     => 'Tickets',
+            'children' => [
+                [
+                    'name' => 'Gold',
+                ]
+            ]
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Silver'
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Bronze'
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Premium'
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Medium'
+        ]);
+
+        $parent->children()->create([
+            'name' => 'Classic'
+        ]);
     }
 }

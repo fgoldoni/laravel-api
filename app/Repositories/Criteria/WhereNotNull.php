@@ -23,8 +23,6 @@ class WhereNotNull
 
     /**
      * WhereNull constructor.
-     *
-     * @param string $column
      */
     public function __construct(string $column)
     {
@@ -33,8 +31,6 @@ class WhereNotNull
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

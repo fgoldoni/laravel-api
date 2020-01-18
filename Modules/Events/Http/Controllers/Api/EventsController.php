@@ -3,13 +3,19 @@
 namespace Modules\Events\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Criteria\Where;
 use Carbon\Carbon;
+use Illuminate\Auth\AuthManager;
+use Illuminate\Http\Request;
+use Modules\Events\Entities\Event;
 use Modules\Events\Http\Requests\StoreEventRequest;
 use Modules\Events\Http\Requests\UpdateEventRequest;
 use Modules\Events\Services\Contracts\EventsServiceInterface;
 use Modules\Events\Transformers\CreateEventCollection;
 use Modules\Events\Transformers\EventCollection;
 use Modules\Events\Transformers\EventsCollection;
+use Modules\Tickets\Repositories\Contracts\TicketsRepository;
+use Modules\Tickets\Transformers\TicketsCollection;
 
 class EventsController extends Controller
 {
@@ -21,11 +27,21 @@ class EventsController extends Controller
      * @var \Carbon\Carbon
      */
     private $carbon;
+    /**
+     * @var \Modules\Tickets\Repositories\Contracts\TicketsRepository
+     */
+    private $tickets;
+    /**
+     * @var \Illuminate\Auth\AuthManager
+     */
+    private $auth;
 
-    public function __construct(EventsServiceInterface $eventsService, Carbon $carbon)
+    public function __construct(EventsServiceInterface $eventsService, TicketsRepository $tickets, Carbon $carbon, AuthManager $auth)
     {
         $this->eventsService = $eventsService;
         $this->carbon = $carbon;
+        $this->tickets = $tickets;
+        $this->auth = $auth;
     }
 
     public function getEvents()
@@ -34,6 +50,19 @@ class EventsController extends Controller
             $data = EventsCollection::collection($this->eventsService->getEvents());
 
             return $this->responseJson(['data' => $data]);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function tickets(Request $request, Event $event)
+    {
+        try {
+            $result['tickets'] = TicketsCollection::collection($this->tickets->withCriteria([
+                new Where('event_id', $event->id)
+            ])->all());
+
+            return $this->responseJson($result);
         } catch (Exception $e) {
             return $this->responseJsonError($e);
         }
@@ -93,7 +122,6 @@ class EventsController extends Controller
 
     public function store(StoreEventRequest $request)
     {
-
         try {
             $result['event'] = new EventCollection(
                 $this->eventsService->storeEvent(
@@ -102,7 +130,6 @@ class EventsController extends Controller
                     $request->get('tags', [])
                 )
             );
-
 
             return $this->responseJson($result);
         } catch (Exception $e) {

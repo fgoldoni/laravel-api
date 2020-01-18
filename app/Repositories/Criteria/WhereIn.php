@@ -28,8 +28,7 @@ class WhereIn
     /**
      * OrderBy constructor.
      *
-     * @param string $column
-     * @param array  $values
+     * @param array $values
      */
     public function __construct(string $column, array $values = null)
     {
@@ -39,8 +38,6 @@ class WhereIn
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

@@ -16,8 +16,6 @@ class Hidden
 
     /**
      * Hidden constructor.
-     *
-     * @param array $fields
      */
     public function __construct(array $fields)
     {
@@ -28,8 +26,6 @@ class Hidden
      * Set hidden fields.
      *
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

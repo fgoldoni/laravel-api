@@ -15,7 +15,6 @@ use Modules\Users\Http\Requests\ApiLinkRequest;
 use Modules\Users\Http\Requests\ApiRegisterRequest;
 use Modules\Users\Http\Requests\ApiTokenRequest;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWTAuth;
 
 class AuthController extends Controller

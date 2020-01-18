@@ -16,8 +16,6 @@ class Search
 
     /**
      * Where constructor.
-     *
-     * @param \Closure $closure
      */
     public function __construct(\Closure $closure)
     {
@@ -26,8 +24,6 @@ class Search
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {

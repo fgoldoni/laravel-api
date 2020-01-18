@@ -23,8 +23,6 @@ class EagerLoad implements CriterionInterface
 
     /**
      * EagerLoad constructor.
-     *
-     * @param array $relations
      */
     public function __construct(array $relations)
     {
@@ -33,8 +31,6 @@ class EagerLoad implements CriterionInterface
 
     /**
      * @param $model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply($model): Builder
     {
