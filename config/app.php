@@ -229,6 +229,7 @@ return [
         'Module' => Nwidart\Modules\Facades\Module::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class
     ],
 
 ];

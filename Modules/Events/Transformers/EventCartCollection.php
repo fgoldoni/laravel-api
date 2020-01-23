@@ -3,9 +3,8 @@
 namespace Modules\Events\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Tickets\Transformers\TicketsCollection;
 
-class EventCollection extends JsonResource
+class EventCartCollection extends JsonResource
 {
     public function toArray($request)
     {
@@ -17,23 +16,12 @@ class EventCollection extends JsonResource
             'content'          => $this->content,
             'address'          => $this->address,
             'city'             => $this->city,
-            'contact_phone'    => $this->contact_phone,
-            'contact_email'    => $this->contact_email,
-            'contact_name'     => $this->contact_name,
             'start'            => $this->start,
             'end'              => $this->end,
             'url'              => $this->url,
-            'color'            => $this->color,
-            'all_day'          => $this->all_day,
-            'online'           => $this->online,
-            'quantity'         => $this->getTotalTickets(),
-            'price'            => $this->getPrice(),
             'attachments'      => $this->getAttachments(),
-            'tickets'          => TicketsCollection::collection($this->tickets()->orderBy('tickets.position', 'asc')->get()),
             'categories'       => $this->getCategories(),
-            'tags'             => $this->getTags(),
             'rating'           => random_int(2, 5),
-            'user_id'          => $this->user->id,
             'user'             => [
                 'full_name' => $this->user->full_name,
             ],
@@ -60,37 +48,5 @@ class EventCollection extends JsonResource
                 'url' => $category->url
             ];
         });
-    }
-
-    private function getTags()
-    {
-        return $this->tags()->get()->map(function ($tag) {
-            return [
-                'name' => $tag->name
-            ];
-        });
-    }
-
-    private function getPrice()
-    {
-        $ticket = $this->tickets()->orderBy('tickets.price', 'asc')->first();
-
-        if (null !== $ticket) {
-            return $ticket->price;
-        }
-
-        return 0;
-    }
-
-    private function getTotalTickets()
-    {
-        $tickets = $this->tickets()->get();
-        $sum = 0;
-
-        foreach ($tickets as $ticket) {
-            $sum += $ticket->quantity;
-        }
-
-        return $sum;
     }
 }

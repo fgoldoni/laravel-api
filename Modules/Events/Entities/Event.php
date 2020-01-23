@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Scout\Searchable;
 use Modules\Attachments\Traits\AttachableTrait;
 use Modules\Tags\Traits\TaggableTrait;
+use Modules\Tickets\Entities\Ticket;
 use Nicolaslopezj\Searchable\SearchableTrait;
 use Rinvex\Categories\Traits\Categorizable;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -199,5 +200,13 @@ class Event extends Model
     public function visits()
     {
         return visits($this);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 }

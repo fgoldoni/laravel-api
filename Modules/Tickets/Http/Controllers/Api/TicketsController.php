@@ -82,7 +82,7 @@ class TicketsController extends Controller
         try {
             $ticket = $this->tickets->create(
                 array_merge(
-                    $request->only('name', 'offer_1', 'offer_2', 'offer_3', 'offer_4', 'price', 'quantity', 'event_id'),
+                    $request->only('name', 'offer_1', 'offer_2', 'offer_3', 'offer_4', 'price', 'quantity', 'position', 'event_id'),
                     [
                         'user_id' => $this->auth->user()->id
                     ]
@@ -90,6 +90,7 @@ class TicketsController extends Controller
             );
             $this->tickets->sync($ticket->id, 'categories', $request->get('categories', []));
 
+            $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Ticket']);
             $result['ticket'] = new TicketCollection($ticket->fresh());
 
             return $this->responseJson($result);
@@ -123,13 +124,12 @@ class TicketsController extends Controller
         try {
             $ticket = $this->tickets->update(
                 $id,
-                $request->only('name', 'offer_1', 'offer_2', 'offer_3', 'offer_4', 'price', 'quantity', 'online')
+                $request->only('name', 'offer_1', 'offer_2', 'offer_3', 'offer_4', 'price', 'quantity', 'position', 'online')
             );
             $this->tickets->sync($ticket->id, 'categories', $request->get('categories', []));
 
             $result['message'] = $this->lang->get('messages.updated', ['attribute' => 'Ticket']);
             $result['ticket'] = new TicketCollection($ticket->fresh());
-
 
             return $this->responseJson($result);
         } catch (Exception $e) {

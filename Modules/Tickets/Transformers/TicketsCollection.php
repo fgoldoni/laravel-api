@@ -3,6 +3,7 @@
 namespace Modules\Tickets\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class TicketsCollection extends JsonResource
 {
@@ -18,10 +19,10 @@ class TicketsCollection extends JsonResource
         return [
             'id'                   => $this->id,
             'name'                 => $this->name,
-            'offer_1'              => $this->offer_1,
-            'offer_2'              => $this->offer_2,
-            'offer_3'              => $this->offer_3,
-            'offer_4'              => $this->offer_4,
+            'offer_1'              => Str::upper($this->offer_1),
+            'offer_2'              => Str::upper($this->offer_2),
+            'offer_3'              => Str::upper($this->offer_3),
+            'offer_4'              => Str::upper($this->offer_4),
             'quantity'             => $this->quantity,
             'price'                => $this->price,
             'online'               => $this->online,

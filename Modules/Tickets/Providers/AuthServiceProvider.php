@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Events\Providers;
+namespace Modules\Tickets\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Modules\Events\Entities\Event;
-use Modules\Events\Policies\EventPolicy;
+use Modules\Tickets\Entities\Event;
+use Modules\Tickets\Policies\EventPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {

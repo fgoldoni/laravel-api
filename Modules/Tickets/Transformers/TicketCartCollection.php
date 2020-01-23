@@ -5,7 +5,7 @@ namespace Modules\Tickets\Transformers;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
-class TicketCollection extends JsonResource
+class TicketCartCollection extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -25,23 +25,8 @@ class TicketCollection extends JsonResource
             'offer_4'              => Str::upper($this->offer_4),
             'quantity'             => $this->quantity,
             'price'                => $this->price,
-            'event_id'             => $this->event_id,
-            'online'               => $this->online,
-            'position'             => $this->position,
             'category'             => $this->getAssociateCategory(),
-            'categories'           => $this->getCategories(),
         ];
-    }
-
-    private function getCategories()
-    {
-        return $this->categories()->get()->map(function ($category) {
-            return [
-                'id'   => $category->id,
-                'name' => $category->name,
-                'slug' => $category->slug,
-            ];
-        });
     }
 
     private function getAssociateCategory()

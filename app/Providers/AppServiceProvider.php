@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Modules\Activities\Providers\ActivitiesServiceProvider;
 use Modules\Attachments\Providers\AttachmentsServiceProvider;
+use Modules\Carts\Providers\CartsServiceProvider;
 use Modules\Categories\Providers\CategoriesServiceProvider;
 use Modules\Events\Providers\EventsServiceProvider;
 use Modules\Posts\Providers\PostsServiceProvider;
@@ -30,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(EventsServiceProvider::class);
         $this->app->register(PostsServiceProvider::class);
         $this->app->register(TagsServiceProvider::class);
+        $this->app->register(CartsServiceProvider::class);
     }
 
     /**

@@ -13,6 +13,7 @@
         "algolia/algoliasearch-client-php": "^2.2",
         "awssat/laravel-visits": "^2.0",
         "barryvdh/laravel-cors": "^0.11.4",
+        "darryldecode/cart": "^4.1",
         "fideloper/proxy": "^4.0",
         "intervention/image": "^2.5",
         "laravel/framework": "^6.0",
