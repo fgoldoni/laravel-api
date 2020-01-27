@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use Modules\Tickets\Entities\Ticket;
+use Modules\Transactions\Entities\Transaction;
 use Modules\Transactions\Repositories\Eloquent\EloquentTransactionsRepository;
 
 class TransactionJob implements ShouldQueue
@@ -49,8 +50,9 @@ class TransactionJob implements ShouldQueue
             $description = $this->getDescription($item);
             $tmpItem = $this->getTmpItem($item);
             $total = number_format($item->quantity * $item->price, 2, '.', ',');
-            $this->makeTransaction($item->price, $description, [$tmpItem], $item->quantity, $total, $total, $item->associatedModel->user_id, $item->associatedModel->user_id);
+            $transaction = $this->makeTransaction($item->price, $description, [$tmpItem], $item->quantity, $total, $total, $item->associatedModel->user_id, $item->associatedModel->user_id);
             $this->updateTicket($item);
+            $this->makeOrder($item, $transaction);
         }
     }
 
@@ -102,5 +104,19 @@ class TransactionJob implements ShouldQueue
         $ticket->sale = (int) $ticket->sale + (int) $item->quantity;
 
         return $ticket->save();
+    }
+
+    private function makeOrder($item, Transaction $transaction)
+    {
+        $orderList = app('orderlist');
+
+        $orderList->session($this->parentId)->add([
+            'id'                     => $transaction->id,
+            'name'                   => $item->name,
+            'price'                  => $item->price,
+            'quantity'               => $item->quantity,
+            'attributes'             => $item->attributes,
+            'associatedModel'        => $item->associatedModel
+        ]);
     }
 }

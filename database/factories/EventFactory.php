@@ -13,7 +13,7 @@ $factory->define(Event::class, function (Faker $faker) {
         'address'          => $faker->address,
         'contact_phone'    => $faker->phoneNumber,
         'contact_email'    => $faker->companyEmail,
-        'contact_name'     => $faker->companyEmail,
+        'contact_name'     => $faker->name,
         'start'            => $faker->dateTimeThisMonth,
         'end'              => $faker->dateTimeThisMonth,
         'url'              => $faker->url,
