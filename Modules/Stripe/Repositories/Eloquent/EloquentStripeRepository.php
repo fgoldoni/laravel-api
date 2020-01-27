@@ -17,6 +17,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Modules\Carts\Jobs\OrderJob;
 use Modules\Carts\Repositories\Contracts\CartsRepository;
+use Modules\Carts\Repositories\Eloquent\EloquentCartsRepository;
 use Modules\Stripe\Repositories\Contracts\StripeRepository;
 use Modules\Transactions\Entities\Transaction;
 use Modules\Transactions\Jobs\TransactionJob;
@@ -133,7 +134,10 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         $transaction = $this->makeTransaction($charges, $cart['total'], $description, $items, $cart['total_quantity'], $cart['sub_total'], $cart['total'], $this->auth->guard('api')->user()->id);
 
         TransactionJob::dispatch($charges, $cart['items'], $this->auth->guard('api')->user()->id);
+
         OrderJob::dispatch($cart['items'], $this->auth->guard('api')->user()->id);
+
+        app()->make(EloquentCartsRepository::class)->clear();
 
         return $transaction;
     }

@@ -100,7 +100,7 @@ class CartsController extends Controller
     public function destroy(int $id)
     {
         try {
-            $this->carts->deteteCart($id);
+            $this->carts->deleteCart($id);
 
             $result['cart'] = $this->carts->details();
             $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Cart']);

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
-use Modules\Carts\Repositories\Contracts\CartsRepository;
 use Modules\Carts\Repositories\Contracts\OrdersRepository;
 use Modules\Tickets\Repositories\Contracts\TicketsRepository;
 

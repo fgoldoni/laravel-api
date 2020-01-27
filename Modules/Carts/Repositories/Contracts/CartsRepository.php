@@ -12,5 +12,7 @@ interface CartsRepository
 
     public function updateCart(Ticket $ticket, int $quantity);
 
-    public function deteteCart(int $id);
+    public function deleteCart(int $id);
+
+    public function clear();
 }

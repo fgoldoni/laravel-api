@@ -11,13 +11,9 @@ namespace Modules\Carts\Repositories\Eloquent;
 
 use App\Repositories\RepositoryAbstract;
 use Darryldecode\Cart\CartCondition;
-use Darryldecode\Cart\Facades\CartFacade;
 use Illuminate\Support\Facades\Auth;
 use Modules\Carts\Entities\Order;
 use Modules\Carts\Repositories\Contracts\OrdersRepository;
-use Modules\Events\Transformers\EventCartCollection;
-use Modules\Tickets\Entities\Ticket;
-use Modules\Tickets\Transformers\TicketCartCollection;
 
 /**
  * Class EloquentCartsRepository.

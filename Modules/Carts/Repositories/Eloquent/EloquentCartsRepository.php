@@ -105,10 +105,15 @@ class EloquentCartsRepository extends RepositoryAbstract implements CartsReposit
         return CartFacade::session(Auth::id())->getContent();
     }
 
-    public function deteteCart(int $id)
+    public function deleteCart(int $id)
     {
         CartFacade::session(Auth::id())->remove($id);
 
         return CartFacade::session(Auth::id())->getContent();
+    }
+
+    public function clear()
+    {
+        CartFacade::session(Auth::id())->clear();
     }
 }
