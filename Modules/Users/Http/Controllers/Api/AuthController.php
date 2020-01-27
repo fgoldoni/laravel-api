@@ -134,7 +134,7 @@ class AuthController extends Controller
             $user = $this->usersService->getUserByEmail($request->get('email'));
             $this->usersService->sendLoginLink($user, $request->get('host'), $request->get('to'));
 
-            $result['message'] = 'We have e-mailed your password reset link!';
+            $result['message'] = 'We have e-mailed your login link!';
 
             return $this->responseJson($result);
         } catch (Exception $e) {

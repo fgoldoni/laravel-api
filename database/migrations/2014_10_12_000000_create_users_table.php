@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->enum('gender', ['male', 'female '])->nullable();
             $table->string('country')->default('Germany');
             $table->string('company')->nullable();
+            $table->string('city')->nullable();
+            $table->string('address')->nullable();
             $table->string('department')->nullable();
             $table->string('mobile')->nullable();
             $table->string('website')->nullable();

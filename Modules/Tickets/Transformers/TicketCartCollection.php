@@ -24,8 +24,10 @@ class TicketCartCollection extends JsonResource
             'offer_3'              => Str::upper($this->offer_3),
             'offer_4'              => Str::upper($this->offer_4),
             'quantity'             => $this->quantity,
+            'sale'                 => $this->sale,
             'price'                => $this->price,
             'category'             => $this->getAssociateCategory(),
+            'user_id'              => $this->user_id,
         ];
     }
 
@@ -37,6 +39,6 @@ class TicketCartCollection extends JsonResource
             return $category->name;
         }
 
-        return 'Gold';
+        return 'Classic';
     }
 }

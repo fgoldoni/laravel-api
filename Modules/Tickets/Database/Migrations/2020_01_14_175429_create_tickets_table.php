@@ -21,6 +21,7 @@ class CreateTicketsTable extends Migration
             $table->string('offer_4')->nullable();
             $table->double('price', 10, 2)->default(0);
             $table->integer('quantity')->default(0);
+            $table->integer('sale')->default(0);
             $table->boolean('free')->default(false);
             $table->boolean('online')->default(false);
             $table->integer('position')->default(0);

@@ -13,6 +13,8 @@ $factory->define(User::class, static function (Faker $faker) {
         'gender'                        => $faker->randomElement(['male', 'female ']),
         'country'                       => $faker->country,
         'company'                       => $faker->company,
+        'city'                          => $faker->city,
+        'address'                       => $faker->address,
         'department'                    => $faker->randomElement(['sales', 'development', 'management', 'it']),
         'mobile'                        => $faker->phoneNumber,
         'website'                       => $faker->url,

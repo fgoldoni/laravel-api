@@ -1,0 +1,15 @@
+{
+    "name": "Paypal",
+    "alias": "paypal",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Paypal\\Providers\\RepositoryServiceProvider",
+        "Modules\\Paypal\\Providers\\PaypalServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

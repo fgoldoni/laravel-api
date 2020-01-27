@@ -38,4 +38,6 @@ class Flag
     const ROLE_USER = 'User';
 
     const UPLOADS = 'uploads';
+
+    const STRIPE_SECRET = 'sk_test_rUdbY7nHw15cCHJdFy0JJOzl';
 }

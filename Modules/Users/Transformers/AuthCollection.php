@@ -16,6 +16,9 @@ class AuthCollection extends JsonResource
             'avatar'              => $this->getAvatar(),
             'name'                => $this->full_name,
             'email'               => $this->email,
+            'city'                => $this->city,
+            'mobile'              => $this->mobile,
+            'address'             => $this->address,
             'role'                => $this->mapRole(),
             'all_permissions'     => $this->all_permissions,
             'unreadNotifications' => $this->getUnreadNotifications()

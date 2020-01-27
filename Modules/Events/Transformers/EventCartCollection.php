@@ -19,7 +19,7 @@ class EventCartCollection extends JsonResource
             'start'            => $this->start,
             'end'              => $this->end,
             'url'              => $this->url,
-            'attachments'      => $this->getAttachments(),
+            'image'            => $this->getAttachment(),
             'categories'       => $this->getCategories(),
             'rating'           => random_int(2, 5),
             'user'             => [
@@ -41,12 +41,12 @@ class EventCartCollection extends JsonResource
         });
     }
 
-    private function getAttachments()
+    private function getAttachment()
     {
-        return $this->attachments()->orderBy('position', 'asc')->latest()->get()->map(function ($category) {
-            return [
-                'url' => $category->url
-            ];
-        });
+        if ($image = $this->attachments()->where('type', 'cover')->latest()->first()) {
+            return $image->url;
+        }
+
+        return asset('storage/uploads/events/1577545968.jpg');
     }
 }

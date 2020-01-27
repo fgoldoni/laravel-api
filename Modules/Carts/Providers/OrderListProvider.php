@@ -4,12 +4,12 @@ namespace Modules\Carts\Providers;
 
 use Darryldecode\Cart\Cart;
 use Illuminate\Support\ServiceProvider;
-use Modules\Carts\DBStorage;
+use Modules\Carts\OrderDBStorage;
 
 /**
  * Class WishListProvider.
  */
-class WishListProvider extends ServiceProvider
+class OrderListProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -27,10 +27,10 @@ class WishListProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('wishlist', function ($app) {
-            $storage = new DBStorage();
+        $this->app->singleton('orderlist', function ($app) {
+            $storage = new OrderDBStorage();
             $events = $app['events'];
-            $instanceName = 'cart_2';
+            $instanceName = 'order';
             $session_key = '88uuiioo99888';
 
             return new Cart(

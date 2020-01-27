@@ -1,0 +1,16 @@
+{
+    "name": "Transactions",
+    "alias": "transactions",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Transactions\\Providers\\EventServiceProvider",
+        "Modules\\Transactions\\Providers\\RepositoryServiceProvider",
+        "Modules\\Transactions\\Providers\\TransactionsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

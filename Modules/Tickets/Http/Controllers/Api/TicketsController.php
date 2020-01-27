@@ -124,9 +124,9 @@ class TicketsController extends Controller
         try {
             $ticket = $this->tickets->update(
                 $id,
-                $request->only('name', 'offer_1', 'offer_2', 'offer_3', 'offer_4', 'price', 'quantity', 'position', 'online')
+                $request->only('name', 'offer_1', 'offer_2', 'offer_3', 'offer_4', 'price', 'quantity', 'sale', 'position', 'online')
             );
-            $this->tickets->sync($ticket->id, 'categories', $request->get('categories', []));
+            $this->tickets->sync($ticket->id, 'categories', $request->get('categories', [18]));
 
             $result['message'] = $this->lang->get('messages.updated', ['attribute' => 'Ticket']);
             $result['ticket'] = new TicketCollection($ticket->fresh());

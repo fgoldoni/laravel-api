@@ -1,0 +1,27 @@
+{
+    "name": "nwidart/transactions",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Transactions\\Providers\\EventServiceProvider",
+                "Modules\\Transactions\\Providers\\RepositoryServiceProvider",
+                "Modules\\Transactions\\Providers\\TransactionsServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Transactions\\": ""
+        }
+    }
+}

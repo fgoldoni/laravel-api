@@ -24,6 +24,7 @@ class TicketCollection extends JsonResource
             'offer_3'              => Str::upper($this->offer_3),
             'offer_4'              => Str::upper($this->offer_4),
             'quantity'             => $this->quantity,
+            'sale'                 => $this->sale,
             'price'                => $this->price,
             'event_id'             => $this->event_id,
             'online'               => $this->online,
