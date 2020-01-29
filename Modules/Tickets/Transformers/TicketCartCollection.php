@@ -4,6 +4,7 @@ namespace Modules\Tickets\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
+use Modules\Events\Transformers\EventCartCollection;
 
 class TicketCartCollection extends JsonResource
 {

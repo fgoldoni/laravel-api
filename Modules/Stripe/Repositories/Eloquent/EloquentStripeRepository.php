@@ -59,7 +59,7 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         return Transaction::class;
     }
 
-    public function customers(string $name, string $email, string $stripeToken)
+    public function customers(string $name, string $email, string $mobile, string $stripeToken)
     {
         $list = [];
         $cart = $this->cart->details();
@@ -77,6 +77,7 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
             'metadata'    => [
                 'id'    => $this->auth->guard('api')->user()->id,
                 'email' => $email,
+                'mobile' => $mobile,
                 'name'  => $name
             ]
         ]);
@@ -120,20 +121,11 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
 
     public function make(array $charges)
     {
-        $list = [];
-        $items = [];
         $cart = $this->cart->details();
 
-        foreach ($cart['items'] as $item) {
-            $list[] = $this->getDescription($item);
-            $items[] = $this->getTmpItem($item);
-        }
+        $transaction = $this->makeTransaction($charges, $cart, $this->auth->guard('api')->user()->id);
 
-        $description = implode(' | ', $list);
-
-        $transaction = $this->makeTransaction($charges, $cart['total'], $description, $items, $cart['total_quantity'], $cart['sub_total'], $cart['total'], $this->auth->guard('api')->user()->id);
-
-        TransactionJob::dispatch($charges, $cart['items'], $this->auth->guard('api')->user()->id);
+        TransactionJob::dispatch($charges, $cart['items'], $this->auth->guard('api')->user()->id, $transaction->id);
 
         //OrderJob::dispatch($cart['items'], $this->auth->guard('api')->user()->id);
 
@@ -142,27 +134,39 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         return $transaction;
     }
 
-    private function makeTransaction(array $charges, $price, string $description, array $items, int $quantity, $subtotal, $total, int $userId, int $parentId = null)
+    private function makeTransaction(array $charges, $cart, int $userId)
     {
+        $list = [];
+        $items = [];
+
+        foreach ($cart['items'] as $item) {
+            $list[] = $this->getDescription($item);
+            $items[] = $this->getTmpItem($item);
+        }
+
+        $description = implode(' | ', $list);
+
         return $this->resolveModel()->create([
             'gateway'             => $charges['source']['brand'],
             'transaction_key'     => $charges['id'],
             'transaction_balance' => $charges['balance_transaction'],
             'status'              => $charges['status'],
-            'price'               => $price,
+            'price'               => $cart['sub_total'],
             'description'         => $description,
             'last4'               => $charges['source']['last4'],
             'country'             => $charges['source']['country'],
             'created'             => Carbon::createFromTimestamp($charges['created'])->toDateTimeString(),
             'detail'              => [
-                'items'    => $items,
-                'quantity' => $quantity,
-                'subtotal' => $subtotal,
-                'total'    => $total,
+                'items'                     => $items,
+                'quantity'                  => $cart['total_quantity'],
+                'subtotal'                  => $cart['sub_total'],
+                'total'                     => $cart['total'],
+                'cart_sub_total_conditions' => $cart['cart_sub_total_conditions'],
+                'cart_total_conditions'     => $cart['cart_total_conditions'],
             ],
             'metadata'  => $charges['metadata'],
             'user_id'   => $userId,
-            'parent_id' => $parentId
+            'parent_id' => null
         ]);
     }
 
@@ -179,6 +183,8 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
             'price'    => $item->price,
             'quantity' => $item->quantity,
             'user_id'  => $item->associatedModel->user_id,
+            'attributes'  => $item->attributes,
+            'associatedModel'  => $item->associatedModel
         ];
     }
 }

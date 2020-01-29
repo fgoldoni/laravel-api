@@ -55,6 +55,8 @@ class EloquentCartsRepository extends RepositoryAbstract implements CartsReposit
 
         $conditions = CartFacade::session($userId)->getConditions();
 
+        $total = CartFacade::session($userId)->getTotal();
+
         $subTotalConditions = $conditions->filter(function (CartCondition $condition) {
             return 'subtotal' === $condition->getTarget();
         })->map(function (CartCondition $c) use ($userId) {
@@ -62,18 +64,19 @@ class EloquentCartsRepository extends RepositoryAbstract implements CartsReposit
                 'name'   => $c->getName(),
                 'type'   => $c->getType(),
                 'target' => $c->getTarget(),
-                'value'  => $c->getValue(),
+                'value'  => $c->getValue()
             ];
         });
 
         $totalConditions = $conditions->filter(function (CartCondition $condition) {
             return 'total' === $condition->getTarget();
-        })->map(function (CartCondition $c) {
+        })->map(function (CartCondition $c) use ($total) {
             return [
                 'name'   => $c->getName(),
                 'type'   => $c->getType(),
                 'target' => $c->getTarget(),
                 'value'  => $c->getValue(),
+                'amount' => $c->getCalculatedValue($total)
             ];
         });
 

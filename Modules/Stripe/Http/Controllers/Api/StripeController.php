@@ -40,7 +40,7 @@ class StripeController extends Controller
     public function store(StripeRequest $request)
     {
         try {
-            $customer = $this->stripe->customers($request->get('name'), $request->get('email'), $request->get('stripeToken'));
+            $customer = $this->stripe->customers($request->get('name'), $request->get('email'), $request->get('mobile'), $request->get('stripeToken'));
             $charges = $this->stripe->charges($customer);
             $result['transaction'] = $this->stripe->make($charges);
             $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Cart']);

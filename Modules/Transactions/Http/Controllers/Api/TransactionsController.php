@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Transactions\Http\Controllers;
+namespace Modules\Transactions\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Auth\AuthManager;
-use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
 use Modules\Transactions\Repositories\Contracts\TransactionsRepository;
@@ -41,6 +41,14 @@ class TransactionsController extends Controller
 
     public function invoice(int $id)
     {
-        dd($id);
+        try {
+
+            $transaction = $this->transactions->find($id);
+            $result['transaction'] = $this->transactions->find($transaction->parent_id);
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
     }
 }

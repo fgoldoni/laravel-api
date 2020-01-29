@@ -23,8 +23,6 @@ Route::group(['middleware' => ['jwt.verify', 'role:' . Flag::ROLE_ADMIN], 'names
     Route::delete('users/{id}/destroy', 'UsersController@forceDelete')
         ->name('admin.users.forceDelete')->where('id', '[0-9]+');
     Route::put('users/{id}/restore', 'UsersController@restore')->name('admin.users.restore')->where('id', '[0-9]+');
-
-
 });
 
 Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], function () {

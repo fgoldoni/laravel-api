@@ -30,13 +30,18 @@ class TransactionJob implements ShouldQueue
      * @var int
      */
     private $parentId;
+    /**
+     * @var int
+     */
+    private $userId;
 
-    public function __construct(array $charges, array $items, int $parentId)
+    public function __construct(array $charges, array $items, int $userId, int $parentId)
     {
         $this->charges = $charges;
         $this->items = $items;
         $this->parentId = $parentId;
         $this->queue = 'transaction';
+        $this->userId = $userId;
     }
 
     /**
@@ -69,6 +74,8 @@ class TransactionJob implements ShouldQueue
             'price'    => $item->price,
             'quantity' => $item->quantity,
             'user_id'  => $item->associatedModel->user_id,
+            'attributes'  => $item->attributes,
+            'associatedModel'  => $item->associatedModel
         ];
     }
 
@@ -110,7 +117,7 @@ class TransactionJob implements ShouldQueue
     {
         $orderList = app('orderlist');
 
-        $orderList->session($this->parentId)->add([
+        $orderList->session($this->userId)->add([
             'id'                     => $transaction->id,
             'name'                   => $item->name,
             'price'                  => $item->price,

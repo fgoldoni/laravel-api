@@ -4,7 +4,6 @@ namespace Modules\Vouchers\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Carbon\CarbonInterval;
-use FrittenKeeZ\Vouchers\Models\Voucher;
 use FrittenKeeZ\Vouchers\Vouchers;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Request;
