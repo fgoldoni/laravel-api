@@ -15,4 +15,6 @@ interface CartsRepository
     public function deleteCart(int $id);
 
     public function clear();
+
+    public function addCoupon(string $coupon);
 }

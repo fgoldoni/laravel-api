@@ -12,6 +12,7 @@
 */
 Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('carts', 'CartsController@getCarts')->name('carts');
+    Route::post('carts/coupon', 'CartsController@coupon')->name('carts.coupon');
     Route::get('carts/paginate', 'CartsController@paginate')->name('carts.paginate');
     Route::get('carts/{id}/edit', 'CartsController@edit')->name('carts.edit')->where('id', '[0-9]+');
     Route::get('carts/create', 'CartsController@create')->name('carts.create');

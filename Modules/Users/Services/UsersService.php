@@ -108,10 +108,10 @@ class UsersService extends ServiceAbstract implements UsersServiceInterface
             array_merge(
                 $attributes,
                 [
-                    'first_name'        => 'Default Name',
+                    'first_name'        => '',
                     'last_name'         => '',
                     'email_verified_at' => now(),
-                    'password'          => bcrypt('68,JzGm++C6<ng>_ZzSP3G{g'),
+                    'password'          => bcrypt(Str::random(20)),
                     'api_token'         => Str::random(60)
                 ]
             )

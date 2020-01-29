@@ -79,6 +79,19 @@ class CartsController extends Controller
         }
     }
 
+    public function coupon(Request $request)
+    {
+        try {
+            $this->carts->addCoupon($request->get('coupon'));
+            $result['cart'] = $this->carts->details();
+            $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Cart']);
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
     public function update(Request $request, int $id)
     {
         try {

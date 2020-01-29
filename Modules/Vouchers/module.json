@@ -1,0 +1,13 @@
+{
+    "name": "Vouchers",
+    "alias": "vouchers",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Vouchers\\Providers\\VouchersServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

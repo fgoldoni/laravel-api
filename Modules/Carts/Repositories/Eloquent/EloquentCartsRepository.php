@@ -9,9 +9,12 @@
 
 namespace Modules\Carts\Repositories\Eloquent;
 
+use App\Exceptions\VoucherNotFoundException;
 use App\Repositories\RepositoryAbstract;
 use Darryldecode\Cart\CartCondition;
 use Darryldecode\Cart\Facades\CartFacade;
+use FrittenKeeZ\Vouchers\Facades\Vouchers;
+use FrittenKeeZ\Vouchers\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 use Modules\Carts\Entities\Cart as Model;
 use Modules\Carts\Repositories\Contracts\CartsRepository;
@@ -49,6 +52,7 @@ class EloquentCartsRepository extends RepositoryAbstract implements CartsReposit
     {
         $items = [];
         $userId = Auth::id();
+
         $conditions = CartFacade::session($userId)->getConditions();
 
         $subTotalConditions = $conditions->filter(function (CartCondition $condition) {
@@ -82,8 +86,8 @@ class EloquentCartsRepository extends RepositoryAbstract implements CartsReposit
             'total_quantity'                  => CartFacade::session($userId)->getTotalQuantity(),
             'sub_total'                       => CartFacade::session($userId)->getSubTotal(),
             'total'                           => CartFacade::session($userId)->getTotal(),
-            'cart_sub_total_conditions_count' => $subTotalConditions->count(),
-            'cart_total_conditions_count'     => $totalConditions->count(),
+            'cart_sub_total_conditions'       => $subTotalConditions,
+            'cart_total_conditions'           => $totalConditions,
         ];
     }
 
@@ -114,6 +118,26 @@ class EloquentCartsRepository extends RepositoryAbstract implements CartsReposit
 
     public function clear()
     {
+        CartFacade::session(Auth::id())->clearCartConditions();
         CartFacade::session(Auth::id())->clear();
+    }
+
+    public function addCoupon(string $coupon)
+    {
+        if (Vouchers::redeemable($coupon)) {
+            $voucher = Voucher::where('code', $coupon)->first();
+
+            if ($voucher->getEntities()->isNotEmpty()) {
+                $voucher = Auth::user()->vouchers()->where('code', $coupon)->first();
+
+                if (null === $voucher) {
+                    throw new VoucherNotFoundException();
+                }
+            }
+
+            $cartCondition = new CartCondition($voucher->metadata);
+            CartFacade::session(Auth::id())->condition($cartCondition);
+            Vouchers::redeem($coupon, Auth::user(), [now()]);
+        }
     }
 }

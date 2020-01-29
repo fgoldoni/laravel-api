@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
@@ -177,6 +178,17 @@ class AuthController extends Controller
         try {
             $user = $this->usersService->findByToken($request->get('token'));
             $result['accessToken'] = $this->jwtAuth->fromUser($user);
+
+            return $this->responseJson($result, Flag::STATUS_CODE_CREATED);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function update(Request $request): JsonResponse
+    {
+        try {
+            $result['user'] = $this->usersService->update($this->auth->user()->id, $request->only(['first_name', 'mobile']));
 
             return $this->responseJson($result, Flag::STATUS_CODE_CREATED);
         } catch (Exception $e) {

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use FrittenKeeZ\Vouchers\Concerns\HasRedeemers;
+use FrittenKeeZ\Vouchers\Concerns\HasVouchers;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -19,6 +21,8 @@ class User extends Authenticatable implements JWTSubject
     use SoftDeletes;
     use LogsActivity;
     use AttachableTrait;
+    use HasRedeemers;
+    use HasVouchers;
 
     protected $dates = ['deleted_at'];
 
@@ -30,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'api_token', 'email_verified_at',
+        'first_name', 'last_name', 'email', 'mobile', 'password', 'api_token', 'email_verified_at',
     ];
 
     /**
