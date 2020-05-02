@@ -83,6 +83,16 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
         return $this->model->firstOrFail($columns);
     }
 
+    public function exists()
+    {
+        return $this->model->exists();
+    }
+
+    public function doesntExist()
+    {
+        return $this->model->doesntExist();
+    }
+
     public function findWhere(string $column, $value = null, $columns = ['*'])
     {
         $model = $this->model->where($column, $value)->get($columns);

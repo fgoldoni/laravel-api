@@ -69,12 +69,12 @@ class TransactionJob implements ShouldQueue
     private function getTmpItem($item)
     {
         return [
-            'id'       => $item->id,
-            'name'     => $item->name,
-            'price'    => $item->price,
-            'quantity' => $item->quantity,
-            'user_id'  => $item->associatedModel->user_id,
-            'attributes'  => $item->attributes,
+            'id'               => $item->id,
+            'name'             => $item->name,
+            'price'            => $item->price,
+            'quantity'         => $item->quantity,
+            'user_id'          => $item->associatedModel->user_id,
+            'attributes'       => $item->attributes,
             'associatedModel'  => $item->associatedModel
         ];
     }

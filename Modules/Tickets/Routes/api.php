@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('tickets', 'TicketsController@getTickets')->name('tickets');
     Route::get('tickets/paginate', 'TicketsController@paginate')->name('tickets.paginate');
     Route::get('tickets/{id}/edit', 'TicketsController@edit')->name('tickets.edit')->where('id', '[0-9]+');

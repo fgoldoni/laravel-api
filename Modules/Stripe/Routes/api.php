@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('stripe', 'StripeController@getStripe')->name('stripe');
     Route::get('stripe/intent', 'StripeController@intent')->name('stripe.intent');
     Route::get('stripe/paginate', 'StripeController@paginate')->name('stripe.paginate');

@@ -75,10 +75,10 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
             'description' => $description,
             'email'       => $email,
             'metadata'    => [
-                'id'    => $this->auth->guard('api')->user()->id,
-                'email' => $email,
+                'id'     => $this->auth->user()->id,
+                'email'  => $email,
                 'mobile' => $mobile,
-                'name'  => $name
+                'name'   => $name
             ]
         ]);
     }
@@ -119,11 +119,11 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         ]);
     }
 
-    public function make(array $charges)
+    public function make(array $charges, $transactions)
     {
         $cart = $this->cart->details();
 
-        $transaction = $this->makeTransaction($charges, $cart, $this->auth->guard('api')->user()->id);
+        $transaction = $transactions->makeCardTransaction($charges, $cart, $this->auth->guard('api')->user()->id);
 
         TransactionJob::dispatch($charges, $cart['items'], $this->auth->guard('api')->user()->id, $transaction->id);
 
@@ -134,57 +134,4 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         return $transaction;
     }
 
-    private function makeTransaction(array $charges, $cart, int $userId)
-    {
-        $list = [];
-        $items = [];
-
-        foreach ($cart['items'] as $item) {
-            $list[] = $this->getDescription($item);
-            $items[] = $this->getTmpItem($item);
-        }
-
-        $description = implode(' | ', $list);
-
-        return $this->resolveModel()->create([
-            'gateway'             => $charges['source']['brand'],
-            'transaction_key'     => $charges['id'],
-            'transaction_balance' => $charges['balance_transaction'],
-            'status'              => $charges['status'],
-            'price'               => $cart['sub_total'],
-            'description'         => $description,
-            'last4'               => $charges['source']['last4'],
-            'country'             => $charges['source']['country'],
-            'created'             => Carbon::createFromTimestamp($charges['created'])->toDateTimeString(),
-            'detail'              => [
-                'items'                     => $items,
-                'quantity'                  => $cart['total_quantity'],
-                'subtotal'                  => $cart['sub_total'],
-                'total'                     => $cart['total'],
-                'cart_sub_total_conditions' => $cart['cart_sub_total_conditions'],
-                'cart_total_conditions'     => $cart['cart_total_conditions'],
-            ],
-            'metadata'  => $charges['metadata'],
-            'user_id'   => $userId,
-            'parent_id' => null
-        ]);
-    }
-
-    private function getDescription($item)
-    {
-        return $item->id . ':' . $item->name;
-    }
-
-    private function getTmpItem($item)
-    {
-        return [
-            'id'       => $item->id,
-            'name'     => $item->name,
-            'price'    => $item->price,
-            'quantity' => $item->quantity,
-            'user_id'  => $item->associatedModel->user_id,
-            'attributes'  => $item->attributes,
-            'associatedModel'  => $item->associatedModel
-        ];
-    }
 }

@@ -15,6 +15,7 @@ use Modules\Users\Http\Requests\ApiAccessTokenRequest;
 use Modules\Users\Http\Requests\ApiLinkRequest;
 use Modules\Users\Http\Requests\ApiRegisterRequest;
 use Modules\Users\Http\Requests\ApiTokenRequest;
+use Modules\Users\Http\Requests\LinkRequest;
 use Modules\Users\Services\Contracts\UsersServiceInterface;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -124,10 +125,36 @@ class AuthController extends Controller
             $result['status'] = Flag::STATUS_CODE_UNAUTHORIZED;
         }
 
-        return $this->response->json($result, $result['status'], [], JSON_NUMERIC_CHECK);
+        return $this->responseJson($result);
     }
 
-    public function link(ApiLinkRequest $request): JsonResponse
+    public function apiLink(ApiLinkRequest $request): JsonResponse
+    {
+        $result = [];
+
+        try {
+            if ($this->usersService->isExist($request->get('email'))) {
+                $user = $this->usersService->getUserByEmail($request->get('email'));
+                $this->usersService->sendLoginLink($user, $request->get('host'), $request->get('to'));
+            } else {
+                $user = $this->usersService->saveUser($request->only('email'))->makeVisible('api_token');
+                $user->assignRole(Flag::ROLE_EVENT_MANAGER);
+                $this->usersService->sendRegisterNotification($user, $request->get('host'), $request->get('to'));
+                $this->jwtAuth->fromUser($user);
+            }
+
+
+            $result['message'] = 'We have e-mailed your login link!';
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+
+        return $this->response->json($result, 200, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function link(LinkRequest $request): JsonResponse
     {
         $result = [];
 
@@ -185,10 +212,23 @@ class AuthController extends Controller
         }
     }
 
+    public function loginToken(ApiAccessTokenRequest $request): JsonResponse
+    {
+        try {
+            $user = $this->usersService->findByToken($request->get('token'));
+            $result['user'] = $this->usersService->authTransform($user);
+            $result['accessToken'] = $this->jwtAuth->fromUser($user);
+
+            return $this->responseJson($result, Flag::STATUS_CODE_CREATED);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
     public function update(Request $request): JsonResponse
     {
         try {
-            $result['user'] = $this->usersService->update($this->auth->user()->id, $request->only(['first_name', 'mobile']));
+            $result['user'] = $this->usersService->update($this->auth->user()->id, $request->only(['first_name', 'mobile', 'email']));
 
             return $this->responseJson($result, Flag::STATUS_CODE_CREATED);
         } catch (Exception $e) {

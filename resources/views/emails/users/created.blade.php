@@ -12,14 +12,14 @@
                     </p>
 
                     <p style="line-height: 24px; margin-bottom:20px;">
-                        Einer unserer Spezialisten für das Reiseziel :title hat ein Angebot für Ihren Reisewunsch erstellt! Sie können es unter dem folgenden Link einsehen
+                        Vielen Dank für das Anfordern Ihrer Zugangsdaten zum EventPortal. Sie können sich über den folgenden Link ganz einfach in Ihr Profil einloggen.
                         <br><br>
-                        <a href="{{ $url }}">{{ $url }}</a>
+                        <a href="{{ $url }}">Login Link</a>
                         <br><br>
-                        Wir hoffen, Ihnen sagt das Angebot zu.
+                        Vielen Dank, dass Sie unsere EventPortal verwenden!.
                     </p>
 
-                    @include('emails.layouts.footer')
+                    @include('emails.layouts.footer', ['url' => $url])
                 </td>
             </tr>
         </table>

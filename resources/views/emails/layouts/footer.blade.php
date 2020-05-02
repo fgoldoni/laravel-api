@@ -7,19 +7,28 @@
 <p>
     Sonnige Grüße
     <br/>
-    Ihr Team vom TUI Reisewunschportal
+    Ihr Team vom EventPortal
     <br/><br/>
-    TUI GROUP
+    EventPortal GROUP
     <br/><br/>
-    TUI Deutschland GmbH
+    EventPortal Deutschland GmbH
     <br/>
-    Karl-Wiechert-Allee 23 | D-30625 Hannover | Deutschland
+    Niendorfer Straße 43 | D-22529 Hamburg | Deutschland
     <br/><br/>
-    Vorsitzender des Aufsichtsrates: Friedrich Joussen<br/>
-    Geschäftsführung: Marek Andryszak (Vorsitzender), Stefan Baumert, Mathias Kiep, Hubert Kluske
+    Vorsitzender des Aufsichtsrates: Goldoni Fouotsa<br/>
+    Geschäftsführung: Goldoni Fouotsa (Vorsitzender)
     <br/>
-    Sitz der Gesellschaft: Hannover
+    Sitz der Gesellschaft: Hamburg
     <br/>
-    Handelsregister: Amtsgericht Hannover HRB 62522
+    Handelsregister: Amtsgericht Hamburg HRB 66666
 </p>
 <hr style="background: #e7e7e7;border: none;height: 1px;">
+<?php echo app('translator')->get(
+    "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
+    "into your web browser:\n",
+    [
+        'actionText' => 'Login Link'
+    ]
+); ?>
+<br>
+<a href="{{ $url }}">{{ $url }}</a>

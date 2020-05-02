@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Modules\Attachments\Traits\AttachableTrait;
+use Modules\Dashboard\Entities\Dashboard;
+use Modules\Dashboard\Entities\DashboardUser;
 use Modules\Events\Entities\Event;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Models\Permission;
@@ -75,6 +77,22 @@ class User extends Authenticatable implements JWTSubject
         $array = $this->toArray();
 
         return $array;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function dashboards()
+    {
+        return $this->belongsToMany(Dashboard::class)
+            ->using(DashboardUser::class)
+            ->withPivot([
+                'x',
+                'y',
+                'w',
+                'h',
+                'i',
+            ]);
     }
 
     /**

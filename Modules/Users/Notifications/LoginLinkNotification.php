@@ -55,10 +55,7 @@ class LoginLinkNotification extends Notification
         $url = $this->host . '/magiclink/' . $notifiable->api_token . '?' . http_build_query(['to' => $this->to]);
 
         return (new MailMessage())
-                    ->subject('Your access to your EventPortal')
-                    ->line('Thank you for requesting your login details!')
-                    ->line('You can easily log into your profile using the following link.')
-                    ->action('Login Link', $url)
-                    ->line('Thank you for using our application!');
+            ->subject('Herzlich willkommen beim EventPortal')
+            ->view('emails.users.created', ['homeUrl' => $this->host, 'url' => $url]);
     }
 }

@@ -30,6 +30,8 @@ class CreateEventsTable extends Migration
             $table->boolean('online')->default(false);
             $table->integer('user_id')->nullable()->unsigned()->index();
             $table->morphs('eventable');
+            $table->enum('theme', ['standard', 'profile'])->default('standard');
+            $table->string('video')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

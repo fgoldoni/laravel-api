@@ -129,4 +129,11 @@ class UsersService extends ServiceAbstract implements UsersServiceInterface
             new Where('api_token', $token)
         ])->first();
     }
+
+    public function isExist(string $email)
+    {
+        return $this->resolveRepository()->withCriteria([
+            new Where('email', $email)
+        ])->exists();
+    }
 }

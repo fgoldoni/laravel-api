@@ -14,7 +14,7 @@ class ApiLinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|max:255|exists:users,email',
+            'email' => 'required|email|max:255',
             'host'  => 'required|string',
             'to'    => 'nullable|string'
         ];

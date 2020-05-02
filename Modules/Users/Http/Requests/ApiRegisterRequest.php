@@ -15,7 +15,7 @@ class ApiRegisterRequest extends FormRequest
     {
         return [
             'email' => 'required|email|max:255|unique:users',
-            'terms' => 'required|boolean|accepted',
+            'terms' => 'required|accepted',
             'host'  => 'required|string',
             'to'    => 'nullable|string'
         ];

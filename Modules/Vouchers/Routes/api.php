@@ -13,7 +13,7 @@ use App\Flag;
 |
 */
 
-Route::group(['middleware' => ['jwt.verify', 'permission:' . Flag::PERMISSION_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'permission:' . Flag::PERMISSION_ADMIN, 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('vouchers', 'VouchersController@getVouchers')->name('vouchers');
     Route::get('vouchers/paginate', 'VouchersController@paginate')->name('vouchers.paginate');
     Route::get('vouchers/{id}/edit', 'VouchersController@edit')->name('vouchers.edit')->where('id', '[0-9]+');

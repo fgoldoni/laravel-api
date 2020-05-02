@@ -13,7 +13,7 @@ use App\Flag;
 |
 */
 
-Route::group(['middleware' => ['jwt.verify', 'permission:' . Flag::PERMISSION_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'permission:' . Flag::PERMISSION_ADMIN, 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('categories', 'CategoriesController@getCategories')->name('categories');
     Route::get('categories/paginate', 'CategoriesController@paginate')->name('categories.paginate');
     Route::get('categories/{id}/edit', 'CategoriesController@edit')->name('categories.edit')->where('id', '[0-9]+');

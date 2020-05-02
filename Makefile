@@ -55,7 +55,7 @@ message: optimize ## messages.js add /* eslint-disable */
 	$(PHP) artisan lang:js --no-lib resources/js/utils/messages.js & php artisan lang:js public/js/messages.js
 
 queue: optimize ## start jos processing
-	$(PHP) artisan queue:work --queue=high,low,default --tries=3
+	$(PHP) artisan queue:work --queue=high,transaction,low,default --tries=3
 
 restart: optimize ## restart jos processing
 	$(PHP) artisan queue:restart

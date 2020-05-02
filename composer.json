@@ -11,6 +11,7 @@
         "php": "^7.2",
         "ext-json": "*",
         "algolia/algoliasearch-client-php": "^2.2",
+        "arcanedev/log-viewer": "^5.2",
         "awssat/laravel-visits": "^2.0",
         "barryvdh/laravel-cors": "^0.11.4",
         "cartalyst/stripe-laravel": "11.0.*",
@@ -28,6 +29,7 @@
         "rinvex/laravel-categories": "^3.0",
         "spatie/laravel-activitylog": "^3.8",
         "spatie/laravel-cors": "^1.6",
+        "spatie/laravel-http-logger": "^1.4",
         "spatie/laravel-permission": "^3.0",
         "tymon/jwt-auth": "dev-develop",
         "willvincent/laravel-rateable": "^2.0"

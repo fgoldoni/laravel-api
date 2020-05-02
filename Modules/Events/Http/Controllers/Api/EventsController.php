@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Modules\Events\Entities\Event;
 use Modules\Events\Http\Requests\StoreEventRequest;
 use Modules\Events\Http\Requests\UpdateEventRequest;
+use Modules\Events\Http\Requests\UpdateEventThemeRequest;
 use Modules\Events\Services\Contracts\EventsServiceInterface;
 use Modules\Events\Transformers\CreateEventCollection;
 use Modules\Events\Transformers\EventCollection;
@@ -59,7 +60,8 @@ class EventsController extends Controller
     {
         try {
             $result['tickets'] = TicketsCollection::collection($this->tickets->withCriteria([
-                new Where('event_id', $event->id)
+                new Where('event_id', $event->id),
+                new Where('online', true)
             ])->all());
 
             return $this->responseJson($result);
@@ -102,6 +104,7 @@ class EventsController extends Controller
                 'id'               => 0,
                 'title'            => 'Ebony 2020',
                 'description'      => 'Id est harum enim tempora quia ad est similique cumque eius ut quidem nesciunt accusamus expedita quae et soluta temporibus nesciunt commodi.',
+                'content'          => 'content',
                 'address'          => 'Niendorfer Straße 45, 22303 Hamburg',
                 'city'             => 'Hamburg',
                 'contact_phone'    => '017699663325',
@@ -147,7 +150,23 @@ class EventsController extends Controller
                 $request->get('tags', [])
             );
 
-            $result['data'] = new EventCollection($event);
+            $result['event'] = new EventCollection($event);
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function theme(UpdateEventThemeRequest $request, int $id)
+    {
+        try {
+            $event = $this->eventsService->update(
+                $id,
+                $request->only('theme')
+            );
+
+            $result['event'] = new EventCollection($event);
 
             return $this->responseJson($result);
         } catch (Exception $e) {

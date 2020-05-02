@@ -10,5 +10,5 @@ interface StripeRepository
 
     public function intent();
 
-    public function make(array $charges);
+    public function make(array $charges, $transactions);
 }

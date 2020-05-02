@@ -12,7 +12,7 @@
 
 use App\Flag;
 
-Route::group(['middleware' => ['jwt.verify', 'role:' . Flag::ROLE_ADMIN], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'role:' . Flag::ROLE_ADMIN, 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('users', 'UsersController@getUsers')->name('users');
     Route::get('users/paginate', 'UsersController@paginate')->name('users.paginate');
     Route::get('users/{id}/edit', 'UsersController@edit')->name('users.edit')->where('id', '[0-9]+');
@@ -25,16 +25,18 @@ Route::group(['middleware' => ['jwt.verify', 'role:' . Flag::ROLE_ADMIN], 'names
     Route::put('users/{id}/restore', 'UsersController@restore')->name('admin.users.restore')->where('id', '[0-9]+');
 });
 
-Route::group(['middleware' => [], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('auth/login', 'AuthController@login')->name('auth.login');
     Route::post('auth/link', 'AuthController@link')->name('auth.link');
+    Route::post('auth/api-link', 'AuthController@apiLink')->name('auth.api-link');
+    Route::post('auth/login-token', 'AuthController@loginToken')->name('auth.login-token');
     Route::post('auth/token', 'AuthController@token')->name('auth.token');
     Route::get('auth/magiclink/{token}', 'AuthController@magiclink')->name('auth.magiclink');
     Route::post('auth/register', 'AuthController@register')->name('auth.register');
     Route::post('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
 });
 
-Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
     Route::get('users/tickets', 'UsersController@tickets')->name('users.tickets');
 

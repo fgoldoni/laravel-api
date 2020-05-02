@@ -10,7 +10,7 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('carts', 'CartsController@getCarts')->name('carts');
     Route::post('carts/coupon', 'CartsController@coupon')->name('carts.coupon');
     Route::get('carts/paginate', 'CartsController@paginate')->name('carts.paginate');
@@ -24,7 +24,7 @@ Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api
     Route::put('carts/{id}/restore', 'CartsController@restore')->name('admin.carts.restore')->where('id', '[0-9]+');
 });
 
-Route::group(['middleware' => ['jwt.verify'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['jwt.verify', 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('orders', 'OrdersController@getOrders')->name('orders');
     Route::get('orders/paginate', 'OrdersController@paginate')->name('orders.paginate');
     Route::get('orders/{id}/edit', 'OrdersController@edit')->name('orders.edit')->where('id', '[0-9]+');

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Modules\Attachments\Entities\Attachment;
 use Modules\Attachments\Repositories\Contracts\AttachmentsRepository;
+use Modules\Events\Entities\Event;
 
 /**
  * Class EloquentPostsRepository.
@@ -31,7 +32,8 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
     {
         $attachment = new Attachment([
             'attachable_type' => $attributes['attachable_type'],
-            'attachable_id'   => $attributes['attachable_id']
+            'attachable_id'   => $attributes['attachable_id'],
+            'position'   => $attributes['position']
         ]);
 
         $attachment->loadParameters($attributes['attachment'], $attributes['folder']);
@@ -41,6 +43,18 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
         if ('cover' === $attachment->type) {
             $attachments = $this->withCriteria([
                 new Where('type', 'cover'),
+                new Where('attachable_id', $attributes['attachable_id']),
+                new Where('attachable_type', $attributes['attachable_type'])
+            ])->get();
+
+            foreach ($attachments as $file) {
+                $file->delete();
+            }
+        }
+
+        if (Event::class === $attributes['attachable_type']) {
+            $attachments = $this->withCriteria([
+                new Where('position', (int) $attributes['position']),
                 new Where('attachable_id', $attributes['attachable_id']),
                 new Where('attachable_type', $attributes['attachable_type'])
             ])->get();
@@ -71,6 +85,8 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
 
         if (isset($attributes['resize']) && (bool) $attributes['resize']) {
             $manager->make($attributes['attachment']->getRealPath())->orientate()->fit($attributes['width'], $attributes['height'])->save($path);
+        } else if(isset($attributes['position']) && ((int) $attributes['position'] === 0)) {
+            $manager->make($attributes['attachment']->getRealPath())->orientate()->fit(166, 39)->save($path);
         } else {
             $manager->make($attributes['attachment']->getRealPath())->orientate()->save($path);
         }

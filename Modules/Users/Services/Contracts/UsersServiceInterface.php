@@ -34,4 +34,6 @@ interface UsersServiceInterface
     public function sendRegisterNotification(User $user, string $host, string $to = null);
 
     public function findByToken(string $token);
+
+    public function isExist(string $email);
 }

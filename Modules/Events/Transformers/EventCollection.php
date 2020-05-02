@@ -3,6 +3,9 @@
 namespace Modules\Events\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Categories\Repositories\Contracts\CategoriesRepository;
+use Modules\Events\Entities\Event;
+use Modules\Tickets\Entities\Ticket;
 use Modules\Tickets\Transformers\TicketsCollection;
 
 class EventCollection extends JsonResource
@@ -26,16 +29,26 @@ class EventCollection extends JsonResource
             'color'            => $this->color,
             'all_day'          => $this->all_day,
             'online'           => $this->online,
+            'theme'            => $this->theme,
             'quantity'         => $this->getTotalTickets(),
             'price'            => $this->getPrice(),
+            'logo'             => $this->getLogo(),
+            'banner'           => $this->getBanner(),
+            'background'       => $this->getBackground(),
+            'flyer'            => $this->getFlyer(),
+            'profile'          => $this->getProfile(),
             'attachments'      => $this->getAttachments(),
             'tickets'          => TicketsCollection::collection($this->tickets()->orderBy('tickets.position', 'asc')->get()),
             'categories'       => $this->getCategories(),
+            'categoriesTags'   => $this->getCategoriesTags(),
+            'categoriesList'   => $this->getCategoriesList(),
+            'ticketsList'      => $this->ticketsList(),
             'tags'             => $this->getTags(),
             'rating'           => random_int(2, 5),
             'user_id'          => $this->user->id,
             'user'             => [
                 'full_name' => $this->user->full_name,
+                'email'     => $this->user->email
             ],
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
@@ -44,20 +57,24 @@ class EventCollection extends JsonResource
 
     private function getCategories()
     {
-        return $this->categories()->get()->map(function ($category) {
-            return [
-                'id'   => $category->id,
-                'name' => $category->name,
-                'slug' => $category->slug,
-            ];
-        });
+        return $this->categories()->get()->pluck(['id']);
+    }
+
+    private function getCategoriesTags()
+    {
+        return $this->categories()->get()->pluck(['name']);
+    }
+
+    private function getCategoriesList()
+    {
+        return app()->make(CategoriesRepository::class)->siblings('events', Event::class);
     }
 
     private function getAttachments()
     {
-        return $this->attachments()->orderBy('position', 'asc')->latest()->get()->map(function ($category) {
+        return $this->attachments()->orderBy('position', 'asc')->get()->map(function ($attachment) {
             return [
-                'url' => $category->url
+                'url' => asset($attachment->url)
             ];
         });
     }
@@ -92,5 +109,65 @@ class EventCollection extends JsonResource
         }
 
         return $sum;
+    }
+
+    private function getBanner()
+    {
+        $attachment = $this->attachments()->where('position', 2)->first();
+
+        if ($attachment) {
+            return asset($attachment->url);
+        } else {
+            return "http://localhost:8080/storage/uploads/cover/1587022819_i5i2.jpg";
+        }
+    }
+
+    private function ticketsList()
+    {
+        return app()->make(CategoriesRepository::class)->siblings('tickets', Ticket::class);
+    }
+
+    private function getBackground()
+    {
+        $attachment = $this->attachments()->where('position', 1)->first();
+
+        if ($attachment) {
+            return asset($attachment->url);
+        } else {
+            return "http://localhost:8080/storage/uploads/cover/1587022819_i5i2.jpg";
+        }
+    }
+
+    private function getFlyer()
+    {
+        $attachment = $this->attachments()->where('position', 3)->first();
+
+        if ($attachment) {
+            return asset($attachment->url);
+        } else {
+            return "http://localhost:8080/storage/uploads/cover/1587022819_i5i2.jpg";
+        }
+    }
+
+    private function getLogo()
+    {
+        $attachment = $this->attachments()->where('position', 0)->first();
+
+        if ($attachment) {
+            return asset($attachment->url);
+        } else {
+            return "http://localhost:8080/storage/uploads/events/1587691120_o6X2.png";
+        }
+    }
+
+    private function getProfile()
+    {
+        $attachment = $this->attachments()->where('position', 4)->first();
+
+        if ($attachment) {
+            return asset($attachment->url);
+        } else {
+            return "http://localhost:8080/storage/uploads/events/1587691120_o6X2.png";
+        }
     }
 }

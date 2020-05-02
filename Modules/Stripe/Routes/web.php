@@ -11,6 +11,3 @@
 |
 */
 
-Route::prefix('stripe')->group(function () {
-    Route::get('/', 'StripeController@index');
-});
