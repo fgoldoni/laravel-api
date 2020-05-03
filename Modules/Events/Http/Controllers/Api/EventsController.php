@@ -60,6 +60,19 @@ class EventsController extends Controller
     {
         try {
             $result['tickets'] = TicketsCollection::collection($this->tickets->withCriteria([
+                new Where('event_id', $event->id)
+            ])->all());
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function clientTickets(Request $request, Event $event)
+    {
+        try {
+            $result['tickets'] = TicketsCollection::collection($this->tickets->withCriteria([
                 new Where('event_id', $event->id),
                 new Where('online', true)
             ])->all());

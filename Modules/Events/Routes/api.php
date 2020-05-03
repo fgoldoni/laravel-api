@@ -30,5 +30,5 @@ Route::group(['middleware' => ['jwt.verify', 'permission:' . Flag::PERMISSION_EV
 
 Route::group(['middleware' => ['http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('events/{slug}', 'EventsController@show')->name('events.show');
-    Route::get('client/events/tickets/{event}', 'EventsController@tickets')->name('events.tickets');
+    Route::get('client/events/tickets/{event}', 'EventsController@clientTickets')->name('events.tickets');
 });
