@@ -124,8 +124,6 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
 
         $transaction = $transactions->makeCardTransaction($charges, $cart, $this->auth->user()->id);
 
-        // TransactionJob::dispatch($charges, $cart['items'], $this->auth->user()->id, $transaction->id);
-
         OrderJob::dispatch($cart['items'], $transaction->id,  $this->auth->user()->id);
 
         app()->make(EloquentCartsRepository::class)->clear();

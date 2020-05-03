@@ -69,12 +69,12 @@ class TransactionsController extends Controller
 
             $transaction = $this->transactions->makePaypalTransaction($request->all(), $cart, $this->auth->user()->id);
 
-            PaypalTransactionJob::dispatch($request->all(), $cart['items'], $this->auth->user(), $transaction->id);
-
             OrderJob::dispatch($cart['items'], $transaction->id,  $this->auth->user()->id);
 
             app()->make(EloquentCartsRepository::class)->clear();
-            $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Cart']);
+
+            $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Paypal']);
+
             return $this->responseJson($result);
         } catch (Exception $e) {
             return $this->responseJsonError($e);

@@ -27,7 +27,7 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 
     private function getDescription($item)
     {
-        return $item->id . ':' . $item->name;
+        return $item->name;
     }
 
     private function getTmpItem($item)
