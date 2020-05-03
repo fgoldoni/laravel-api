@@ -48,7 +48,7 @@ class StripeController extends Controller
         try {
             $customer = $this->stripe->customers($request->get('name'), $request->get('email'), $request->get('mobile'), $request->get('stripeToken'));
             $charges = $this->stripe->charges($customer);
-            $result['transaction'] = $this->stripe->make($charges, $this->transactions);
+            $this->stripe->make($charges, $this->transactions);
             $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Cart']);
 
             return $this->responseJson($result);

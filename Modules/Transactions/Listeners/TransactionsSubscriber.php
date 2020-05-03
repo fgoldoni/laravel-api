@@ -36,12 +36,8 @@ class TransactionsSubscriber
     public function handleTransactionCreated(Transaction $transaction)
     {
         $users = $this->getUserByRole(Flag::ROLE_ADMIN);
-
-        if ($transaction->parent_id) {
-            $users->push($this->getUserById($transaction->detail['items'][0]['user_id']));
-        } else {
-            $users->push($this->getUserById(Auth::id()));
-        }
+        $users->push($this->getUserById(Auth::id()));
+        $users->push($this->getUserById($transaction->detail['items'][0]['user_id']));
 
         Notification::send($users, new TransactionCreated($transaction));
     }
@@ -62,7 +58,7 @@ class TransactionsSubscriber
 
     public function getUserByRole(string $role)
     {
-        return User::role($role)->get();
+        return User::where('users.id', '!=', Auth::id())->role($role)->get();
     }
 
     public function getUserById(string $id)
