@@ -12,17 +12,17 @@ namespace Modules\Carts\Repositories\Eloquent;
 use App\Repositories\RepositoryAbstract;
 use Darryldecode\Cart\CartCondition;
 use Illuminate\Support\Facades\Auth;
-use Modules\Carts\Entities\Order;
-use Modules\Carts\Repositories\Contracts\OrdersRepository;
+use Modules\Carts\Entities\OrderList;
+use Modules\Carts\Repositories\Contracts\OrderListsRepository;
 
 /**
  * Class EloquentCartsRepository.
  */
-class EloquentOrdersRepository extends RepositoryAbstract implements OrdersRepository
+class EloquentOrderListsRepository extends RepositoryAbstract implements OrderListsRepository
 {
     public function model()
     {
-        return Order::class;
+        return OrderList::class;
     }
 
     public function details()

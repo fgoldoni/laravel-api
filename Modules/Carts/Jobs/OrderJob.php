@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Modules\Orders\Repositories\Contracts\OrdersRepository;
 
 class OrderJob implements ShouldQueue
 {
@@ -21,33 +22,36 @@ class OrderJob implements ShouldQueue
     /**
      * @var int
      */
+    private $transactionId;
+    /**
+     * @var int
+     */
     private $userId;
 
-    public function __construct(array $items, int $userId)
+    public function __construct(array $items, int $transactionId, int $userId)
     {
         $this->items = $items;
         $this->queue = 'transaction';
+        $this->transactionId = $transactionId;
         $this->userId = $userId;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
+
     public function handle()
     {
         foreach ($this->items as $item) {
-            $orderList = app('orderlist');
-
-            $orderList->session($this->userId)->add([
-                'id'                     => $item->id,
-                'name'                   => $item->name,
-                'price'                  => $item->price,
-                'quantity'               => $item->quantity,
-                'attributes'             => $item->attributes,
-                'associatedModel'        => $item->associatedModel
-            ]);
+            app()->make(OrdersRepository::class)->create(
+                [
+                    'name' => $item->name,
+                    'price' => $item->price,
+                    'quantity'  => $item->quantity,
+                    'customer_id' => $this->userId,
+                    'provider_id' => $item->associatedModel->user_id,
+                    'transaction_id' => $this->transactionId,
+                    'ticket_id' => $item->id,
+                    'event_id' => $item->associatedModel->event_id,
+                ]
+            );
         }
     }
 }

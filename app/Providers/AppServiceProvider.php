@@ -8,6 +8,7 @@ use Modules\Attachments\Providers\AttachmentsServiceProvider;
 use Modules\Carts\Providers\CartsServiceProvider;
 use Modules\Categories\Providers\CategoriesServiceProvider;
 use Modules\Events\Providers\EventsServiceProvider;
+use Modules\Orders\Providers\OrdersServiceProvider;
 use Modules\Posts\Providers\PostsServiceProvider;
 use Modules\Roles\Providers\RolesServiceProvider;
 use Modules\Tags\Providers\TagsServiceProvider;
@@ -34,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(TagsServiceProvider::class);
         $this->app->register(CartsServiceProvider::class);
         $this->app->register(TransactionsServiceProvider::class);
+        $this->app->register(OrdersServiceProvider::class);
     }
 
     /**

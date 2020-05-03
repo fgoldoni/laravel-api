@@ -3,22 +3,22 @@
 namespace Modules\Carts;
 
 use Darryldecode\Cart\CartCollection;
-use Modules\Carts\Entities\Order;
+use Modules\Carts\Entities\OrderList;
 
 /**
  * Class DBStorage.
  */
-class OrderDBStorage
+class OrderListDBStorage
 {
     public function has($key)
     {
-        return Order::find($key);
+        return OrderList::find($key);
     }
 
     public function get($key)
     {
         if ($this->has($key)) {
-            return new CartCollection(Order::find($key)->cart_data);
+            return new CartCollection(OrderList::find($key)->cart_data);
         }
 
         return [];
@@ -26,11 +26,11 @@ class OrderDBStorage
 
     public function put($key, $value)
     {
-        if ($row = Order::find($key)) {
+        if ($row = OrderList::find($key)) {
             $row->cart_data = $value;
             $row->save();
         } else {
-            Order::create([
+            OrderList::create([
                 'id'        => $key,
                 'cart_data' => $value
             ]);

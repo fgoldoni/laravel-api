@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
+use Modules\Carts\Jobs\OrderJob;
 use Modules\Carts\Repositories\Contracts\CartsRepository;
 use Modules\Carts\Repositories\Eloquent\EloquentCartsRepository;
 use Modules\Transactions\Http\Requests\PaypalRequest;
@@ -67,8 +68,10 @@ class TransactionsController extends Controller
             $cart = $this->cart->details();
 
             $transaction = $this->transactions->makePaypalTransaction($request->all(), $cart, $this->auth->user()->id);
+
             PaypalTransactionJob::dispatch($request->all(), $cart['items'], $this->auth->user(), $transaction->id);
-            //OrderJob::dispatch($cart['items'], $this->auth->guard('api')->user()->id);
+
+            OrderJob::dispatch($cart['items'], $transaction->id,  $this->auth->user()->id);
 
             app()->make(EloquentCartsRepository::class)->clear();
             $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Cart']);

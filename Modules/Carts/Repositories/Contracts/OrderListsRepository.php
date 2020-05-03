@@ -2,7 +2,7 @@
 
 namespace Modules\Carts\Repositories\Contracts;
 
-interface OrdersRepository
+interface OrderListsRepository
 {
     public function details();
 }

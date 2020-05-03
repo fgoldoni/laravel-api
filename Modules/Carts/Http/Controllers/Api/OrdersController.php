@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
-use Modules\Carts\Repositories\Contracts\OrdersRepository;
+use Modules\Carts\Repositories\Contracts\OrderListsRepository;
 use Modules\Tickets\Repositories\Contracts\TicketsRepository;
 
 class OrdersController extends Controller
@@ -35,11 +35,11 @@ class OrdersController extends Controller
      */
     private $tickets;
     /**
-     * @var \Modules\Carts\Repositories\Contracts\OrdersRepository
+     * @var \Modules\Carts\Repositories\Contracts\OrderListsRepository
      */
     private $orders;
 
-    public function __construct(OrdersRepository $orders, TicketsRepository $tickets, ResponseFactory $response, Translator $lang, Logger $logger, AuthManager $auth)
+    public function __construct(OrderListsRepository $orders, TicketsRepository $tickets, ResponseFactory $response, Translator $lang, Logger $logger, AuthManager $auth)
     {
         $this->response = $response;
         $this->lang = $lang;

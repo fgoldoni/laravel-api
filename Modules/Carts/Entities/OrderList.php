@@ -4,7 +4,7 @@ namespace Modules\Carts\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class OrderList extends Model
 {
     /**
      * The attributes that are mass assignable.
