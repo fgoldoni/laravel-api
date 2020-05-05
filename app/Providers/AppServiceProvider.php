@@ -12,6 +12,7 @@ use Modules\Orders\Providers\OrdersServiceProvider;
 use Modules\Posts\Providers\PostsServiceProvider;
 use Modules\Roles\Providers\RolesServiceProvider;
 use Modules\Tags\Providers\TagsServiceProvider;
+use Modules\Tickets\Providers\TicketsServiceProvider;
 use Modules\Transactions\Providers\TransactionsServiceProvider;
 use Modules\Users\Providers\UsersServiceProvider;
 
@@ -36,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(CartsServiceProvider::class);
         $this->app->register(TransactionsServiceProvider::class);
         $this->app->register(OrdersServiceProvider::class);
+        $this->app->register(TicketsServiceProvider::class);
     }
 
     /**

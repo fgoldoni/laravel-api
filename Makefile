@@ -80,7 +80,7 @@ load:  ## move templates
 echo:  ## laravel-echo-server start
 	laravel-echo-server start
 
-ansible:  ## deploy with ansible before run:  sudo apt-get install -y python
+ansible:  ## deploy with ansible before run:  sudo apt-get install -y python https://www.digitalocean.com/community/tutorials/comment-installer-mysql-sur-ubuntu-18-04-fr
 	ansible-playbook -i ../Ansible/hosts ../Ansible/playbook.yml
 
 ansible-repo:  ## deploy with ansible
