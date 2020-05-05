@@ -10,7 +10,6 @@
 .env.backup
 .phpunit.result.cache
 .php_cs.cache
-composer.lock
 package-lock.json
 Homestead.json
 Homestead.yaml
