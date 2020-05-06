@@ -24,7 +24,6 @@
                                         <th scope="col">Methods</th>
                                         <th scope="col">Url</th>
                                         <th scope="col">Action</th>
-                                        <th scope="col">Route</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -34,7 +33,6 @@
                                         <td>{{ strtolower(implode(',', $value->methods())) }}</td>
                                         <td>{{ $value->uri() }}</td>
                                         <td>{{ $value->getActionName() }}</td>
-                                        <td>{{ $value->getName() }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
