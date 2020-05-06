@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Dashboard</div>
 
@@ -21,18 +21,20 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Route</th>
+                                        <th scope="col">Methods</th>
                                         <th scope="col">Url</th>
                                         <th scope="col">Action</th>
+                                        <th scope="col">Route</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($routeCollection as $key => $value)
                                     <tr>
                                         <th scope="row">{{ $key }}</th>
-                                        <td>{{ $value->getName() }}</td>
+                                        <td>{{ strtolower(implode(',', $value->methods())) }}</td>
                                         <td>{{ $value->uri() }}</td>
                                         <td>{{ $value->getActionName() }}</td>
+                                        <td>{{ $value->getName() }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
