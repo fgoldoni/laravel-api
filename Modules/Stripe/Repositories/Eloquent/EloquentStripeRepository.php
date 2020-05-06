@@ -48,7 +48,7 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
     {
         parent::__construct($arr);
 
-        $this->stripe = Stripe::make(env('STRIPE_SECRET', Flag::PERMISSION_ADMIN));
+        $this->stripe = Stripe::make(env('STRIPE_SECRET', Flag::STRIPE_SECRET));
         $this->auth = $auth;
         $this->cart = $cart;
     }
