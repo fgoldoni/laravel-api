@@ -83,7 +83,7 @@ class CategoriesDatabaseSeeder extends Seeder
         ]);
 
         $parent->children()->create([
-            'name' => 'Silver'
+            'name' => 'Standard'
         ]);
 
         $parent->children()->create([
@@ -99,7 +99,7 @@ class CategoriesDatabaseSeeder extends Seeder
         ]);
 
         $parent->children()->create([
-            'name' => 'Classic'
+            'name' => 'VIP'
         ]);
     }
 }
