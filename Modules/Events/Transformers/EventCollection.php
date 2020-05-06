@@ -118,7 +118,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return asset('storage/uploads/cover/1587022819_i5i2.jpg');
+            return asset('images/ticket/ticket-bg01.jpg');
         }
     }
 
@@ -134,7 +134,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return asset('storage/uploads/cover/1587022819_i5i2.jpg');
+            return asset('images/banner/banner07.jpg');
         }
     }
 
@@ -145,7 +145,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return asset('storage/uploads/cover/1587022819_i5i2.jpg');
+            return asset('images/event/event-about.jpg');
         }
     }
 
@@ -156,7 +156,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return asset('storage/uploads/events/1587691120_o6X2.png');
+            return asset('images/logo.png');
         }
     }
 
@@ -167,7 +167,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return asset('storage/uploads/events/1587691120_o6X2.png');
+            return asset('images/movie/venus.jpg');
         }
     }
 }
