@@ -118,7 +118,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return "http://localhost:8080/storage/uploads/cover/1587022819_i5i2.jpg";
+            return asset('storage/uploads/cover/1587022819_i5i2.jpg');
         }
     }
 
@@ -134,7 +134,8 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return "http://localhost:8080/storage/uploads/cover/1587022819_i5i2.jpg";
+            return asset('storage/uploads/events/1577545968.jpg')
+            return asset('storage/uploads/cover/1587022819_i5i2.jpg');
         }
     }
 
@@ -145,7 +146,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return "http://localhost:8080/storage/uploads/cover/1587022819_i5i2.jpg";
+            return asset('storage/uploads/cover/1587022819_i5i2.jpg');
         }
     }
 
@@ -156,7 +157,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return "http://localhost:8080/storage/uploads/events/1587691120_o6X2.png";
+            return asset('storage/uploads/events/1587691120_o6X2.png');
         }
     }
 
@@ -167,7 +168,7 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return "http://localhost:8080/storage/uploads/events/1587691120_o6X2.png";
+            return asset('storage/uploads/events/1587691120_o6X2.png');
         }
     }
 }
