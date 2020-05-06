@@ -134,7 +134,6 @@ class EventCollection extends JsonResource
         if ($attachment) {
             return asset($attachment->url);
         } else {
-            return asset('storage/uploads/events/1577545968.jpg')
             return asset('storage/uploads/cover/1587022819_i5i2.jpg');
         }
     }
