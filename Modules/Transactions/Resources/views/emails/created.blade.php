@@ -12,9 +12,9 @@
                     </p>
 
                     <p style="line-height: 24px; margin-bottom:20px;">
-                        Vielen Dank für das Anfordern Ihrer Zugangsdaten zum {{ env('APP_NAME', 'SellFirst Portal') }}. Sie können sich über den folgenden Link ganz einfach in Ihr Profil einloggen.
+                        Ihre Zahlung wurde erfolgreich ausgeführt. Sie können über den folgenden Link ganz einfach die Rechnung anzeigen.
                         <br><br>
-                        <a href="{{ $url }}">Login Link</a>
+                        <a href="{{ $url }}">Meine Rechnung</a>
                         <br><br>
                         Vielen Dank, dass Sie unsere {{ env('APP_NAME', 'SellFirst Portal') }} verwenden!.
                     </p>

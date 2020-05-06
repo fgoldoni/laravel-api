@@ -4,6 +4,7 @@ namespace Modules\Transactions\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Modules\Transactions\Entities\Transaction;
 
@@ -23,7 +24,7 @@ class TransactionCreated extends Notification implements ShouldQueue
 
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail', 'database'];
     }
 
     public function toArray($notifiable)
@@ -36,5 +37,19 @@ class TransactionCreated extends Notification implements ShouldQueue
             'time'     => $this->transaction->created_at->format('c'),
             'category' => 'primary',
         ];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param mixed $notifiable
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage())
+            ->subject('['. env('APP_NAME', 'SellFirst Portal') .'] Rechnung Nr: '. $this->transaction->id .' ist verfügbar ' )
+            ->view('transactions::emails.created', ['homeUrl' => '#0', 'url' => '#0']);
     }
 }

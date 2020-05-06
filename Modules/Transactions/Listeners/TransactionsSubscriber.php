@@ -36,10 +36,16 @@ class TransactionsSubscriber
     public function handleTransactionCreated(Transaction $transaction)
     {
         $users = $this->getUserByRole(Flag::ROLE_ADMIN);
-        $users->push($this->getUserById(Auth::id()));
-        $users->push($this->getUserById($transaction->detail['items'][0]['user_id']));
 
-        Notification::send($users, new TransactionCreated($transaction));
+        if ($customer = $this->getUserById(Auth::id())) {
+            $users->push($customer);
+        }
+
+        if ($provider = $this->getUserById($transaction->detail['items'][0]['user_id'])) {
+            $users->push($provider);
+        }
+
+        Notification::send($users->unique(), new TransactionCreated($transaction));
     }
 
     public function handleTransactionDeleted(Transaction $transaction)

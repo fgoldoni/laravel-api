@@ -7,11 +7,11 @@
 <p>
     Sonnige Grüße
     <br/>
-    Ihr Team vom EventPortal
+    Ihr Team vom {{ env('APP_NAME', 'SellFirst Portal') }}
     <br/><br/>
-    EventPortal GROUP
+    {{ env('APP_NAME', 'SellFirst Portal') }} GROUP
     <br/><br/>
-    EventPortal Deutschland GmbH
+    {{ env('APP_NAME', 'SellFirst Portal') }} Deutschland GmbH
     <br/>
     Niendorfer Straße 43 | D-22529 Hamburg | Deutschland
     <br/><br/>

@@ -54,7 +54,7 @@ class RegisterNotification extends Notification
         $url = $this->host . '/magiclink/' . $notifiable->api_token . '?' . http_build_query(['to' => $this->to]);
 
         return (new MailMessage())
-            ->subject('Herzlich willkommen beim EventPortal')
+            ->subject('Herzlich willkommen beim ' .  env('APP_NAME', 'SellFirst Portal') )
             ->view('emails.users.created', ['homeUrl' => $this->host, 'url' => $url]);
     }
 
