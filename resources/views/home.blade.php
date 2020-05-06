@@ -13,8 +13,20 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    You are logged in!
+                    @if (Auth::user()->hasRole(\App\Flag::ROLE_ADMIN))
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="{{ url('telescope/requests') }}" target="_blank">
+                                Telescope
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{ url('log-viewer') }}" target="_blank">
+                                Logs
+                            </a>
+                        </li>
+                    </ul>
+                   @endif
                 </div>
             </div>
         </div>
