@@ -46,7 +46,7 @@ class UsersDatabaseSeeder extends Seeder
 
         $admin->assignRole(Flag::ROLE_ADMIN);
 
-        $executive->assignRole(Flag::PERMISSION_EVENT_MANAGER);
+        $executive->assignRole(Flag::ROLE_EVENT_MANAGER);
 
         $user->assignRole(Flag::ROLE_USER);
 
