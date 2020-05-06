@@ -16,6 +16,7 @@ use Modules\Tags\Providers\TagsServiceProvider;
 use Modules\Tickets\Providers\TicketsServiceProvider;
 use Modules\Transactions\Providers\TransactionsServiceProvider;
 use Modules\Users\Providers\UsersServiceProvider;
+use Modules\Vouchers\Providers\VouchersServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(OrdersServiceProvider::class);
         $this->app->register(TicketsServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
+        $this->app->register(VouchersServiceProvider::class);
     }
 
     /**
