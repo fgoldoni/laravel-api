@@ -16,13 +16,18 @@
                     @if (Auth::user()->hasRole(\App\Flag::ROLE_ADMIN))
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="{{ url('telescope/requests') }}" target="_blank">
+                            <a href="{{ url('telescope/requests') }}">
                                 Telescope
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="{{ url('log-viewer') }}" target="_blank">
+                            <a href="{{ url('log-viewer') }}">
                                 Logs
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{ route('routes.list') }}">
+                                Route List
                             </a>
                         </li>
                     </ul>
