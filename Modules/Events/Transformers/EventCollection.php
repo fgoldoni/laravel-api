@@ -14,6 +14,7 @@ class EventCollection extends JsonResource
     {
         return [
             'id'               => $this->id,
+            'name'             => $this->name,
             'title'            => $this->title,
             'slug'             => $this->slug,
             'description'      => $this->description,
@@ -52,6 +53,8 @@ class EventCollection extends JsonResource
             ],
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
+            'domain'     => 'http://' .$this->slug . '.' . env('EVENT_DOMAIN', 'sell-first.com'),
+            'video'      => $this->video,
         ];
     }
 

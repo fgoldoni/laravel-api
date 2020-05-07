@@ -13,6 +13,7 @@ class CreateEventCollection extends JsonResource
     {
         return [
             'id'                   => $this->id,
+            'name'                 => $this->name,
             'title'                => $this->title,
             'slug'                 => $this->slug,
             'description'          => $this->description,
@@ -32,6 +33,7 @@ class CreateEventCollection extends JsonResource
             'categories'           => [6],
             'ticketsList'          => $this->ticketsList(),
             'categoriesList'       => $this->getCategories(),
+            'video'                => $this->video,
         ];
     }
 

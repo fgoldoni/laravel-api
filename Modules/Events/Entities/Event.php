@@ -32,7 +32,7 @@ class Event extends Model
 
     protected $date = ['start', 'end', 'deleted_at', 'reminder_at'];
 
-    protected static $logAttributes = ['title', 'description', 'content', 'start', 'end', 'url', 'address', 'reminder_at'];
+    protected static $logAttributes = ['name', 'title', 'description', 'content', 'start', 'end', 'url', 'address', 'reminder_at', 'video'];
 
     protected static $logOnlyDirty = true;
 
@@ -102,7 +102,7 @@ class Event extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('title')
+            ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
 
@@ -135,6 +135,7 @@ class Event extends Model
     {
         return [
             'id'               => $this->id,
+            'title'            => $this->name,
             'title'            => $this->title,
             'slug'             => $this->slug,
             'description'      => $this->description,

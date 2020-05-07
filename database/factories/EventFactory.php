@@ -6,6 +6,7 @@ use Modules\Events\Entities\Event;
 
 $factory->define(Event::class, function (Faker $faker) {
     return [
+        'name'             => $faker->name,
         'title'            => $faker->name,
         'description'      => $faker->sentence(20),
         'content'          => $faker->sentence(20),

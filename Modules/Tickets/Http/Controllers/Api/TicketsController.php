@@ -82,7 +82,7 @@ class TicketsController extends Controller
         try {
             $ticket = $this->tickets->create(
                 array_merge(
-                    $request->only('name', 'offer_1', 'offer_2', 'offer_3', 'offer_4', 'price', 'quantity', 'position', 'event_id'),
+                    $request->only('name', 'offer_1', 'offer_2', 'offer_3', 'offer_4', 'price', 'quantity', 'position', 'event_id', 'online'),
                     [
                         'user_id' => $this->auth->user()->id
                     ]

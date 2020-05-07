@@ -115,6 +115,7 @@ class EventsController extends Controller
         try {
             $event = $this->eventsService->firstOrNew([
                 'id'               => 0,
+                'name'             => 'Ebony',
                 'title'            => 'Ebony 2020',
                 'description'      => 'Id est harum enim tempora quia ad est similique cumque eius ut quidem nesciunt accusamus expedita quae et soluta temporibus nesciunt commodi.',
                 'content'          => 'content',
@@ -141,7 +142,7 @@ class EventsController extends Controller
         try {
             $result['event'] = new EventCollection(
                 $this->eventsService->storeEvent(
-                    $request->only('title', 'description', 'content', 'address', 'city', 'contact_phone', 'contact_email', 'contact_name', 'start', 'end', 'url', 'color', 'online'),
+                    $request->only('name', 'title', 'description', 'content', 'address', 'city', 'contact_phone', 'contact_email', 'contact_name', 'start', 'end', 'url', 'color', 'online', 'video'),
                     $request->get('categories', []),
                     $request->get('tags', [])
                 )
@@ -158,7 +159,7 @@ class EventsController extends Controller
         try {
             $event = $this->eventsService->updateEvent(
                 $id,
-                $request->only('title', 'description', 'content', 'address', 'city', 'contact_phone', 'contact_email', 'contact_name', 'start', 'end', 'url', 'color', 'online'),
+                $request->only('name', 'title', 'description', 'content', 'address', 'city', 'contact_phone', 'contact_email', 'contact_name', 'start', 'end', 'url', 'color', 'online', 'video'),
                 $request->get('categories', []),
                 $request->get('tags', [])
             );
