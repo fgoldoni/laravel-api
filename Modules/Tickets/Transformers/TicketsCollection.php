@@ -26,6 +26,7 @@ class TicketsCollection extends JsonResource
             'quantity'             => $this->quantity,
             'sale'                 => $this->sale,
             'price'                => $this->price,
+            'rate'                 => $this->getRate(),
             'online'               => $this->online,
             'position'             => $this->position,
             'category'             => $this->getCategories(),
@@ -53,5 +54,17 @@ class TicketsCollection extends JsonResource
         }
 
         return 13;
+    }
+
+    private function getRate()
+    {
+        $q = $this->quantity + $this->sale;
+        $d = 100 * $this->sale;
+
+        if ($q > 0) {
+            return number_format($d / $q, 2);
+        }
+
+        return 0;
     }
 }

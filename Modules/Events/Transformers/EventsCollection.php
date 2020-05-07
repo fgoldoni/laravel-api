@@ -28,6 +28,9 @@ class EventsCollection extends JsonResource
             'color'            => $this->color,
             'all_day'          => $this->all_day,
             'online'           => $this->online,
+            'quantity'         => $this->getQuantity(),
+            'sale'             => $this->getSale(),
+            'rate'             => $this->getRate(),
             'attachments'      => $this->getAttachments(),
             'categories'       => $this->getCategories(),
             'tags'             => $this->getTags(),
@@ -66,5 +69,27 @@ class EventsCollection extends JsonResource
                 'name' => $tag->name
             ];
         });
+    }
+
+    private function getQuantity()
+    {
+        return $this->tickets->sum('quantity');
+    }
+
+    private function getSale()
+    {
+        return $this->tickets->sum('sale');
+    }
+
+    private function getRate()
+    {
+        $q = $this->getQuantity() + $this->getSale();
+        $d = 100 * $this->getSale();
+
+        if ($q > 0) {
+            return number_format($d / $q, 2);
+        }
+
+        return 0;
     }
 }

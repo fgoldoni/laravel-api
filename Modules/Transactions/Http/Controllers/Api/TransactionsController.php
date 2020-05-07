@@ -6,11 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
-use Modules\Carts\Jobs\OrderJob;
 use Modules\Carts\Repositories\Contracts\CartsRepository;
 use Modules\Carts\Repositories\Eloquent\EloquentCartsRepository;
+use Modules\Orders\Jobs\OrderJob;
 use Modules\Transactions\Http\Requests\PaypalRequest;
-use Modules\Transactions\Jobs\PaypalTransactionJob;
 use Modules\Transactions\Repositories\Contracts\TransactionsRepository;
 
 class TransactionsController extends Controller

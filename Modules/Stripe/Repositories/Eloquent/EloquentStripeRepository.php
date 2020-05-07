@@ -14,12 +14,11 @@ use App\Repositories\RepositoryAbstract;
 use Cartalyst\Stripe\Stripe;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Arr;
-use Modules\Carts\Jobs\OrderJob;
 use Modules\Carts\Repositories\Contracts\CartsRepository;
 use Modules\Carts\Repositories\Eloquent\EloquentCartsRepository;
+use Modules\Orders\Jobs\OrderJob;
 use Modules\Stripe\Repositories\Contracts\StripeRepository;
 use Modules\Transactions\Entities\Transaction;
-use Modules\Transactions\Jobs\TransactionJob;
 
 /**
  * Class EloquentStripeRepository.

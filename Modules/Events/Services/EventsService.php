@@ -36,7 +36,7 @@ class EventsService extends ServiceAbstract implements EventsServiceInterface
         return $this->resolveRepository()->withCriteria([
             new WithTrashed(),
             new ByUser($this->auth->user()->id),
-            new EagerLoad(['categories' => function ($query) {
+            new EagerLoad(['tickets', 'categories' => function ($query) {
                 $query->select('categories.id', 'categories.name');
             }, 'user' => function ($query) {
                 $query->select('users.id', 'users.first_name', 'users.last_name');

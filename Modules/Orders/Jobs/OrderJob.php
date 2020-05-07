@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Carts\Jobs;
+namespace Modules\Orders\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Modules\Orders\Repositories\Contracts\OrdersRepository;
+use Modules\Tickets\Repositories\Contracts\TicketsRepository;
 
 class OrderJob implements ShouldQueue
 {
@@ -52,6 +53,7 @@ class OrderJob implements ShouldQueue
                     'event_id' => $item->associatedModel->event_id,
                 ]
             );
+            app()->make(TicketsRepository::class)->updateQuantity($item->id, $item->quantity);
         }
     }
 }
