@@ -25,18 +25,14 @@ class OrderBy implements CriterionInterface
      */
     private $dir;
 
-    /**
-     * OrderBy constructor.
-     */
+
     public function __construct(string $column, string $dir = 'asc')
     {
         $this->column = $column;
         $this->dir = $dir;
     }
 
-    /**
-     * @param $model
-     */
+
     public function apply($model): Builder
     {
         return $model->orderBy($this->column, $this->dir);

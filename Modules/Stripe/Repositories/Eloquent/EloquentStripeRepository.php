@@ -63,7 +63,7 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         $cart = $this->cart->details();
 
         foreach ($cart['items'] as $item) {
-            $list[] = $item->id . ':' . $item->name;
+            $list[] = $item->attributes->title . ' ( '. $item->quantity . 'X' . $item->name . ' )';
         }
 
         $description = implode(' | ', $list);
@@ -87,7 +87,7 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         $cart = $this->cart->details();
 
         foreach ($cart['items'] as $item) {
-            $list[] = $item->id . ':' . $item->name;
+            $list[] = $item->attributes->title . ' ( '. $item->quantity . 'X' . $item->name . ' )';
         }
 
         $amount = (float) ($cart['total']);
