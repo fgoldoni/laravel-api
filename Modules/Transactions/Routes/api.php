@@ -12,6 +12,7 @@
 */
 
 Route::group(['middleware' => ['jwt.verify', 'http.logger'], 'namespace' => 'Api', 'as' => 'api.'], function () {
+    Route::get('transactions/{id}', 'TransactionsController@show')->name('transactions.show');
     Route::get('transactions/invoice/{id}', 'TransactionsController@invoice')->name('transactions.invoice');
     Route::post('transactions/paypal', 'TransactionsController@paypal')->name('transactions.paypal');
 });

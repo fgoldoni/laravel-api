@@ -27,7 +27,13 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 
     private function getDescription($item)
     {
-        return $item->quantity . 'X' .$item->name;
+        return $item->quantity . ' X ' .$item->name;
+        $list[] = $item->attributes->title . ' ( '. $item->quantity . 'X' . $item->name . ' )';
+    }
+
+    private function getDomain($item)
+    {
+        return 'http://' . $item->attributes->slug . '.' . env('EVENT_DOMAIN', 'sell-first.com');
     }
 
     private function getTmpItem($item)
@@ -46,11 +52,13 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
     public function makeCardTransaction(array $charges, $cart, int $userId)
     {
         $list = [];
+        $domain = '#0';
         $items = [];
 
         foreach ($cart['items'] as $item) {
             $list[] = $this->getDescription($item);
             $items[] = $this->getTmpItem($item);
+            $domain = $this->getDomain($item);
         }
 
         $description = implode(' | ', $list);
@@ -75,7 +83,8 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
             ],
             'metadata'  => $charges['metadata'],
             'user_id'   => $userId,
-            'parent_id' => null
+            'parent_id' => null,
+            'domain'     => $domain
         ]);
     }
 
@@ -83,10 +92,12 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
     {
         $list = [];
         $items = [];
+        $domain = '#0';
 
         foreach ($cart['items'] as $item) {
             $list[] = $this->getDescription($item);
             $items[] = $this->getTmpItem($item);
+            $domain = $this->getDomain($item);
         }
         $description = implode(' | ', $list);
 
@@ -107,7 +118,8 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
             ],
             'metadata'  => $this->getMetadata($charges),
             'user_id'   => $userId,
-            'parent_id' => null
+            'parent_id' => null,
+            'domain'     => $domain
         ]);
     }
 

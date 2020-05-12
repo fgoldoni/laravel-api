@@ -2,6 +2,7 @@
 
 namespace Modules\Transactions\Entities;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
@@ -31,5 +32,13 @@ class Transaction extends Model
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

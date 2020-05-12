@@ -3,7 +3,9 @@
 namespace Modules\Transactions\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Criteria\EagerLoad;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
 use Modules\Carts\Repositories\Contracts\CartsRepository;
@@ -73,6 +75,21 @@ class TransactionsController extends Controller
             app()->make(EloquentCartsRepository::class)->clear();
 
             $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Paypal']);
+
+            return $this->responseJson($result);
+        } catch (Exception $e) {
+            return $this->responseJsonError($e);
+        }
+    }
+
+    public function show (int $id)
+    {
+        try {
+            $result['transaction'] = $this->transactions->withCriteria([
+                new EagerLoad(['user' => function ($query) {
+                    $query->select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.mobile');
+                }])
+            ])->find($id);
 
             return $this->responseJson($result);
         } catch (Exception $e) {

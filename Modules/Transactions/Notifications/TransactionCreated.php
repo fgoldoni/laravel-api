@@ -48,8 +48,11 @@ class TransactionCreated extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $homeUrl = $this->transaction->domain;
+        $url = $homeUrl . '/transactions/' . $this->transaction->id . '?' . http_build_query(['token' => $notifiable->api_token]);
+
         return (new MailMessage())
-            ->subject('['. env('APP_NAME', 'SellFirst Portal') .'] Rechnung Nr: '. $this->transaction->id .' ist verfügbar ' )
-            ->view('transactions::emails.created', ['homeUrl' => '#0', 'url' => '#0']);
+            ->subject('Ihre Rechnung ('. $this->transaction->id .') ist verfügbar' )
+            ->view('transactions::emails.created', ['homeUrl' => $homeUrl, 'url' => $url]);
     }
 }
