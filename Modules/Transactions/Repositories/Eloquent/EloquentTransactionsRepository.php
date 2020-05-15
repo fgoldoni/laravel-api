@@ -20,6 +20,8 @@ use Modules\Transactions\Repositories\Contracts\TransactionsRepository;
  */
 class EloquentTransactionsRepository extends RepositoryAbstract implements TransactionsRepository
 {
+    private $providerId;
+
     public function model()
     {
         return Transaction::class;
@@ -38,6 +40,8 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 
     private function getTmpItem($item)
     {
+        $this->providerId = $item->associatedModel->user_id;
+
         return [
             'id'               => $item->id,
             'name'             => $item->name,
@@ -81,10 +85,11 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
                 'cart_sub_total_conditions' => $cart['cart_sub_total_conditions'],
                 'cart_total_conditions'     => $cart['cart_total_conditions'],
             ],
-            'metadata'  => $charges['metadata'],
-            'user_id'   => $userId,
-            'parent_id' => null,
-            'domain'     => $domain
+            'metadata'    => $charges['metadata'],
+            'customer_id' => $userId,
+            'provider_id' => $this->providerId,
+            'parent_id'   => null,
+            'domain'      => $domain
         ]);
     }
 
@@ -116,10 +121,11 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
                 'cart_sub_total_conditions' => $cart['cart_sub_total_conditions'],
                 'cart_total_conditions'     => $cart['cart_total_conditions'],
             ],
-            'metadata'  => $this->getMetadata($charges),
-            'user_id'   => $userId,
-            'parent_id' => null,
-            'domain'     => $domain
+            'metadata'    => $this->getMetadata($charges),
+            'customer_id' => $userId,
+            'provider_id' => $this->providerId,
+            'parent_id'   => null,
+            'domain'      => $domain
         ]);
     }
 

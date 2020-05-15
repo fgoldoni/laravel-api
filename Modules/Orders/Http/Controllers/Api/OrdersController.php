@@ -3,15 +3,17 @@
 namespace Modules\Orders\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Criteria\ByCustomerOrProvider;
 use App\Repositories\Criteria\EagerLoad;
+use App\Repositories\Criteria\Select;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
-use Modules\Carts\Repositories\Contracts\OrderListsRepository;
 use Modules\Orders\Repositories\Contracts\OrdersRepository;
 use Modules\Tickets\Repositories\Contracts\TicketsRepository;
+use Modules\Transactions\Repositories\Contracts\TransactionsRepository;
 
 class OrdersController extends Controller
 {
@@ -39,9 +41,13 @@ class OrdersController extends Controller
      * @var \Modules\Orders\Repositories\Contracts\OrdersRepository
      */
     private $orders;
+    /**
+     * @var \Modules\Transactions\Repositories\Contracts\TransactionsRepository
+     */
+    private $transactions;
 
 
-    public function __construct(OrdersRepository $orders, TicketsRepository $tickets, ResponseFactory $response, Translator $lang, Logger $logger, AuthManager $auth)
+    public function __construct(OrdersRepository $orders, TransactionsRepository $transactions, TicketsRepository $tickets, ResponseFactory $response, Translator $lang, Logger $logger, AuthManager $auth)
     {
         $this->response = $response;
         $this->lang = $lang;
@@ -49,12 +55,18 @@ class OrdersController extends Controller
         $this->auth = $auth;
         $this->tickets = $tickets;
         $this->orders = $orders;
+        $this->transactions = $transactions;
     }
 
     public function getOrders()
     {
+        $transactions = $this->transactions->withCriteria([
+            new Select('id', 'customer_id', 'provider_id'),
+            new ByCustomerOrProvider($this->auth->user()->id)
+        ])->all();
+
         try {
-            $result['orders'] = $this->orders->getOrders();
+            $result['orders'] = $this->orders->getOrders($transactions->pluck(['id'])->toArray());
             $result['message'] = $this->lang->get('messages.created', ['attribute' => 'Order']);
 
             return $this->responseJson($result);

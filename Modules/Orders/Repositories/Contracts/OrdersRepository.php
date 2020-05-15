@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface OrdersRepository
 {
-    public function getOrders(): Collection;
+    public function getOrders(array $transactions = []): Collection;
 }

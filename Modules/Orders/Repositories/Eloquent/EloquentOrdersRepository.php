@@ -13,6 +13,7 @@ use App\Repositories\Criteria\ByCustomerOrProvider;
 use App\Repositories\Criteria\EagerLoad;
 use App\Repositories\Criteria\OrderBy;
 use App\Repositories\Criteria\Select;
+use App\Repositories\Criteria\WhereIn;
 use App\Repositories\Criteria\WithTrashed;
 use App\Repositories\RepositoryAbstract;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,16 +31,14 @@ class EloquentOrdersRepository extends RepositoryAbstract implements OrdersRepos
         return Order::class;
     }
 
-    public function getOrders(): Collection
+    public function getOrders (array $transactions = []): Collection
     {
         return $this->withCriteria([
             new WithTrashed(),
-            new Select('id', 'name', 'price', 'quantity', 'customer_id', 'provider_id', 'transaction_id', 'event_id', 'created_at'),
-            new ByCustomerOrProvider(Auth::id()),
+            new Select('id', 'name', 'price', 'quantity', 'user_id', 'transaction_id', 'event_id', 'created_at'),
             new OrderBy('orders.id', 'desc'),
-            new EagerLoad(['customer' => function ($query) {
-                $query->select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.mobile');
-            }, 'provider' => function ($query) {
+            new WhereIn('orders.transaction_id', $transactions),
+            new EagerLoad(['user' => function ($query) {
                 $query->select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.mobile');
             }, 'transaction' => function ($query) {
                 $query->select('transactions.id', 'transactions.gateway');
