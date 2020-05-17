@@ -86,7 +86,9 @@ class TransactionsController extends Controller
     {
         try {
             $result['transaction'] = $this->transactions->withCriteria([
-                new EagerLoad(['user' => function ($query) {
+                new EagerLoad(['customer' => function ($query) {
+                    $query->select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.mobile');
+                }, 'provider' => function ($query) {
                     $query->select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.mobile');
                 }])
             ])->find($id);

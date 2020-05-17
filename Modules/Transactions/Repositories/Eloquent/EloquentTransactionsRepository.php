@@ -22,6 +22,8 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 {
     private $providerId;
 
+    private $eventTitle;
+
     public function model()
     {
         return Transaction::class;
@@ -29,8 +31,9 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 
     private function getDescription($item)
     {
-        return $item->quantity . ' X ' .$item->name;
-        $list[] = $item->attributes->title . ' ( '. $item->quantity . 'X' . $item->name . ' )';
+        $this->eventTitle = $item->attributes['title'];
+
+        $list[] = $item->attributes['title'] . ' ( '. $item->quantity . 'X' . $item->name . ' )';
     }
 
     private function getDomain($item)
@@ -60,7 +63,7 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
         $items = [];
 
         foreach ($cart['items'] as $item) {
-            $list[] = $this->getDescription($item);
+            $this->getDescription($item);
             $items[] = $this->getTmpItem($item);
             $domain = $this->getDomain($item);
         }
@@ -69,6 +72,7 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 
         return $this->resolveModel()->create([
             'gateway'             => $charges['source']['brand'],
+            'name'                => $this->eventTitle,
             'transaction_key'     => $charges['id'],
             'transaction_balance' => $charges['balance_transaction'],
             'status'              => $charges['status'],
@@ -108,6 +112,7 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 
         return $this->resolveModel()->create([
             'gateway'             => 'Paypal',
+            'name'                => $this->eventTitle,
             'transaction_key'     => $charges['paymentId'],
             'status'              => 'succeeded',
             'price'               => $cart['total'],

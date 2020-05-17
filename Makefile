@@ -1,4 +1,4 @@
-.PHONY: install phpcs server test help optimize routes migrate watch chmod refresh move echo ansible test docker
+.PHONY: install phpcs server test help optimize routes migrate watch chmod refresh move echo ansible test docker retry
 
 .DEFAULT_GOAL = help
 PHP=php
@@ -59,6 +59,9 @@ message: optimize ## messages.js add /* eslint-disable */
 
 queue: optimize ## start jos processing
 	$(PHP) artisan queue:work --queue=high,transaction,low,default --tries=3
+
+retry: optimize ## start jos processing
+	$(PHP) artisan queue:retry all
 
 restart: optimize ## restart jos processing
 	$(PHP) artisan queue:restart

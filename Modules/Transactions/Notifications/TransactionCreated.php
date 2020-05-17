@@ -49,10 +49,11 @@ class TransactionCreated extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         $homeUrl = $this->transaction->domain;
-        $url = $homeUrl . '/transactions/' . $this->transaction->id . '?' . http_build_query(['token' => $notifiable->api_token]);
+        $ticketUrl = $homeUrl . '/tickets';
+        $url = $homeUrl . '/magiclink/' . $notifiable->api_token . '?' . http_build_query(['to' => $ticketUrl]);
 
         return (new MailMessage())
-            ->subject('Ihre Rechnung ('. $this->transaction->id .') ist verfügbar' )
-            ->view('transactions::emails.created', ['homeUrl' => $homeUrl, 'url' => $url]);
+            ->subject('Kauf bestätigt: '. $this->transaction->name)
+            ->view('transactions::emails.created', ['homeUrl' => $homeUrl, 'name' => $this->transaction->metadata['name'], 'url' => $url, 'detail' => $this->transaction->detail, 'coupons' => $this->transaction->detail['cart_total_conditions']]);
     }
 }
