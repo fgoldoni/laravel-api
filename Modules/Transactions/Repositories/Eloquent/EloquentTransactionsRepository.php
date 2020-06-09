@@ -24,6 +24,8 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 
     private $eventTitle;
 
+    private $eventId;
+
     public function model()
     {
         return Transaction::class;
@@ -31,9 +33,10 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
 
     private function getDescription($item)
     {
+        $this->eventId = $item->attributes['id'];
         $this->eventTitle = $item->attributes['title'];
 
-        $list[] = $item->attributes['title'] . ' ( '. $item->quantity . 'X' . $item->name . ' )';
+        $list[] = $item->attributes['title'] . ' ( ' . $item->quantity . 'X' . $item->name . ' )';
     }
 
     private function getDomain($item)
@@ -92,6 +95,7 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
             'metadata'    => $charges['metadata'],
             'customer_id' => $userId,
             'provider_id' => $this->providerId,
+            'event_id'    => $this->eventId,
             'parent_id'   => null,
             'domain'      => $domain
         ]);
@@ -129,6 +133,7 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
             'metadata'    => $this->getMetadata($charges),
             'customer_id' => $userId,
             'provider_id' => $this->providerId,
+            'event_id'    => $this->eventId,
             'parent_id'   => null,
             'domain'      => $domain
         ]);
@@ -137,12 +142,12 @@ class EloquentTransactionsRepository extends RepositoryAbstract implements Trans
     private function getMetadata($charges)
     {
         return [
-            'id' => Auth::user()->id,
-            'email' => Auth::user()->email,
-            'mobile' => Auth::user()->mobile,
-            'name' => Auth::user()->full_name,
+            'id'        => Auth::user()->id,
+            'email'     => Auth::user()->email,
+            'mobile'    => Auth::user()->mobile,
+            'name'      => Auth::user()->full_name,
             'paymentId' => $charges['paymentId'],
-            'PayerID' => $charges['PayerID']
+            'PayerID'   => $charges['PayerID']
         ];
     }
 }

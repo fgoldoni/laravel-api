@@ -63,7 +63,7 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         $cart = $this->cart->details();
 
         foreach ($cart['items'] as $item) {
-            $list[] = $item->attributes->title . ' ( '. $item->quantity . 'X' . $item->name . ' )';
+            $list[] = $item->attributes->title . ' ( ' . $item->quantity . 'X' . $item->name . ' )';
         }
 
         $description = implode(' | ', $list);
@@ -87,7 +87,7 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         $cart = $this->cart->details();
 
         foreach ($cart['items'] as $item) {
-            $list[] = $item->attributes->title . ' ( '. $item->quantity . 'X' . $item->name . ' )';
+            $list[] = $item->attributes->title . ' ( ' . $item->quantity . 'X' . $item->name . ' )';
         }
 
         $amount = (float) ($cart['total']);
@@ -123,11 +123,10 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
 
         $transaction = $transactions->makeCardTransaction($charges, $cart, $this->auth->user()->id);
 
-        OrderJob::dispatch($cart['items'], $transaction->id,  $this->auth->user()->id);
+        OrderJob::dispatch($cart['items'], $transaction->id, $this->auth->user()->id);
 
         app()->make(EloquentCartsRepository::class)->clear();
 
         return $transaction;
     }
-
 }

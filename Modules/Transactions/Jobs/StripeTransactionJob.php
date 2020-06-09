@@ -16,7 +16,6 @@ class StripeTransactionJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-
     private $transactions;
     /**
      * @var array
@@ -31,7 +30,6 @@ class StripeTransactionJob implements ShouldQueue
 
     public function __construct($transactions, array $charges, $cart, int $userId)
     {
-
         $this->queue = 'transaction';
         $this->transactions = $transactions;
         $this->charges = $charges;
@@ -39,11 +37,10 @@ class StripeTransactionJob implements ShouldQueue
         $this->userId = $userId;
     }
 
-
     public function handle()
     {
         $transaction = $this->transactions->makeCardTransaction($this->charges, $this->cart, $this->userId);
 
-        OrderJob::dispatch($this->cart['items'], $transaction->id,  $this->userId);
+        OrderJob::dispatch($this->cart['items'], $transaction->id, $this->userId);
     }
 }

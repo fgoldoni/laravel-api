@@ -34,8 +34,8 @@ class EloquentTicketsRepository extends RepositoryAbstract implements TicketsRep
     public function updateQuantity(int $id, int $quantity): Ticket
     {
         $ticket = $this->find($id);
-        $newQuantity = (int)$ticket->quantity - $quantity;
-        $newSale = (int)$ticket->sale + $quantity;
+        $newQuantity = (int) $ticket->quantity - $quantity;
+        $newSale = (int) $ticket->sale + $quantity;
 
         return $this->update($id, ['quantity' => $newQuantity, 'sale' => $newSale]);
     }

@@ -53,7 +53,17 @@ class TransactionCreated extends Notification implements ShouldQueue
         $url = $homeUrl . '/magiclink/' . $notifiable->api_token . '?' . http_build_query(['to' => $ticketUrl]);
 
         return (new MailMessage())
-            ->subject('Kauf bestätigt: '. $this->transaction->name)
-            ->view('transactions::emails.created', ['homeUrl' => $homeUrl, 'name' => $this->transaction->metadata['name'], 'url' => $url, 'detail' => $this->transaction->detail, 'coupons' => $this->transaction->detail['cart_total_conditions']]);
+            ->subject($this->transaction->id . ' | Kauf bestätigt: ' . $this->transaction->name)
+            ->view('transactions::emails.created', [
+                'homeUrl'       => $homeUrl,
+                'transactionId' => $this->transaction->id,
+                'name'          => $notifiable->full_name,
+                'url'           => $url,
+                'event'         => $this->transaction->event,
+                'provider'      => $this->transaction->provider,
+                'detail'        => $this->transaction->detail,
+                'coupons'       => $this->transaction->detail['cart_total_conditions'
+                ]
+            ]);
     }
 }

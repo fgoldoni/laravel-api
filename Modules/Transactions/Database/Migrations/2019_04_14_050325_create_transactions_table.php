@@ -30,6 +30,7 @@ class CreateTransactionsTable extends Migration
             $table->string('domain')->nullable();
             $table->integer('customer_id')->unsigned()->index()->nullable();
             $table->integer('provider_id')->unsigned()->index()->nullable();
+            $table->integer('event_id')->unsigned()->index()->nullable();
             $table->integer('parent_id')->unsigned()->nullable()->index();
 
             $table->softDeletes();
@@ -39,6 +40,7 @@ class CreateTransactionsTable extends Migration
         Schema::table('transactions', function (Blueprint $table) {
             $table->foreign('customer_id', 'customer')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('provider_id', 'provider')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
         });
     }
 

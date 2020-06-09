@@ -33,7 +33,7 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
         $attachment = new Attachment([
             'attachable_type' => $attributes['attachable_type'],
             'attachable_id'   => $attributes['attachable_id'],
-            'position'   => $attributes['position']
+            'position'        => $attributes['position']
         ]);
 
         $attachment->loadParameters($attributes['attachment'], $attributes['folder']);
@@ -85,7 +85,7 @@ class EloquentAttachmentsRepository extends RepositoryAbstract implements Attach
 
         if (isset($attributes['resize']) && (bool) $attributes['resize']) {
             $manager->make($attributes['attachment']->getRealPath())->orientate()->fit($attributes['width'], $attributes['height'])->save($path);
-        } else if(isset($attributes['position']) && ((int) $attributes['position'] === 0)) {
+        } elseif (isset($attributes['position']) && (0 === (int) $attributes['position'])) {
             $manager->make($attributes['attachment']->getRealPath())->orientate()->fit(166, 39)->save($path);
         } else {
             $manager->make($attributes['attachment']->getRealPath())->orientate()->save($path);

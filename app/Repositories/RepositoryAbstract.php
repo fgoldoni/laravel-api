@@ -63,7 +63,6 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
         return $this;
     }
 
-
     public function find(int $id, $columns = ['*'])
     {
         return $this->model->findOrFail($id, $columns);

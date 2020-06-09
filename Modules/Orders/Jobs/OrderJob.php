@@ -37,19 +37,18 @@ class OrderJob implements ShouldQueue
         $this->userId = $userId;
     }
 
-
     public function handle()
     {
         foreach ($this->items as $item) {
             app()->make(OrdersRepository::class)->create(
                 [
-                    'name' => $item->name,
-                    'price' => $item->price,
-                    'quantity'  => $item->quantity,
-                    'user_id' => $this->userId,
+                    'name'           => $item->name,
+                    'price'          => $item->price,
+                    'quantity'       => $item->quantity,
+                    'user_id'        => $this->userId,
                     'transaction_id' => $this->transactionId,
-                    'ticket_id' => $item->id,
-                    'event_id' => $item->associatedModel->event_id,
+                    'ticket_id'      => $item->id,
+                    'event_id'       => $item->associatedModel->event_id,
                 ]
             );
             app()->make(TicketsRepository::class)->updateQuantity($item->id, $item->quantity);

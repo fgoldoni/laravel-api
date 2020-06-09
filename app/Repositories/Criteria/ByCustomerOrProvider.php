@@ -23,12 +23,10 @@ class ByCustomerOrProvider implements CriterionInterface
      */
     private $userId;
 
-
     public function __construct(int $userId)
     {
         $this->userId = $userId;
     }
-
 
     public function apply($model): Builder
     {

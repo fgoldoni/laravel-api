@@ -14,7 +14,6 @@ class PaypalRequest extends FormRequest
     public function rules()
     {
         return [
-            //
         ];
     }
 

@@ -12,7 +12,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Order extends Model
 {
-    use SoftDeletes, LogsActivity;
+    use SoftDeletes;
+    use LogsActivity;
 
     protected $guarded = [];
 

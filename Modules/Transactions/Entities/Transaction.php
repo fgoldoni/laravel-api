@@ -4,6 +4,7 @@ namespace Modules\Transactions\Entities;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Events\Entities\Event;
 
 class Transaction extends Model
 {
@@ -48,5 +49,13 @@ class Transaction extends Model
     public function provider()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
     }
 }

@@ -9,7 +9,6 @@
 
 namespace Modules\Orders\Repositories\Eloquent;
 
-use App\Repositories\Criteria\ByCustomerOrProvider;
 use App\Repositories\Criteria\EagerLoad;
 use App\Repositories\Criteria\OrderBy;
 use App\Repositories\Criteria\Select;
@@ -17,7 +16,6 @@ use App\Repositories\Criteria\WhereIn;
 use App\Repositories\Criteria\WithTrashed;
 use App\Repositories\RepositoryAbstract;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Repositories\Contracts\OrdersRepository;
 
@@ -31,7 +29,7 @@ class EloquentOrdersRepository extends RepositoryAbstract implements OrdersRepos
         return Order::class;
     }
 
-    public function getOrders (array $transactions = []): Collection
+    public function getOrders(array $transactions = []): Collection
     {
         return $this->withCriteria([
             new WithTrashed(),

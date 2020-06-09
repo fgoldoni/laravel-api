@@ -120,9 +120,9 @@ class EventCollection extends JsonResource
 
         if ($attachment) {
             return asset($attachment->url);
-        } else {
-            return asset('images/ticket/ticket-bg01.jpg');
         }
+
+        return asset('images/ticket/ticket-bg01.jpg');
     }
 
     private function ticketsList()
@@ -136,9 +136,9 @@ class EventCollection extends JsonResource
 
         if ($attachment) {
             return asset($attachment->url);
-        } else {
-            return asset('images/banner/banner07.jpg');
         }
+
+        return asset('images/banner/banner07.jpg');
     }
 
     private function getFlyer()
@@ -147,9 +147,9 @@ class EventCollection extends JsonResource
 
         if ($attachment) {
             return asset($attachment->url);
-        } else {
-            return asset('images/event/event-about.jpg');
         }
+
+        return asset('images/event/event-about.jpg');
     }
 
     private function getLogo()
@@ -158,9 +158,9 @@ class EventCollection extends JsonResource
 
         if ($attachment) {
             return asset($attachment->url);
-        } else {
-            return asset('images/logo.png');
         }
+
+        return asset('images/logo.png');
     }
 
     private function getProfile()
@@ -169,8 +169,8 @@ class EventCollection extends JsonResource
 
         if ($attachment) {
             return asset($attachment->url);
-        } else {
-            return asset('images/movie/venus.jpg');
         }
+
+        return asset('images/movie/venus.jpg');
     }
 }

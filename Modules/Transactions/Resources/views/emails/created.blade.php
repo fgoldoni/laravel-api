@@ -13,7 +13,10 @@
 
                     <p style="line-height: 24px; margin-bottom:20px;">
                         Ihre Zahlung wurde erfolgreich ausgeführt.
-                        <br><br>
+                        <br>
+                        <br>
+                        <u>Transaction N. </u> <strong>{{ $transactionId }}</strong>
+                        <br>
                         <p style="line-height: 24px; margin-bottom:10px;">
                         Bestellübersicht
                         </p>
@@ -74,6 +77,24 @@
                     <br>
                     <a href="{{ $url }}">Mehr Tickets kaufen</a>
                     <br><br>
+                    <p style="line-height: 24px; margin-bottom:10px;">
+                        <u>Verkäufer</u>
+                        <br>
+                        <br>
+                        <strong>Event: </strong> {{ $event->title }}
+                        <br>
+                        <strong>Name: </strong> {{ $provider->full_name }}
+                        <br>
+                        <strong>Email: </strong>{{ $provider->email }}
+                        <br>
+                        <strong>Phone: </strong>{{ $provider->mobile }}
+                        <br>
+                        <strong>Address: </strong>{{ $event->address }}
+                        <br>
+                        <strong>Start: </strong>{{ \Illuminate\Support\Carbon::parse($event->start)->format('d M, Y H:m') }}
+
+                    </p>
+                        <br>
                         Vielen Dank, dass Sie unsere {{ env('APP_NAME', 'SellFirst Portal') }} verwenden!.
                     </p>
 

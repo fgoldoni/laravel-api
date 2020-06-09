@@ -5,7 +5,6 @@ namespace Modules\Transactions\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\Criteria\EagerLoad;
 use Illuminate\Auth\AuthManager;
-use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Translation\Translator;
 use Modules\Carts\Repositories\Contracts\CartsRepository;
@@ -70,7 +69,7 @@ class TransactionsController extends Controller
 
             $transaction = $this->transactions->makePaypalTransaction($request->all(), $cart, $this->auth->user()->id);
 
-            OrderJob::dispatch($cart['items'], $transaction->id,  $this->auth->user()->id);
+            OrderJob::dispatch($cart['items'], $transaction->id, $this->auth->user()->id);
 
             app()->make(EloquentCartsRepository::class)->clear();
 
@@ -82,7 +81,7 @@ class TransactionsController extends Controller
         }
     }
 
-    public function show (int $id)
+    public function show(int $id)
     {
         try {
             $result['transaction'] = $this->transactions->withCriteria([
@@ -90,7 +89,7 @@ class TransactionsController extends Controller
                     $query->select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.mobile');
                 }, 'provider' => function ($query) {
                     $query->select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.mobile');
-                }])
+                }, 'event'])
             ])->find($id);
 
             return $this->responseJson($result);

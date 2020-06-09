@@ -143,7 +143,6 @@ class AuthController extends Controller
                 $this->jwtAuth->fromUser($user);
             }
 
-
             $result['message'] = 'We have e-mailed your login link!';
 
             return $this->responseJson($result);

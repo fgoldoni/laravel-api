@@ -7,8 +7,10 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Modules\Transactions\Entities\Transaction;
+use Modules\Transactions\Notifications\TransactionAdminCreated;
 use Modules\Transactions\Notifications\TransactionCreated;
 use Modules\Transactions\Notifications\TransactionDeleted;
+use Modules\Transactions\Notifications\TransactionProviderCreated;
 use Modules\Transactions\Notifications\TransactionRestored;
 
 class TransactionsSubscriber
@@ -38,14 +40,14 @@ class TransactionsSubscriber
         $users = $this->getUserByRole(Flag::ROLE_ADMIN);
 
         if ($customer = $this->getUserById(Auth::id())) {
-            $users->push($customer);
+            Notification::send($customer, new TransactionCreated($transaction->load('provider', 'event')));
         }
 
         if ($provider = $this->getUserById($transaction->detail['items'][0]['user_id'])) {
-            $users->push($provider);
+            Notification::send($provider, new TransactionProviderCreated($transaction));
         }
 
-        Notification::send($users->unique(), new TransactionCreated($transaction));
+        Notification::send($users->unique(), new TransactionAdminCreated($transaction));
     }
 
     public function handleTransactionDeleted(Transaction $transaction)

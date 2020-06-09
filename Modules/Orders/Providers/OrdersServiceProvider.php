@@ -2,8 +2,8 @@
 
 namespace Modules\Orders\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\ServiceProvider;
 
 class OrdersServiceProvider extends ServiceProvider
 {
@@ -60,7 +60,7 @@ class OrdersServiceProvider extends ServiceProvider
 
         $this->publishes([
             $sourcePath => $viewPath
-        ],'views');
+        ], 'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/modules/orders';
@@ -90,7 +90,7 @@ class OrdersServiceProvider extends ServiceProvider
      */
     public function registerFactories()
     {
-        if (! app()->environment('production') && $this->app->runningInConsole()) {
+        if (!app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(module_path('Orders', 'Database/factories'));
         }
     }

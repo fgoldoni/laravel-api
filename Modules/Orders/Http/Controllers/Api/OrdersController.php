@@ -46,7 +46,6 @@ class OrdersController extends Controller
      */
     private $transactions;
 
-
     public function __construct(OrdersRepository $orders, TransactionsRepository $transactions, TicketsRepository $tickets, ResponseFactory $response, Translator $lang, Logger $logger, AuthManager $auth)
     {
         $this->response = $response;

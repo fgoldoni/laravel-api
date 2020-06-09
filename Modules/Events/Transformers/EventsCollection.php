@@ -39,7 +39,7 @@ class EventsCollection extends JsonResource
             ],
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
-            'domain'     => 'http://' .$this->slug . '.' . env('EVENT_DOMAIN', 'sell-first.com'),
+            'domain'     => 'http://' . $this->slug . '.' . env('EVENT_DOMAIN', 'sell-first.com'),
             'video'      => $this->video,
         ];
     }

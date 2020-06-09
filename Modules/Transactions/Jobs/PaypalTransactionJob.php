@@ -131,12 +131,12 @@ class PaypalTransactionJob implements ShouldQueue
     private function getMetadata($charges)
     {
         return [
-            'id' => $this->auth->id,
-            'email' => $this->auth->email,
-            'mobile' => $this->auth->mobile,
-            'name' => $this->auth->full_name,
+            'id'        => $this->auth->id,
+            'email'     => $this->auth->email,
+            'mobile'    => $this->auth->mobile,
+            'name'      => $this->auth->full_name,
             'paymentId' => $charges['paymentId'],
-            'PayerID' => $charges['PayerID']
+            'PayerID'   => $charges['PayerID']
         ];
     }
 }
