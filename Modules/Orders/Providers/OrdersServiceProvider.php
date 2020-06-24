@@ -43,7 +43,8 @@ class OrdersServiceProvider extends ServiceProvider
             module_path('Orders', 'Config/config.php') => config_path('orders.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path('Orders', 'Config/config.php'), 'orders'
+            module_path('Orders', 'Config/config.php'),
+            'orders'
         );
     }
 

@@ -43,7 +43,8 @@ class StripeServiceProvider extends ServiceProvider
             module_path('Stripe', 'Config/config.php') => config_path('stripe.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path('Stripe', 'Config/config.php'), 'stripe'
+            module_path('Stripe', 'Config/config.php'),
+            'stripe'
         );
     }
 

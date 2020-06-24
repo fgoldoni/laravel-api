@@ -42,7 +42,8 @@ class VouchersServiceProvider extends ServiceProvider
             module_path('Vouchers', 'Config/config.php') => config_path('vouchers.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path('Vouchers', 'Config/config.php'), 'vouchers'
+            module_path('Vouchers', 'Config/config.php'),
+            'vouchers'
         );
     }
 

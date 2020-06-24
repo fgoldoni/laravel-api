@@ -46,11 +46,14 @@ class DashboardController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->users->sync($this->auth->user()->id, 'dashboards',
+            $this->users->sync(
+                $this->auth->user()->id,
+                'dashboards',
                 [
                     1 => ['x' => 0, 'y' => 0, 'w' => 2, 'h' => 2, 'i' => 1],
                     2 => ['x' => 2, 'y' => 0, 'w' => 2, 'h' => 2, 'i' => 2],
-                ]);
+                ]
+            );
             $result['dashboards'] = $this->auth->user()->dashboards()->get();
 
             return $this->responseJson($result);
