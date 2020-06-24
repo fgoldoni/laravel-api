@@ -21,7 +21,7 @@ class RolesApiExceptionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $token = $this->admin->makeVisible('api_token')->api_token;
+        $token = $this->authAdmin()->accessToken;
         $this->headers = ['Authorization' => "Bearer $token"];
     }
 

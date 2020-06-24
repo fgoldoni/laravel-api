@@ -4,7 +4,6 @@ namespace Modules\Users\Listeners;
 
 use App\Flag;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Modules\Users\Notifications\UserCreated;
 use Modules\Users\Notifications\UserDeleted;
@@ -55,6 +54,6 @@ class UsersSubscriber
 
     public function getUserByRole(string $role)
     {
-        return User::where('users.id', '!=', Auth::id())->role($role)->get();
+        return User::role($role)->get();
     }
 }

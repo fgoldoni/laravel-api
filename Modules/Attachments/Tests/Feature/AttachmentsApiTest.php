@@ -20,7 +20,7 @@ class AttachmentsApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $token = $this->admin->makeVisible('api_token')->api_token;
+        $token = $this->authAdmin()->accessToken;
         $this->headers = ['Authorization' => "Bearer $token"];
     }
 
@@ -34,6 +34,9 @@ class AttachmentsApiTest extends TestCase
         $response = $this->json('GET', 'api/attachments', [], $this->headers);
 
         $this->responseBody = $response->getContent();
+
+
+        //fwrite(STDERR, $this->responseBody);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -72,11 +75,13 @@ class AttachmentsApiTest extends TestCase
             'attachment'                  => UploadedFile::fake()->image('avatar.jpg'),
             'attachable_id'               => $this->user->id,
             'attachable_type'             => \get_class($this->user),
+            'position'                    => 1,
             'folder'                      => 'users',
             'resize'                      => false,
         ];
 
         $response = $this->json('POST', 'api/attachments/store', $payload, []);
+
 
         $this->responseBody = $response->getContent();
 

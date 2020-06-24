@@ -105,6 +105,11 @@ abstract class TestCase extends BaseTestCase
         return json_decode($this->responseBody, true);
     }
 
+    protected function getResponseAsObject()
+    {
+        return json_decode($this->responseBody, false);
+    }
+
     protected function assertLoggedIn()
     {
         $this->assertTrue(Auth::check());
@@ -118,5 +123,17 @@ abstract class TestCase extends BaseTestCase
     protected function getExceptionShortName(string $class)
     {
         return (new ReflectionClass($class))->getShortName();
+    }
+
+    protected function authAdmin()
+    {
+        $response = $this->json('POST', '/api/auth/login', [
+            'email' => $this->admin->email,
+            'password' => $this->adminPassword
+        ]);
+
+        $this->responseBody = $response->getContent();
+
+        return $this->getResponseAsObject();
     }
 }
