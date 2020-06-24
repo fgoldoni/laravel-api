@@ -14,7 +14,7 @@ before_script:
   - php artisan key:generate
   - php artisan migrate
   - php artisan module:seed Roles
-  - composer dump-nameauto
+  - composer dump-auto
   - php artisan config:clear
   - php artisan cache:clear
   - php artisan route:clear
