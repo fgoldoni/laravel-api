@@ -17,4 +17,6 @@ interface CartsRepository
     public function clear();
 
     public function addCoupon(string $coupon);
+
+    public function addFee(string $value);
 }

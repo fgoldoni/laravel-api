@@ -17,6 +17,9 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->double('price', 10, 2);
+            $table->double('subtotal', 10, 2);
+            $table->double('fee', 10, 2);
+            $table->double('total', 10, 2);
             $table->integer('quantity')->default(1);
             $table->integer('user_id')->unsigned()->index()->nullable();
             $table->integer('transaction_id')->unsigned()->index()->nullable();

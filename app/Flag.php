@@ -31,6 +31,8 @@ class Flag
 
     const ROLE_ADMIN = 'Admin';
 
+    const FEE = '-10%';
+
     const ROLE_EVENT_MANAGER = 'Event Manager';
 
     const ROLE_EXECUTIVE = 'Executive';

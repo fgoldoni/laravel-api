@@ -12,13 +12,16 @@ namespace Modules\Stripe\Repositories\Eloquent;
 use App\Flag;
 use App\Repositories\RepositoryAbstract;
 use Cartalyst\Stripe\Stripe;
+use Darryldecode\Cart\Facades\CartFacade;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Modules\Carts\Repositories\Contracts\CartsRepository;
 use Modules\Carts\Repositories\Eloquent\EloquentCartsRepository;
 use Modules\Orders\Jobs\OrderJob;
 use Modules\Stripe\Repositories\Contracts\StripeRepository;
 use Modules\Transactions\Entities\Transaction;
+use Modules\Transactions\Repositories\Contracts\TransactionsRepository;
 
 /**
  * Class EloquentStripeRepository.
@@ -34,10 +37,6 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
      */
     private $auth;
 
-    /**
-     * @var array
-     */
-    private $items = [];
     /**
      * @var \Modules\Carts\Repositories\Contracts\CartsRepository
      */
@@ -117,13 +116,26 @@ class EloquentStripeRepository extends RepositoryAbstract implements StripeRepos
         ]);
     }
 
-    public function make(array $charges, $transactions)
+    public function make(array $charges, TransactionsRepository $transactions)
     {
         $cart = $this->cart->details();
 
         $transaction = $transactions->makeCardTransaction($charges, $cart, $this->auth->user()->id);
 
-        OrderJob::dispatch($cart['items'], $transaction->id, $this->auth->user()->id);
+        $this->cart->addFee(Flag::FEE);
+
+        $cart = $this->cart->details();
+
+        foreach ($cart['items'] as $item) {
+            $fee = 0;
+
+            foreach($item->getConditions() as $condition)
+            {
+                $fee += $condition->getCalculatedValue($item->getPriceSum());
+            }
+
+            OrderJob::dispatch($item, $transaction->id, $this->auth->user()->id, $fee);
+        }
 
         app()->make(EloquentCartsRepository::class)->clear();
 

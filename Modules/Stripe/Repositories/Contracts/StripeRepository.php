@@ -2,6 +2,8 @@
 
 namespace Modules\Stripe\Repositories\Contracts;
 
+use Modules\Transactions\Repositories\Contracts\TransactionsRepository;
+
 interface StripeRepository
 {
     public function customers(string $name, string $email, string $mobile, string $stripeToken);
@@ -10,5 +12,5 @@ interface StripeRepository
 
     public function intent();
 
-    public function make(array $charges, $transactions);
+    public function make(array $charges, TransactionsRepository $transactions);
 }

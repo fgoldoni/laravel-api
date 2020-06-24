@@ -33,7 +33,7 @@ class EloquentOrdersRepository extends RepositoryAbstract implements OrdersRepos
     {
         return $this->withCriteria([
             new WithTrashed(),
-            new Select('id', 'name', 'price', 'quantity', 'user_id', 'transaction_id', 'event_id', 'created_at'),
+            new Select('id', 'name', 'price', 'quantity', 'fee', 'total', 'user_id', 'transaction_id', 'event_id', 'created_at'),
             new OrderBy('orders.id', 'desc'),
             new WhereIn('orders.transaction_id', $transactions),
             new EagerLoad(['user' => function ($query) {

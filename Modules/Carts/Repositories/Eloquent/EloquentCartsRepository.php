@@ -145,4 +145,20 @@ class EloquentCartsRepository extends RepositoryAbstract implements CartsReposit
             Vouchers::redeem($coupon, Auth::user(), [now()]);
         }
     }
+
+    public function addFee(string $value)
+    {
+        $cartCondition = new CartCondition([
+            'name' => "FEE $value",
+            'type' => 'fee',
+            'target' => 'total',
+            'value' => $value
+        ]);
+
+        $items = CartFacade::session(Auth::id())->getContent();
+
+        foreach($items as $row) {
+            CartFacade::session(Auth::id())->addItemCondition($row->id, $cartCondition);
+        }
+    }
 }
